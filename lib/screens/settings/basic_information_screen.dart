@@ -14,7 +14,7 @@ class BasicInformationScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: Icon(Icons.arrow_back_ios, size: 20),
+          icon: const Icon(Icons.arrow_back_ios, size: 20),
         ),
         title: Text(
           "Basic Information",
@@ -23,14 +23,14 @@ class BasicInformationScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Center(
               child: Stack(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 100 / 2,
                     backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
                   ),
@@ -44,7 +44,7 @@ class BasicInformationScreen extends StatelessWidget {
                       decoration: ShapeDecoration(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(
+                          side: const BorderSide(
                             width: 0.25,
                             color: Color(
                               0xFF2465C2,
@@ -53,7 +53,7 @@ class BasicInformationScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(14),
                         ),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.camera_alt_outlined,
                         size: 16,
                         color: Palette.primaryColor,
@@ -64,14 +64,14 @@ class BasicInformationScreen extends StatelessWidget {
               ),
             ),
             addVerticalSpace(30),
-            CustomTextField(labelText: "Full Name", hinText: "Enter your name"),
+            const CustomTextField(labelText: "Full Name", hinText: "Enter your name"),
             addVerticalSpace(16),
-            CustomTextField(labelText: "Email", hinText: "example@gmail.com"),
+            const CustomTextField(labelText: "Email", hinText: "example@gmail.com"),
             addVerticalSpace(16),
-            CustomTextField(
+            const CustomTextField(
                 labelText: "Mobile Number", hinText: "024 000 0000"),
             addVerticalSpace(16),
-            Spacer(),
+            const Spacer(),
             CustomPrimaryButton(
               text: "Save",
               onPressed: () {},

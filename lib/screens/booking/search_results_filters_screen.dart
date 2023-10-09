@@ -16,7 +16,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
           "Accra, Ghana - Lagos, Nigeria",
@@ -26,7 +26,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () {},
-              child: Text(
+              child: const Text(
                 "Reset All",
               ))
         ],
@@ -37,7 +37,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 18,
                 left: 20,
                 bottom: 15,
@@ -70,7 +70,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
       </svg>
       """),
                         addHorizontalSpace(10),
-                        Text(
+                        const Text(
                           "Air conditioning",
                         ),
                       ],
@@ -79,7 +79,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                     //     horizontal: 12, vertical: 12),
                     backgroundColor: Colors.white,
                     elevation: 0,
-                    side: BorderSide(
+                    side: const BorderSide(
                       color:
                           // selectedTripType == e
                           //     ? Color(0xFF0402FC)
@@ -96,7 +96,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                       color:
                           // selectedTripType == e
                           //     ? Colors.white
-                          Color(0xFF20415B),
+                          const Color(0xFF20415B),
                     ),
                     selected: false,
                     onSelected: (bool selected) {
@@ -123,7 +123,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
       
       """),
                         addHorizontalSpace(10),
-                        Text(
+                        const Text(
                           "Entertainment (No Wifi)",
                         ),
                       ],
@@ -132,7 +132,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                     //     horizontal: 12, vertical: 12),
                     backgroundColor: Colors.white,
                     elevation: 0,
-                    side: BorderSide(
+                    side: const BorderSide(
                       color:
                           // selectedTripType == e
                           //     ? Color(0xFF0402FC)
@@ -149,7 +149,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                       color:
                           // selectedTripType == e
                           //     ? Colors.white
-                          Color(0xFF20415B),
+                          const Color(0xFF20415B),
                     ),
                     selected: false,
                     onSelected: (bool selected) {
@@ -178,7 +178,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
       </svg>
       """),
                             addHorizontalSpace(10),
-                            Text(
+                            const Text(
                               "Standard seat",
                             ),
                           ],
@@ -187,7 +187,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                         //     horizontal: 12, vertical: 12),
                         backgroundColor: Colors.white,
                         elevation: 0,
-                        side: BorderSide(
+                        side: const BorderSide(
                           color:
                               // selectedTripType == e
                               //     ? Color(0xFF0402FC)
@@ -204,7 +204,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                           color:
                               // selectedTripType == e
                               //     ? Colors.white
-                              Color(0xFF20415B),
+                              const Color(0xFF20415B),
                         ),
                         selected: false,
                         onSelected: (bool selected) {
@@ -232,7 +232,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
       
       """),
                             addHorizontalSpace(10),
-                            Text(
+                            const Text(
                               "Wifi",
                             ),
                           ],
@@ -241,7 +241,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                         //     horizontal: 12, vertical: 12),
                         backgroundColor: Colors.white,
                         elevation: 0,
-                        side: BorderSide(
+                        side: const BorderSide(
                           color:
                               // selectedTripType == e
                               //     ? Color(0xFF0402FC)
@@ -258,7 +258,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                           color:
                               // selectedTripType == e
                               //     ? Colors.white
-                              Color(0xFF20415B),
+                              const Color(0xFF20415B),
                         ),
                         selected: false,
                         onSelected: (bool selected) {
@@ -272,12 +272,12 @@ class SearchResultsFilterScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               height: 1,
             ),
             addVerticalSpace(15),
             Padding(
-              padding: EdgeInsets.only(bottom: 25, left: 20, right: 20),
+              padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -299,7 +299,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                             Text(
                               "From",
                               style: GoogleFonts.manrope(
-                                color: Color(0xFF64748B),
+                                color: const Color(0xFF64748B),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -314,7 +314,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 30 / 375,
-                        margin: EdgeInsets.only(left: 10, right: 10, top: 25),
+                        margin: const EdgeInsets.only(left: 10, right: 10, top: 25),
                         height: 1,
                         color: Palette.lightBorder,
                       ),
@@ -325,7 +325,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                             Text(
                               "To",
                               style: GoogleFonts.manrope(
-                                color: Color(0xFF64748B),
+                                color: const Color(0xFF64748B),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -343,12 +343,12 @@ class SearchResultsFilterScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               height: 1,
             ),
             addVerticalSpace(10),
             Padding(
-              padding: EdgeInsets.only(bottom: 25, left: 20, right: 20),
+              padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -370,7 +370,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                             Text(
                               "From",
                               style: GoogleFonts.manrope(
-                                color: Color.fromARGB(255, 182, 192, 206),
+                                color: const Color.fromARGB(255, 182, 192, 206),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -385,7 +385,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 30 / 375,
-                        margin: EdgeInsets.only(left: 10, right: 10, top: 25),
+                        margin: const EdgeInsets.only(left: 10, right: 10, top: 25),
                         height: 1,
                         color: Palette.lightBorder,
                       ),
@@ -396,7 +396,7 @@ class SearchResultsFilterScreen extends StatelessWidget {
                             Text(
                               "To",
                               style: GoogleFonts.manrope(
-                                color: Color(0xFF64748B),
+                                color: const Color(0xFF64748B),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -414,12 +414,12 @@ class SearchResultsFilterScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               height: 1,
             ),
             addVerticalSpace(10),
             Padding(
-              padding: EdgeInsets.only(bottom: 25, left: 20, right: 20),
+              padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -439,12 +439,12 @@ class SearchResultsFilterScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               height: 1,
             ),
             addVerticalSpace(10),
             Padding(
-              padding: EdgeInsets.only(bottom: 25, left: 20, right: 20),
+              padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -464,12 +464,12 @@ class SearchResultsFilterScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               height: 1,
             ),
             addVerticalSpace(10),
             Padding(
-              padding: EdgeInsets.only(bottom: 25, left: 20, right: 20),
+              padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -520,11 +520,11 @@ class TimeSelectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 0,
           ),
-          side: BorderSide(
+          side: const BorderSide(
             color: Palette.lightBorder,
             width: 1,
           ),
@@ -541,7 +541,7 @@ class TimeSelectButton extends StatelessWidget {
           Text(
             "00:00",
             style: GoogleFonts.quicksand(
-                color: Color(0xFFE2E8F0),
+                color: const Color(0xFFE2E8F0),
                 fontSize: 16,
                 fontWeight: FontWeight.w400),
           ),
@@ -556,7 +556,7 @@ class TimeSelectButton extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
               addHorizontalSpace(8),
-              Icon(
+              const Icon(
                 Icons.keyboard_arrow_down,
                 color: Palette.greyText,
               )
@@ -585,16 +585,16 @@ class FilterSearchButtonWidget extends StatelessWidget {
       children: [
         Container(
           width: double.maxFinite,
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             bottom: 7,
           ),
           child: OutlinedButton(
             style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 16,
                   horizontal: 30,
                 ),
-                side: BorderSide(
+                side: const BorderSide(
                   color: Palette.lightBorder,
                   width: 2,
                 ),
@@ -623,8 +623,8 @@ class FilterSearchButtonWidget extends StatelessWidget {
           right: 20,
           child: Container(
               color: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Icon(Iconsax.search_normal_1,
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: const Icon(Iconsax.search_normal_1,
                   size: 16, color: Palette.greyText)),
         ),
       ],

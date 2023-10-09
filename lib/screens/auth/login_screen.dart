@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({
+    super.key,
+  });
+
   static const String routeName = '/login';
 
   @override
@@ -15,7 +18,7 @@ class LoginScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsetsDirectional.symmetric(
+          padding: const EdgeInsetsDirectional.symmetric(
             vertical: 18,
             horizontal: 20,
           ),
@@ -26,9 +29,10 @@ class LoginScreen extends StatelessWidget {
                 "Login",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.manrope(
-                    color: Palette.tertiaryColor,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700),
+                  color: Palette.tertiaryColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               addVerticalSpace(3),
               Text(
@@ -40,9 +44,10 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500),
               ),
               addVerticalSpace(23),
-              CustomTextField(labelText: "Email", hinText: "example@gmail.com"),
+              const CustomTextField(
+                  labelText: "Email", hinText: "example@gmail.com"),
               addVerticalSpace(20),
-              CustomTextField(labelText: "Password", hinText: ""),
+              const CustomTextField(labelText: "Password", hinText: ""),
               addVerticalSpace(30),
               CustomPrimaryButton(text: "Log in", onPressed: () {}),
               addVerticalSpace(14),

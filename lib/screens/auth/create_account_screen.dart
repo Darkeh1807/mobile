@@ -1,18 +1,15 @@
 import 'package:bus_booking/config/theme/palette.dart';
-import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
-import 'package:bus_booking/widgets/base/custom_button.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:bus_booking/widgets/base/custom_text_field.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CreateAccountScreen extends StatefulWidget {
-  CreateAccountScreen({super.key});
+  const CreateAccountScreen({super.key});
   static const routeName = '/create-account';
 
   @override
@@ -57,12 +54,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
               ),
               addVerticalSpace(50),
-              CustomTextField(
+              const CustomTextField(
                   labelText: "Full Name", hinText: "Enter your name"),
               addVerticalSpace(16),
-              CustomTextField(labelText: "Email", hinText: "example@gmail.com"),
+              const CustomTextField(labelText: "Email", hinText: "example@gmail.com"),
               addVerticalSpace(16),
-              CustomTextField(
+              const CustomTextField(
                   labelText: "Password", hinText: "enter your password"),
               addVerticalSpace(16),
               Column(
@@ -78,7 +75,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   addVerticalSpace(8),
                   Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: 75,
                         child: DropdownButtonFormField<String>(
                             value: selectedCountryCode,
@@ -126,7 +123,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text("+250"),
+                                    const Text("+250"),
                                     addHorizontalSpace(12),
                                     Center(
                                       child: Flag.fromCode(
@@ -144,7 +141,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text("+233"),
+                                    const Text("+233"),
                                     addHorizontalSpace(12),
                                     Center(
                                       child: Flag.fromCode(
@@ -176,11 +173,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: Palette.greyText),
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 18, vertical: 13),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 width: 2,
                                 color: Color(0xFFE1E7EE),
                               ),
@@ -224,7 +221,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 children: [
                   Checkbox(value: false, onChanged: (bool? value) {}),
                   addHorizontalSpace(3),
-                  Text(
+                  const Text(
                     "Send me travel tips and promotions by email.",
                     style: TextStyle(
                       color: Palette.greyText,

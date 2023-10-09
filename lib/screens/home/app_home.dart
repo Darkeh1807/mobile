@@ -23,21 +23,23 @@ class _AppHomeState extends State<AppHome> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       HomeScreen(scafoldKey: _scafoldKey),
-      BookingsScreen(),
-      ProfileScreen()
+      const BookingsScreen(),
+      const ProfileScreen()
     ];
     return Scaffold(
       key: _scafoldKey,
       drawer: SafeArea(
         child: Drawer(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
                     Icons.close,
                   ),
                 ),
@@ -68,13 +70,14 @@ class _AppHomeState extends State<AppHome> {
                   ),
                 ),
                 addVerticalSpace(15),
-                Divider(
+                const Divider(
                   height: 1,
                 ),
                 addVerticalSpace(16),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Iconsax.personalcard, color: Colors.black),
+                  leading:
+                      const Icon(Iconsax.personalcard, color: Colors.black),
                   title: Text(
                     "Car Rental",
                     style: GoogleFonts.manrope(
@@ -86,7 +89,7 @@ class _AppHomeState extends State<AppHome> {
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Iconsax.setting_2, color: Colors.black),
+                  leading: const Icon(Iconsax.setting_2, color: Colors.black),
                   title: Text(
                     "Settings",
                     style: GoogleFonts.manrope(
@@ -98,7 +101,8 @@ class _AppHomeState extends State<AppHome> {
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Iconsax.logout, color: Palette.destructive600),
+                  leading:
+                      const Icon(Iconsax.logout, color: Palette.destructive600),
                   title: Text(
                     "Sign out",
                     style: GoogleFonts.manrope(

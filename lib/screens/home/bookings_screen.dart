@@ -3,7 +3,6 @@ import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
-import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -50,7 +49,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: _tripTypes
                   .map((e) => Container(
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         child: ChoiceChip(
                           label: Text(e),
                           // padding: EdgeInsets.symmetric(
@@ -59,7 +58,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           elevation: 0,
                           side: BorderSide(
                             color: selectedTripType == e
-                                ? Color(0xFF0402FC)
+                                ? const Color(0xFF0402FC)
                                 : Palette.lightBorder,
                             width: 1,
                           ),
@@ -69,7 +68,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             fontWeight: FontWeight.w400,
                             color: selectedTripType == e
                                 ? Colors.white
-                                : Color(0xFF808099),
+                                : const Color(0xFF808099),
                           ),
                           selected: selectedTripType == e,
                           onSelected: (bool selected) {
@@ -83,7 +82,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
             ),
             addVerticalSpace(10),
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: Spacing.pageHorizontalPadding,
               ),
               child: Column(
@@ -92,7 +91,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Recently Booked',
                         style: TextStyle(
                           color: Color(0xFF000023),
@@ -103,7 +102,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                       ),
                       TextButton(
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'See All',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -116,9 +115,9 @@ class _BookingsScreenState extends State<BookingsScreen> {
                     ],
                   ),
                   addVerticalSpace(10),
-                  TicketDisplayWidget(),
+                  const TicketDisplayWidget(),
                   addVerticalSpace(20),
-                  Text(
+                  const Text(
                     'Up-coming',
                     style: TextStyle(
                       color: Color(0xFF000023),
@@ -132,7 +131,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                       3,
                       (index) => Column(
                             children: [
-                              TicketDisplayWidget(),
+                              const TicketDisplayWidget(),
                               if (index != 2) addVerticalSpace(12),
                             ],
                           ))
@@ -163,7 +162,7 @@ class TicketDisplayWidget extends StatelessWidget {
           decoration: ShapeDecoration(
             color: Colors.white,
             shape: RoundedRectangleBorder(
-              side: BorderSide(width: 0.50, color: Color(0xFF5E90CC)),
+              side: const BorderSide(width: 0.50, color: Color(0xFF5E90CC)),
               borderRadius: BorderRadius.circular(Sizing.baseBorderRadius),
             ),
           ),
@@ -179,7 +178,7 @@ class TicketDisplayWidget extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -209,7 +208,7 @@ class TicketDisplayWidget extends StatelessWidget {
                           Container(
                             width: 10,
                             height: 10,
-                            decoration: ShapeDecoration(
+                            decoration: const ShapeDecoration(
                               shape: CircleBorder(
                                 side: BorderSide(
                                     color: Palette.primaryColor, width: 2),
@@ -246,7 +245,7 @@ class TicketDisplayWidget extends StatelessWidget {
                       ),
                       Container(
                         height: 18,
-                        margin: EdgeInsets.only(left: 8),
+                        margin: const EdgeInsets.only(left: 8),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: SvgPicture.string(
@@ -258,7 +257,7 @@ class TicketDisplayWidget extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on_outlined,
                             size: 18,
                             color: Palette.primaryColor,
@@ -293,11 +292,11 @@ class TicketDisplayWidget extends StatelessWidget {
                       ),
                     ]),
               ),
-              Container(
+              SizedBox(
                 height: 22,
                 child: Stack(
                   children: [
-                    Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
+                    const Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
                     Positioned(
                         left: 0,
                         top: 0,
@@ -357,7 +356,7 @@ class TicketDisplayWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
+                    const Text(
                       '1 Seat',
                       style: TextStyle(
                         color: Color(0xFF2465C2),
@@ -384,7 +383,7 @@ class NoBookingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.maxFinite,
       child: Center(
         child: Column(
@@ -394,7 +393,7 @@ class NoBookingWidget extends StatelessWidget {
             ),
             Image.asset("assets/images/empty_booking.png"),
             addVerticalSpace(24),
-            Text(
+            const Text(
               'There are no active bookings here.',
               style: TextStyle(
                 color: Color(0xFF777777),

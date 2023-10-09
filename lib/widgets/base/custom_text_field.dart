@@ -31,10 +31,10 @@ class CustomTextField extends StatelessWidget {
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: Palette.greyText),
-            contentPadding: EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 width: 2,
                 color: Color(0xFFE1E7EE),
               ),

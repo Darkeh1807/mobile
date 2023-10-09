@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../config/theme/palette.dart';
 
 class OtpVerifyScreen extends StatefulWidget {
-  OtpVerifyScreen({super.key});
+  const OtpVerifyScreen({super.key});
   static const routeName = '/otp_verify_screen';
 
   @override
@@ -42,14 +42,14 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
           ),
           leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Palette.baseBlack,
             ),
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
@@ -75,7 +75,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               6,
               (index) => Expanded(
                 child: Container(
-                  margin: index != 5 ? EdgeInsets.only(right: 6) : null,
+                  margin: index != 5 ? const EdgeInsets.only(right: 6) : null,
                   child: BaseOutlinedinput(
                     hintText: "",
                     height: 59,
@@ -99,8 +99,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               ),
             )),
             addVerticalSpace(26),
-            Spacer(),
-            Container(
+            const Spacer(),
+            SizedBox(
               width: double.maxFinite,
               child: CustomPrimaryButton(
                 text: "Next",

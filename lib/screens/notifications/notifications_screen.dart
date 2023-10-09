@@ -13,9 +13,9 @@ class NotificationsScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: Icon(Icons.arrow_back_ios, size: 20),
+          icon: const Icon(Icons.arrow_back_ios, size: 20),
         ),
-        title: Text(
+        title: const Text(
           'Notifications',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -40,7 +40,7 @@ class NotificationsScreen extends StatelessWidget {
                 20,
                 (index) => Column(
                       children: [
-                        NotificationDisplayWidget(),
+                        const NotificationDisplayWidget(),
                         addVerticalSpace(15),
                       ],
                     ))
@@ -61,8 +61,8 @@ class NotificationDisplayWidget extends StatelessWidget {
     return InkWell(
       onTap: () {},
       child: Ink(
-        padding: EdgeInsets.only(bottom: 15),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.only(bottom: 15),
+        decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(
               color: Color(0xFFE5E5E5),
@@ -74,8 +74,8 @@ class NotificationDisplayWidget extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 40 / 2,
-              backgroundColor: Color(0xFF5E90CC).withOpacity(0.1),
-              child: Center(
+              backgroundColor: const Color(0xFF5E90CC).withOpacity(0.1),
+              child: const Center(
                 child: Icon(
                   Iconsax.notification,
                   color: Colors.black,
@@ -90,7 +90,7 @@ class NotificationDisplayWidget extends StatelessWidget {
                 Text(
                   'New Update',
                   style: GoogleFonts.manrope(
-                    color: Color(0xFF060C2C),
+                    color: const Color(0xFF060C2C),
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
@@ -101,7 +101,7 @@ class NotificationDisplayWidget extends StatelessWidget {
                   child: Text(
                     'A new version is available for download.',
                     style: GoogleFonts.manrope(
-                      color: Color(0xFF858585),
+                      color: const Color(0xFF858585),
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
                     ),

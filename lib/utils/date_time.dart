@@ -20,7 +20,7 @@ class DateTimeUtil {
     try {
       return months[index];
     }
-    on RangeError catch(e){
+    on RangeError {
       return "";
     }
   }

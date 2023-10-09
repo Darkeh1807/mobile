@@ -9,7 +9,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'dart:math' as math;
 
 class TicketDetailsScreen extends StatelessWidget {
   const TicketDetailsScreen({super.key});
@@ -21,7 +20,7 @@ class TicketDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: Icon(Icons.arrow_back_ios, size: 20),
+          icon: const Icon(Icons.arrow_back_ios, size: 20),
         ),
         title: Text(
           "Ticket Details",
@@ -44,7 +43,7 @@ class TicketDetailsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding:
-            EdgeInsets.symmetric(horizontal: Spacing.pageHorizontalPadding),
+            const EdgeInsets.symmetric(horizontal: Spacing.pageHorizontalPadding),
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           addVerticalSpace(20),
@@ -53,7 +52,7 @@ class TicketDetailsScreen extends StatelessWidget {
             decoration: ShapeDecoration(
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                side: BorderSide(width: 0.50, color: Color(0xFF5E90CC)),
+                side: const BorderSide(width: 0.50, color: Color(0xFF5E90CC)),
                 borderRadius: BorderRadius.circular(Sizing.baseBorderRadius),
               ),
             ),
@@ -70,7 +69,7 @@ class TicketDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -100,7 +99,7 @@ class TicketDetailsScreen extends StatelessWidget {
                           Container(
                             width: 10,
                             height: 10,
-                            decoration: ShapeDecoration(
+                            decoration: const ShapeDecoration(
                               shape: CircleBorder(
                                 side: BorderSide(
                                     color: Palette.primaryColor, width: 2),
@@ -137,7 +136,7 @@ class TicketDetailsScreen extends StatelessWidget {
                       ),
                       Container(
                         height: 18,
-                        margin: EdgeInsets.only(left: 8),
+                        margin: const EdgeInsets.only(left: 8),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: SvgPicture.string(
@@ -149,7 +148,7 @@ class TicketDetailsScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on_outlined,
                             size: 18,
                             color: Palette.primaryColor,
@@ -219,7 +218,7 @@ class TicketDetailsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Text(
+                          const Text(
                             '1 Seat',
                             style: TextStyle(
                               color: Color(0xFF2465C2),
@@ -233,11 +232,11 @@ class TicketDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 22,
                   child: Stack(
                     children: [
-                      Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
+                      const Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
                       Positioned(
                           left: 0,
                           top: 0,
@@ -267,49 +266,49 @@ class TicketDetailsScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Bus Type",
                               value: "Air conditioning",
                             ),
                             addVerticalSpace(24),
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Departure Time",
                               value: "12am - 6am",
                             ),
                             addVerticalSpace(24),
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Dropping Point",
                               value: "Dropping Point",
                             ),
                             addVerticalSpace(24),
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Buss Number",
                               value: "GS - 25624-32",
                             ),
                           ],
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       IntrinsicWidth(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Bus Operator",
                               value: "VIP Transport",
                             ),
                             addVerticalSpace(24),
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Arrival Time",
                               value: "12am - 6am",
                             ),
                             addVerticalSpace(24),
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Boarding Point",
                               value: "12am - 6am",
                             ),
                             addVerticalSpace(24),
-                            DetailDisplayWidget(
+                            const DetailDisplayWidget(
                               title: "Seat ",
                               value: "A2",
                             ),
@@ -319,11 +318,11 @@ class TicketDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 22,
                   child: Stack(
                     children: [
-                      Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
+                      const Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
                       Positioned(
                           left: 0,
                           top: 0,
@@ -353,7 +352,7 @@ class TicketDetailsScreen extends StatelessWidget {
                     children: [
                       Image.asset("assets/images/qr_code.png"),
                       addVerticalSpace(5),
-                      Text(
+                      const Text(
                         'Show the QR Code at the boarding point',
                         textAlign: TextAlign.right,
                         style: TextStyle(
@@ -372,7 +371,7 @@ class TicketDetailsScreen extends StatelessWidget {
           CustomOutlinedButton(
             text: "Download",
             onPressed: () {},
-            icon: Icon(Iconsax.document_download),
+            icon: const Icon(Iconsax.document_download),
           ),
           addVerticalSpace(70)
         ]),

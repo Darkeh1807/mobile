@@ -19,6 +19,12 @@ class CustomPrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+          fixedSize: Size.fromHeight(height ?? 56),
+          backgroundColor: Palette.primaryColor,
+          elevation: 0.0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(radius ?? 8))),
       child: Text(
         text,
         style: GoogleFonts.manrope(
@@ -27,12 +33,6 @@ class CustomPrimaryButton extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      style: ElevatedButton.styleFrom(
-          fixedSize: Size.fromHeight(height ?? 56),
-          backgroundColor: Palette.primaryColor,
-          elevation: 0.0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius ?? 8))),
     );
   }
 }

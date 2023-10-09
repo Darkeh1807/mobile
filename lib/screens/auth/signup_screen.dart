@@ -45,7 +45,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               addVerticalSpace(50),
               CustomButton(
-                color: Color(0xFF1877F2),
+                color: const Color(0xFF1877F2),
                 onPressed: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +65,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               addVerticalSpace(14),
               CustomButton(
-                color: Color(0xFF8FACC1).withOpacity(0.1),
+                color: const Color(0xFF8FACC1).withOpacity(0.1),
                 onPressed: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +106,7 @@ class SignUpScreen extends StatelessWidget {
               addVerticalSpace(16),
               Center(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 17, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(
@@ -124,7 +124,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               addVerticalSpace(15),
               CustomButton(
-                color: Color(0xFF2EAFFF).withOpacity(0.1),
+                color: const Color(0xFF2EAFFF).withOpacity(0.1),
                 onPressed: () {
                   pushNamedRoute(context, CreateAccountScreen.routeName);
                 },
@@ -146,7 +146,7 @@ class SignUpScreen extends StatelessWidget {
                 children: [
                   Checkbox(value: false, onChanged: (bool? value) {}),
                   addHorizontalSpace(3),
-                  Text(
+                  const Text(
                     "Send me travel tips and promotions by email.",
                     style: TextStyle(
                       color: Palette.greyText,

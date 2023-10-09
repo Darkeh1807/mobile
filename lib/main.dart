@@ -14,14 +14,21 @@ import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:io' show Directory;
+import 'package:path_provider/path_provider.dart';
+
+import 'package:hive/hive.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Palette.primaryColor,
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.light));
+
+  Directory dir = await getApplicationCacheDirectory();
+  Hive.init(dir.path);
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
   //   SystemUiOverlay.bottom, //This line is used for showing the bottom bar
@@ -51,15 +58,15 @@ class MyApp extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
-          iconTheme: IconThemeData(color: Palette.baseBlack),
+          iconTheme: const IconThemeData(color: Palette.baseBlack),
           centerTitle: true,
-          systemOverlayStyle: SystemUiOverlayStyle(
+          systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.white,
             statusBarIconBrightness: Brightness.dark,
           ),
         ),
         scaffoldBackgroundColor: Colors.white,
-        bottomSheetTheme: BottomSheetThemeData(
+        bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: Colors.white,
           elevation: 0,
         ),
@@ -89,55 +96,55 @@ class MyApp extends StatelessWidget {
         switch (settings.name) {
           case AppHome.routeName:
             return MaterialPageRoute(
-              builder: (context) => AppHome(),
+              builder: (context) => const AppHome(),
             );
           case LoginScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => LoginScreen(),
+              builder: (context) => const LoginScreen(),
             );
           case SignUpScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => SignUpScreen(),
+              builder: (context) => const SignUpScreen(),
             );
           case CreateAccountScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => CreateAccountScreen(),
+              builder: (context) => const CreateAccountScreen(),
             );
           case SelectedScreenProceedScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => SelectedScreenProceedScreen(),
+              builder: (context) => const SelectedScreenProceedScreen(),
             );
           case OtpVerifyScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => OtpVerifyScreen(),
+              builder: (context) => const OtpVerifyScreen(),
             );
           case SearchResultsScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => SearchResultsScreen(),
+              builder: (context) => const SearchResultsScreen(),
             );
           case BookingDetailsConfirmScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => BookingDetailsConfirmScreen(),
+              builder: (context) => const BookingDetailsConfirmScreen(),
             );
           case PaymentSuccessScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => PaymentSuccessScreen(),
+              builder: (context) => const PaymentSuccessScreen(),
             );
           case TicketDetailsScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => TicketDetailsScreen(),
+              builder: (context) => const TicketDetailsScreen(),
             );
           case NotificationsScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => NotificationsScreen(),
+              builder: (context) => const NotificationsScreen(),
             );
           case BasicInformationScreen.routeName:
             return MaterialPageRoute(
-              builder: (context) => BasicInformationScreen(),
+              builder: (context) => const BasicInformationScreen(),
             );
           default:
             return MaterialPageRoute(
-              builder: (context) => LoginScreen(),
+              builder: (context) => const LoginScreen(),
             );
         }
       },

@@ -9,7 +9,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SearchResultsScreen extends StatefulWidget {
-  SearchResultsScreen({super.key});
+  const SearchResultsScreen({super.key});
   static const routeName = 'search_results_screen';
 
   @override
@@ -33,7 +33,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
           "Accra, Ghana - Lagos, Nigeria",
@@ -43,9 +43,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              pushWidgetRoute(context, SearchResultsFilterScreen());
+              pushWidgetRoute(context, const SearchResultsFilterScreen());
             },
-            icon: CircleAvatar(
+            icon: const CircleAvatar(
               backgroundColor: Palette.primaryColor,
               child: Icon(
                 Iconsax.setting_4,
@@ -59,13 +59,13 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         child: Column(
           children: [
             SingleChildScrollView(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: _tripTypes
                     .map((e) => Container(
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           child: ChoiceChip(
                             label: Text(e),
                             // padding: EdgeInsets.symmetric(
@@ -74,7 +74,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                             elevation: 0,
                             side: BorderSide(
                               color: selectedTripType == e
-                                  ? Color(0xFF0402FC)
+                                  ? const Color(0xFF0402FC)
                                   : Palette.lightBorder,
                               width: 1,
                             ),
@@ -84,7 +84,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                               fontWeight: FontWeight.w400,
                               color: selectedTripType == e
                                   ? Colors.white
-                                  : Color(0xFF808099),
+                                  : const Color(0xFF808099),
                             ),
                             selected: selectedTripType == e,
                             onSelected: (bool selected) {
@@ -98,12 +98,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
               ),
             ),
             addVerticalSpace(20),
-            AvailableTicketCard(),
-            AvailableTicketCard(),
-            AvailableTicketCard(),
-            AvailableTicketCard(),
-            AvailableTicketCard(),
-            AvailableTicketCard(),
+            const AvailableTicketCard(),
+            const AvailableTicketCard(),
+            const AvailableTicketCard(),
+            const AvailableTicketCard(),
+            const AvailableTicketCard(),
+            const AvailableTicketCard(),
           ],
         ),
       ),
@@ -123,10 +123,10 @@ class AvailableTicketCard extends StatelessWidget {
         pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
       },
       child: Container(
-        padding: EdgeInsets.fromLTRB(15, 12, 15, 15),
-        margin: EdgeInsets.only(right: 20, bottom: 20, left: 20),
+        padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
+        margin: const EdgeInsets.only(right: 20, bottom: 20, left: 20),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFE5ECF0), width: 1),
+          border: Border.all(color: const Color(0xFFE5ECF0), width: 1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -160,7 +160,7 @@ class AvailableTicketCard extends StatelessWidget {
                 Container(
                   width: 10,
                   height: 10,
-                  decoration: ShapeDecoration(
+                  decoration: const ShapeDecoration(
                     shape: CircleBorder(
                       side: BorderSide(color: Palette.primaryColor, width: 2),
                     ),
@@ -196,7 +196,7 @@ class AvailableTicketCard extends StatelessWidget {
             ),
             Container(
               height: 18,
-              margin: EdgeInsets.only(left: 8),
+              margin: const EdgeInsets.only(left: 8),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: SvgPicture.string(
@@ -208,7 +208,7 @@ class AvailableTicketCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.location_on_outlined,
                   size: 18,
                   color: Palette.primaryColor,

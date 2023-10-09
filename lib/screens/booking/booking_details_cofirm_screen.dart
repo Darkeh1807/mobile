@@ -1,4 +1,3 @@
-import 'package:bus_booking/screens/booking/payment_success_screen.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
@@ -11,7 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../config/theme/palette.dart';
 
 class BookingDetailsConfirmScreen extends StatefulWidget {
-  BookingDetailsConfirmScreen({super.key});
+  const BookingDetailsConfirmScreen({super.key});
   static const routeName = '/booking_details_confirm_screen';
 
   @override
@@ -31,7 +30,7 @@ class _BookingDetailsConfirmScreenState
           appBar: AppBar(
             leading: IconButton(
               onPressed: () => Navigator.pop(context, null),
-              icon: Icon(Icons.arrow_back_ios),
+              icon: const Icon(Icons.arrow_back_ios),
             ),
             title: Text(
               "Accra, Ghana - Lagos, Nigeria",
@@ -45,16 +44,16 @@ class _BookingDetailsConfirmScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(20),
                   child: AvailableTicketCard(),
                 ),
-                Divider(
+                const Divider(
                   height: 1,
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -209,12 +208,12 @@ class _BookingDetailsConfirmScreenState
                     ],
                   ),
                 ),
-                Divider(
+                const Divider(
                   height: 1,
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -250,7 +249,7 @@ class _BookingDetailsConfirmScreenState
                               context: context,
                               barrierColor: Colors.black.withOpacity(0.0),
                               barrierDismissible: false,
-                              builder: (context) => PaymentSuccessDialog(),
+                              builder: (context) => const PaymentSuccessDialog(),
                             );
                           })
                     ],
@@ -264,7 +263,7 @@ class _BookingDetailsConfirmScreenState
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage(
@@ -290,9 +289,9 @@ class PaymentSuccessDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      insetPadding: EdgeInsets.symmetric(horizontal: 20),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        padding: EdgeInsets.fromLTRB(18, 10, 18, 32),
+        padding: const EdgeInsets.fromLTRB(18, 10, 18, 32),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
           color: Colors.white,
@@ -304,7 +303,7 @@ class PaymentSuccessDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Center(
+            const Center(
               child: Icon(
                 Iconsax.tick_circle,
                 color: Palette.primaryColor,
@@ -312,7 +311,7 @@ class PaymentSuccessDialog extends StatelessWidget {
               ),
             ),
             addVerticalSpace(6),
-            Text(
+            const Text(
               'Transaction Successful',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -322,7 +321,7 @@ class PaymentSuccessDialog extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Text(
+            const Text(
               'Payment for ticket has successfully been completed',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -360,10 +359,10 @@ class AvailableTicketCard extends StatelessWidget {
         // pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
       },
       child: Container(
-        padding: EdgeInsets.fromLTRB(15, 12, 15, 15),
+        padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
         // margin: EdgeInsets.only(right: 20, bottom: 20, left: 20),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFE5ECF0), width: 1),
+          border: Border.all(color: const Color(0xFFE5ECF0), width: 1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -397,7 +396,7 @@ class AvailableTicketCard extends StatelessWidget {
                 Container(
                   width: 10,
                   height: 10,
-                  decoration: ShapeDecoration(
+                  decoration: const ShapeDecoration(
                     shape: CircleBorder(
                       side: BorderSide(color: Palette.primaryColor, width: 2),
                     ),
@@ -433,7 +432,7 @@ class AvailableTicketCard extends StatelessWidget {
             ),
             Container(
               height: 18,
-              margin: EdgeInsets.only(left: 8),
+              margin: const EdgeInsets.only(left: 8),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: SvgPicture.string(
@@ -445,7 +444,7 @@ class AvailableTicketCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.location_on_outlined,
                   size: 18,
                   color: Palette.primaryColor,

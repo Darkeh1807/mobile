@@ -1,18 +1,19 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/screens/auth/create_account_screen.dart';
+import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/locations/location_select_screen.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_outlined_button.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../booking/search_results_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key, required this.scafoldKey});
+  const HomeScreen({super.key, required this.scafoldKey});
   final GlobalKey<ScaffoldState> scafoldKey;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -42,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 widget.scafoldKey.currentState!.openDrawer();
               },
               // constraints: BoxConstraints.tight(const Size.square(40)),
-              icon: CircleAvatar(
+              icon: const CircleAvatar(
                 backgroundColor: Colors.white,
-                child: const Icon(
+                child: Icon(
                   Iconsax.menu_1,
                   color: Palette.primaryColor,
                   size: 20,
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Ink(
                   width: 45,
                   height: 45,
-                  decoration: ShapeDecoration(
+                  decoration: const ShapeDecoration(
                     shape: CircleBorder(
                       side: BorderSide(
                         color: Colors.white,
@@ -71,14 +72,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Iconsax.notification,
                       color: Colors.white,
                     ),
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   top: 0,
                   right: 0,
                   child: CircleAvatar(
@@ -96,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 26),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -111,7 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: Text(e),
                             backgroundColor: Colors.white,
                             elevation: 0,
-                            selectedColor: Color(0xFF2276E3).withOpacity(0.1),
+                            selectedColor:
+                                const Color(0xFF2276E3).withOpacity(0.1),
                             labelStyle: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: selectedTripType == e
@@ -130,12 +132,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     showModalBottomSheet(
                         context: context,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(20),
                           ),
                         ),
-                        builder: (context) => PassengerSelectBottomSheet());
+                        builder: (context) =>
+                            const PassengerSelectBottomSheet());
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -145,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Container(
                             width: 45,
                             height: 45,
-                            decoration: ShapeDecoration(
+                            decoration: const ShapeDecoration(
                               shape: CircleBorder(
                                 side: BorderSide(
                                   color: Palette.lightBorder,
@@ -153,13 +156,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Icon(
                                 Iconsax.profile_add,
                               ),
                             ),
                           ),
-                          Positioned(
+                          const Positioned(
                             top: 0,
                             right: 0,
                             child: CircleAvatar(
@@ -173,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       addHorizontalSpace(4),
-                      Icon(
+                      const Icon(
                         Icons.keyboard_arrow_down,
                         color: Palette.greyText,
                       ),
@@ -195,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         pushWidgetRoute(
                             context,
-                            LocationSelectScreen(
+                            const LocationSelectScreen(
                               selecting: "Origin",
                             ));
                       },
@@ -207,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         pushWidgetRoute(
                             context,
-                            LocationSelectScreen(
+                            const LocationSelectScreen(
                               selecting: "Destination",
                             ));
                       },
@@ -221,17 +224,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 50,
                     height: 50,
                     decoration: ShapeDecoration(
-                      shape: CircleBorder(),
+                      shape: const CircleBorder(),
                       color: Colors.white,
                       shadows: <BoxShadow>[
                         BoxShadow(
-                          color: Color(0xFF000000).withOpacity(0.1),
-                          offset: Offset(0.0, 0.0),
+                          color: const Color(0xFF000000).withOpacity(0.1),
+                          offset: const Offset(0.0, 0.0),
                           blurRadius: 10.0,
                         ),
                       ],
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Icon(
                         Icons.swap_vert,
                         color: Palette.primaryColor,
@@ -245,35 +248,43 @@ class _HomeScreenState extends State<HomeScreen> {
             LocationButtonWidget(
               innerLabel: "Sat, 20 May",
               topLabel: "Departure",
-              leading: Icon(
+              leading: const Icon(
                 Iconsax.calendar_1,
                 color: Palette.greyText,
               ),
               onTap: () {
                 showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(Duration(days: 30)));
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime.now().add(
+                    const Duration(
+                      days: 30,
+                    ),
+                  ),
+                );
               },
             ),
             addVerticalSpace(30),
             CustomPrimaryButton(
               text: "Search",
               onPressed: () {
-                pushNamedRoute(context, SearchResultsScreen.routeName);
+                pushNamedRoute(
+                  context,
+                  SearchResultsScreen.routeName,
+                );
               },
             ),
             addVerticalSpace(50),
             Text(
-              'Are yu a car rental/ bus company?',
+              'Are you a car rental/ bus company?',
               style: GoogleFonts.quicksand(
                   color: Colors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w600),
             ),
             addVerticalSpace(8),
-            Divider(),
+            const Divider(),
             Text(
               'Unlock the potential of your bus business with our streamlined ticketing platform. Sign up now and revolutionize the way you manage bookings, maximize your revenue, and provide a seamless experience for your passengers.',
               style: GoogleFonts.quicksand(
@@ -283,7 +294,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w400),
             ),
             addVerticalSpace(50),
-            CustomOutlinedButton(onPressed: () {}, text: "Register")
+            CustomOutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ));
+                },
+                text: "Register")
           ],
         ),
       ),
@@ -315,11 +334,11 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                     child: Ink(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
-                        color: Color(0xFF8FACC1).withOpacity(0.1),
+                        color: const Color(0xFF8FACC1).withOpacity(0.1),
                       ),
                       width: 32,
                       height: 32,
-                      child: Center(
+                      child: const Center(
                           child: Icon(
                         Icons.close,
                         color: Palette.primaryColor,
@@ -374,7 +393,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         child: Ink(
                           width: 24,
                           height: 24,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             shape: CircleBorder(
                               side: BorderSide(
                                 color: Palette.primaryColor,
@@ -382,7 +401,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Icon(
                             Icons.remove,
                             color: Palette.primaryColor,
@@ -391,7 +410,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         ),
                       ),
                       addHorizontalSpace(16),
-                      Text(
+                      const Text(
                         "1",
                         style: TextStyle(color: Palette.greyText),
                       ),
@@ -401,7 +420,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         child: Ink(
                           width: 24,
                           height: 24,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             shape: CircleBorder(
                               side: BorderSide(
                                 color: Palette.primaryColor,
@@ -409,7 +428,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Icon(
                             Icons.add,
                             color: Palette.primaryColor,
@@ -422,7 +441,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                 ],
               ),
               addVerticalSpace(10),
-              Divider(
+              const Divider(
                 height: 1,
               )
             ],
@@ -462,7 +481,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         child: Ink(
                           width: 24,
                           height: 24,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             shape: CircleBorder(
                               side: BorderSide(
                                 color: Palette.primaryColor,
@@ -470,7 +489,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Icon(
                             Icons.remove,
                             color: Palette.primaryColor,
@@ -479,7 +498,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         ),
                       ),
                       addHorizontalSpace(16),
-                      Text(
+                      const Text(
                         "1",
                         style: TextStyle(color: Palette.greyText),
                       ),
@@ -489,7 +508,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         child: Ink(
                           width: 24,
                           height: 24,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             shape: CircleBorder(
                               side: BorderSide(
                                 color: Palette.primaryColor,
@@ -497,7 +516,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Icon(
                             Icons.add,
                             color: Palette.primaryColor,
@@ -510,7 +529,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                 ],
               ),
               addVerticalSpace(10),
-              Divider(
+              const Divider(
                 height: 1,
               )
             ],
@@ -550,7 +569,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         child: Ink(
                           width: 24,
                           height: 24,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             shape: CircleBorder(
                               side: BorderSide(
                                 color: Palette.primaryColor,
@@ -558,7 +577,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Icon(
                             Icons.remove,
                             color: Palette.primaryColor,
@@ -567,7 +586,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         ),
                       ),
                       addHorizontalSpace(16),
-                      Text(
+                      const Text(
                         "1",
                         style: TextStyle(color: Palette.greyText),
                       ),
@@ -577,7 +596,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                         child: Ink(
                           width: 24,
                           height: 24,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             shape: CircleBorder(
                               side: BorderSide(
                                 color: Palette.primaryColor,
@@ -585,7 +604,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Icon(
                             Icons.add,
                             color: Palette.primaryColor,
@@ -598,7 +617,7 @@ class PassengerSelectBottomSheet extends StatelessWidget {
                 ],
               ),
               addVerticalSpace(10),
-              Divider(
+              const Divider(
                 height: 1,
               )
             ],
@@ -630,16 +649,16 @@ class LocationButtonWidget extends StatelessWidget {
       children: [
         Container(
           width: double.maxFinite,
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             top: 7,
           ),
           child: OutlinedButton(
             style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 16,
                   horizontal: 30,
                 ),
-                side: BorderSide(
+                side: const BorderSide(
                   color: Palette.lightBorder,
                   width: 1,
                 ),
@@ -668,10 +687,10 @@ class LocationButtonWidget extends StatelessWidget {
           left: 20,
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               topLabel,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Palette.greyText,
                 fontSize: 14,
                 height: 1,

@@ -30,14 +30,14 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: Spacing.pageHorizontalPadding,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             addVerticalSpace(30),
-            Center(
+            const Center(
               child: CircleAvatar(
                 radius: 100 / 2,
                 backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
@@ -55,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             addVerticalSpace(25),
             SettingTile(
-              icon: Icon(
+              icon: const Icon(
                 Iconsax.user,
                 color: Colors.black,
                 size: 18,
@@ -67,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             addVerticalSpace(20),
             SettingTile(
-              icon: Icon(
+              icon: const Icon(
                 Iconsax.ticket_2,
                 color: Colors.black,
                 size: 18,
@@ -76,14 +76,14 @@ class ProfileScreen extends StatelessWidget {
               onTap: () {
                 showModalBottomSheet(
                     context: context,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20),
                       ),
                     ),
                     isScrollControlled: true,
                     enableDrag: true,
-                    builder: (context) => BookingRetrieveBottomSheet());
+                    builder: (context) => const BookingRetrieveBottomSheet());
               },
             ),
             addVerticalSpace(20),
@@ -99,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
 
             // addVerticalSpace(20),
             SettingTile(
-              icon: Icon(
+              icon: const Icon(
                 Iconsax.profile_2user,
                 color: Colors.black,
                 size: 18,
@@ -108,19 +108,19 @@ class ProfileScreen extends StatelessWidget {
               onTap: () {
                 showModalBottomSheet(
                     context: context,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20),
                       ),
                     ),
                     isScrollControlled: true,
                     enableDrag: true,
-                    builder: (context) => ReferalBottomSheet());
+                    builder: (context) => const ReferalBottomSheet());
               },
             ),
             addVerticalSpace(20),
             SettingTile(
-              icon: Icon(
+              icon: const Icon(
                 Iconsax.setting_2,
                 color: Colors.black,
                 size: 18,
@@ -130,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             addVerticalSpace(20),
             SettingTile(
-              icon: Icon(
+              icon: const Icon(
                 Iconsax.support,
                 color: Colors.black,
                 size: 18,
@@ -139,19 +139,19 @@ class ProfileScreen extends StatelessWidget {
               onTap: () {
                 showModalBottomSheet(
                     context: context,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20),
                       ),
                     ),
                     isScrollControlled: true,
                     enableDrag: true,
-                    builder: (context) => SupportBottomSheet());
+                    builder: (context) => const SupportBottomSheet());
               },
             ),
             addVerticalSpace(20),
             SettingTile(
-              icon: Icon(
+              icon: const Icon(
                 Iconsax.logout,
                 color: Palette.destructive600,
                 size: 18,
@@ -161,7 +161,7 @@ class ProfileScreen extends StatelessWidget {
                 showDialog(
                   context: context,
                   useSafeArea: false,
-                  builder: (context) => SignoutDialog(),
+                  builder: (context) => const SignoutDialog(),
                 );
               },
               color: Palette.destructive600,
@@ -186,9 +186,9 @@ class SignoutDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      insetPadding: EdgeInsets.symmetric(horizontal: 40),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 40),
       child: Container(
-        padding: EdgeInsets.fromLTRB(18, 10, 18, 32),
+        padding: const EdgeInsets.fromLTRB(18, 10, 18, 32),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
           color: Colors.white,
@@ -200,7 +200,7 @@ class SignoutDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               'Sign out',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -210,7 +210,7 @@ class SignoutDialog extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Text(
+            const Text(
               'Are you sure you want to sign out?',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -230,7 +230,7 @@ class SignoutDialog extends StatelessWidget {
                     },
                     radius: 94,
                     height: 46,
-                    color: Color(0xFFEF4444),
+                    color: const Color(0xFFEF4444),
                     child: Text(
                       'Sign out',
                       textAlign: TextAlign.center,
@@ -282,8 +282,8 @@ class SettingTile extends StatelessWidget {
       onTap: onTap,
       child: Ink(
         child: Container(
-          padding: EdgeInsets.only(bottom: 15),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.only(bottom: 15),
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(
                 color: Color(0xFFE5E5E5),
@@ -303,8 +303,8 @@ class SettingTile extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Spacer(),
-              Icon(
+              const Spacer(),
+              const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
                 color: Palette.baseBlack,
@@ -341,11 +341,11 @@ class BookingRetrieveBottomSheet extends StatelessWidget {
                     child: Ink(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
-                        color: Color(0xFF8FACC1).withOpacity(0.1),
+                        color: const Color(0xFF8FACC1).withOpacity(0.1),
                       ),
                       width: 32,
                       height: 32,
-                      child: Center(
+                      child: const Center(
                           child: Icon(
                         Icons.close,
                         color: Palette.primaryColor,
@@ -366,7 +366,7 @@ class BookingRetrieveBottomSheet extends StatelessWidget {
             ],
           ),
           addVerticalSpace(35),
-          CustomTextField(
+          const CustomTextField(
               labelText: "Booking Code", hinText: "Enter Code or Ticket ID"),
           addVerticalSpace(33),
           CustomPrimaryButton(text: "Retrieve Booking", onPressed: () {}),
@@ -400,11 +400,11 @@ class ReferalBottomSheet extends StatelessWidget {
                     child: Ink(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
-                        color: Color(0xFF8FACC1).withOpacity(0.1),
+                        color: const Color(0xFF8FACC1).withOpacity(0.1),
                       ),
                       width: 32,
                       height: 32,
-                      child: Center(
+                      child: const Center(
                           child: Icon(
                         Icons.close,
                         color: Palette.primaryColor,
@@ -464,11 +464,11 @@ class SupportBottomSheet extends StatelessWidget {
                     child: Ink(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
-                        color: Color(0xFF8FACC1).withOpacity(0.1),
+                        color: const Color(0xFF8FACC1).withOpacity(0.1),
                       ),
                       width: 32,
                       height: 32,
-                      child: Center(
+                      child: const Center(
                           child: Icon(
                         Icons.close,
                         color: Palette.primaryColor,
@@ -529,7 +529,7 @@ class BottomSheetExternalActionWidget extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Ink(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: Palette.neutral100,
@@ -543,7 +543,7 @@ class BottomSheetExternalActionWidget extends StatelessWidget {
                   Text(
                     title,
                     style: GoogleFonts.manrope(
-                      color: Color.fromARGB(255, 90, 82, 74),
+                      color: const Color.fromARGB(255, 90, 82, 74),
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -553,7 +553,7 @@ class BottomSheetExternalActionWidget extends StatelessWidget {
                     Text(
                       subtitle!,
                       style: GoogleFonts.manrope(
-                        color: Color.fromARGB(255, 90, 82, 74),
+                        color: const Color.fromARGB(255, 90, 82, 74),
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                       ),

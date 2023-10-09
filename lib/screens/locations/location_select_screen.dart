@@ -15,7 +15,7 @@ class LocationSelectScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(selecting,
             style: GoogleFonts.manrope(
@@ -25,7 +25,7 @@ class LocationSelectScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(
               top: 5,
               left: 20,
@@ -40,11 +40,11 @@ class LocationSelectScreen extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
+          const Divider(
             height: 1,
           ),
           addVerticalSpace(10),
-          Expanded(
+          const Expanded(
               child: SingleChildScrollView(
                   child: Column(
             children: [
@@ -105,7 +105,7 @@ class LocationResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: Palette.neutral100,
@@ -115,7 +115,7 @@ class LocationResultTile extends StatelessWidget {
       ),
       child: ListTile(
         onTap: () {},
-        leading: Icon(
+        leading: const Icon(
           Icons.location_on_outlined,
           color: Colors.black,
         ),

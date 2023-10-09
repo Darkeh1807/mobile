@@ -43,7 +43,7 @@ class _BaseOutlinedinputState extends State<BaseOutlinedinput> {
         ),
         prefixIcon: widget.prefix,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        prefixStyle: TextStyle(
+        prefixStyle: const TextStyle(
           color: Palette.neutral500,
           fontSize: 14,
           fontWeight: FontWeight.w400,
@@ -56,13 +56,13 @@ class _BaseOutlinedinputState extends State<BaseOutlinedinput> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Palette.neutral200,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Palette.primaryColor,
           ),
         ),

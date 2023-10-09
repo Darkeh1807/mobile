@@ -37,7 +37,7 @@ class CustomOutlinedButton extends StatelessWidget {
         children: [
           if (icon != null) icon!,
           if (icon != null)
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
           Text(

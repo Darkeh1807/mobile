@@ -16,7 +16,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
           "Accra, Ghana - Lagos, Nigeria",
@@ -28,16 +28,16 @@ class SelectedScreenProceedScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(20),
               child: AvailableTicketCard(),
             ),
-            Divider(
+            const Divider(
               height: 1,
             ),
             Padding(
               padding:
-                  EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
+                  const EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -172,12 +172,12 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               height: 1,
             ),
             Padding(
               padding:
-                  EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
+                  const EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -210,7 +210,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             "Available",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
-                                color: Color(0xFF20415B),
+                                color: const Color(0xFF20415B),
                                 fontWeight: FontWeight.w400,
                                 height: 1.2),
                           ),
@@ -223,14 +223,14 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             width: 9,
                             height: 9,
                             decoration:
-                                BoxDecoration(color: Palette.primaryColor),
+                                const BoxDecoration(color: Palette.primaryColor),
                           ),
                           addHorizontalSpace(4),
                           Text(
                             "Booked",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
-                                color: Color(0xFF20415B),
+                                color: const Color(0xFF20415B),
                                 fontWeight: FontWeight.w400,
                                 height: 1.2),
                           ),
@@ -242,14 +242,14 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                           Container(
                             width: 9,
                             height: 9,
-                            decoration: BoxDecoration(color: Palette.baseBlack),
+                            decoration: const BoxDecoration(color: Palette.baseBlack),
                           ),
                           addHorizontalSpace(4),
                           Text(
                             "Unavailable",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
-                                color: Color(0xFF20415B),
+                                color: const Color(0xFF20415B),
                                 fontWeight: FontWeight.w400,
                                 height: 1.2),
                           ),
@@ -259,7 +259,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                   ),
                   addVerticalSpace(30),
                   GridView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisSpacing:
@@ -267,7 +267,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                         mainAxisSpacing: 12,
                         mainAxisExtent: 43,
                         crossAxisCount: 4),
-                    children: [
+                    children: const [
                       SeatNumberDisplayWidget(seatNumberTitle: "A1"),
                       SeatNumberDisplayWidget(seatNumberTitle: "A2"),
                       SeatNumberDisplayWidget(seatNumberTitle: "A3"),
@@ -322,7 +322,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
 }
 
 class SeatNumberDisplayWidget extends StatefulWidget {
-  SeatNumberDisplayWidget(
+  const SeatNumberDisplayWidget(
       {super.key, required this.seatNumberTitle, this.status = "available"});
   final String seatNumberTitle;
   final String status;
@@ -360,7 +360,7 @@ class _SeatNumberDisplayWidgetState extends State<SeatNumberDisplayWidget> {
     return Container(
       width: 43,
       height: 43,
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         maxHeight: 43,
         maxWidth: 43,
       ),
@@ -398,10 +398,10 @@ class AvailableTicketCard extends StatelessWidget {
         pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
       },
       child: Container(
-        padding: EdgeInsets.fromLTRB(15, 12, 15, 15),
+        padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
         // margin: EdgeInsets.only(right: 20, bottom: 20, left: 20),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFE5ECF0), width: 1),
+          border: Border.all(color: const Color(0xFFE5ECF0), width: 1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -435,7 +435,7 @@ class AvailableTicketCard extends StatelessWidget {
                 Container(
                   width: 10,
                   height: 10,
-                  decoration: ShapeDecoration(
+                  decoration: const ShapeDecoration(
                     shape: CircleBorder(
                       side: BorderSide(color: Palette.primaryColor, width: 2),
                     ),
@@ -471,7 +471,7 @@ class AvailableTicketCard extends StatelessWidget {
             ),
             Container(
               height: 18,
-              margin: EdgeInsets.only(left: 8),
+              margin: const EdgeInsets.only(left: 8),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: SvgPicture.string(
@@ -483,7 +483,7 @@ class AvailableTicketCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.location_on_outlined,
                   size: 18,
                   color: Palette.primaryColor,
