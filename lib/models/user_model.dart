@@ -1,29 +1,28 @@
 class User {
-    String? id;
-    String? fullName;
-    String? email;
-    String? phone;
-    String? profilePic;
-    bool? isPhoneNumberVerified;
-    bool? isEmailVerified;
-    String? role;
-    // DateTime? createdAt;
-    // DateTime? updatedAt;
-    // int? v;
+  String? id;
+  String? fullName;
+  String? email;
+  String? phone;
+  String? profilePic;
+  bool? isPhoneNumberVerified;
+  bool? isEmailVerified;
+  String? role;
+  // DateTime? createdAt;
+  // DateTime? updatedAt;
+  // int? v;
 
-    User({
-        this.id,
-        this.fullName,
-        this.email,
-        this.phone,
-        this.profilePic,
-        this.isPhoneNumberVerified,
-        this.isEmailVerified,
-        this.role,
-     
-    });
+  User({
+    this.id,
+    this.fullName,
+    this.email,
+    this.phone,
+    this.profilePic,
+    this.isPhoneNumberVerified,
+    this.isEmailVerified,
+    this.role,
+  });
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["_id"],
         fullName: json["fullName"],
         email: json["email"],
@@ -32,10 +31,9 @@ class User {
         isPhoneNumberVerified: json["isPhoneNumberVerified"],
         isEmailVerified: json["isEmailVerified"],
         role: json["role"],
-     
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "_id": id,
         "fullName": fullName,
         "email": email,
@@ -44,6 +42,5 @@ class User {
         "isPhoneNumberVerified": isPhoneNumberVerified,
         "isEmailVerified": isEmailVerified,
         "role": role,
-      
-    };
+      };
 }

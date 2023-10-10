@@ -1,4 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
@@ -18,6 +20,7 @@ import 'dart:io' show Directory;
 import 'package:path_provider/path_provider.dart';
 
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
 void main() async {
@@ -42,112 +45,120 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bus Booking',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: Palette.primaryColor,
-              secondary: Palette.tertiaryColor,
-            ),
-        appBarTheme: AppBarTheme.of(context).copyWith(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          titleTextStyle: GoogleFonts.inter(
-            color: Palette.baseBlack,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-          iconTheme: const IconThemeData(color: Palette.baseBlack),
-          centerTitle: true,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
-          ),
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        bottomSheetTheme: const BottomSheetThemeData(
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
-        textTheme: GoogleFonts.interTextTheme(
-          Theme.of(context).textTheme.copyWith(
-              // bodyText1: const TextStyle(height: 1),
-              // bodyText2: const TextStyle(height: 1),
-              // headline1: const TextStyle(height: 1),
-              // headline2: const TextStyle(height: 1),
-              // headline3: const TextStyle(height: 1),
-              // headline4: const TextStyle(height: 1),
-              // headline5: const TextStyle(height: 1),
-              // headline6: const TextStyle(height: 1),
-              // subtitle1: const TextStyle(height: 1),
-              // subtitle2: const TextStyle(height: 1),
-              // caption: const TextStyle(height: 1),
-              // button: const TextStyle(height: 1),
-              // overline: const TextStyle(height: 1),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Bus Booking',
+        debugShowCheckedModeBanner: false,
+        builder: BotToastInit(),
+        theme: ThemeData(
+          colorScheme: Theme.of(context).colorScheme.copyWith(
+                primary: Palette.primaryColor,
+                secondary: Palette.tertiaryColor,
               ),
-        ).apply(
-          bodyColor: Palette.baseBlack,
-          displayColor: Palette.baseBlack,
+          appBarTheme: AppBarTheme.of(context).copyWith(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            titleTextStyle: GoogleFonts.inter(
+              color: Palette.baseBlack,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            iconTheme: const IconThemeData(color: Palette.baseBlack),
+            centerTitle: true,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.white,
+              statusBarIconBrightness: Brightness.dark,
+            ),
+          ),
+          scaffoldBackgroundColor: Colors.white,
+          bottomSheetTheme: const BottomSheetThemeData(
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+          textTheme: GoogleFonts.interTextTheme(
+            Theme.of(context).textTheme.copyWith(
+                // bodyText1: const TextStyle(height: 1),
+                // bodyText2: const TextStyle(height: 1),
+                // headline1: const TextStyle(height: 1),
+                // headline2: const TextStyle(height: 1),
+                // headline3: const TextStyle(height: 1),
+                // headline4: const TextStyle(height: 1),
+                // headline5: const TextStyle(height: 1),
+                // headline6: const TextStyle(height: 1),
+                // subtitle1: const TextStyle(height: 1),
+                // subtitle2: const TextStyle(height: 1),
+                // caption: const TextStyle(height: 1),
+                // button: const TextStyle(height: 1),
+                // overline: const TextStyle(height: 1),
+                ),
+          ).apply(
+            bodyColor: Palette.baseBlack,
+            displayColor: Palette.baseBlack,
+          ),
         ),
+        initialRoute: AppHome.routeName,
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case AppHome.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const AppHome(),
+              );
+            case LoginScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const LoginScreen(),
+              );
+            case SignUpScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const SignUpScreen(),
+              );
+            case CreateAccountScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const CreateAccountScreen(),
+              );
+            case SelectedScreenProceedScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const SelectedScreenProceedScreen(),
+              );
+            case OtpVerifyScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const OtpVerifyScreen(),
+              );
+            case SearchResultsScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const SearchResultsScreen(),
+              );
+            case BookingDetailsConfirmScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const BookingDetailsConfirmScreen(),
+              );
+            case PaymentSuccessScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const PaymentSuccessScreen(),
+              );
+            case TicketDetailsScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const TicketDetailsScreen(),
+              );
+            case NotificationsScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const NotificationsScreen(),
+              );
+            case BasicInformationScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const BasicInformationScreen(),
+              );
+            default:
+              return MaterialPageRoute(
+                builder: (context) => const LoginScreen(),
+              );
+          }
+        },
       ),
-      initialRoute: AppHome.routeName,
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case AppHome.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const AppHome(),
-            );
-          case LoginScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const LoginScreen(),
-            );
-          case SignUpScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const SignUpScreen(),
-            );
-          case CreateAccountScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const CreateAccountScreen(),
-            );
-          case SelectedScreenProceedScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const SelectedScreenProceedScreen(),
-            );
-          case OtpVerifyScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const OtpVerifyScreen(),
-            );
-          case SearchResultsScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const SearchResultsScreen(),
-            );
-          case BookingDetailsConfirmScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const BookingDetailsConfirmScreen(),
-            );
-          case PaymentSuccessScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const PaymentSuccessScreen(),
-            );
-          case TicketDetailsScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const TicketDetailsScreen(),
-            );
-          case NotificationsScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const NotificationsScreen(),
-            );
-          case BasicInformationScreen.routeName:
-            return MaterialPageRoute(
-              builder: (context) => const BasicInformationScreen(),
-            );
-          default:
-            return MaterialPageRoute(
-              builder: (context) => const LoginScreen(),
-            );
-        }
-      },
     );
   }
 }

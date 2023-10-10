@@ -1,13 +1,23 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/hive/user_hive_methods.dart';
+import 'package:bus_booking/models/user_model.dart';
+import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
+import 'package:bus_booking/services/post_to_server.dart';
+import 'package:bus_booking/utils/loaders.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
-import 'package:bus_booking/widgets/base/custom_text_field.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:provider/provider.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({super.key});
@@ -27,6 +37,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final up = context.watch<UserProvider>();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -63,40 +74,137 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   ),
                 ),
                 addVerticalSpace(50),
-                CustomTextField(
-                  labelText: "Full Name",
-                  hinText: "Enter your name",
-                  controller: fullNameController,
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Full name is required';
-                    }
-                    return null;
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Full name',
+                      style: GoogleFonts.manrope(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Palette.greyText),
+                    ),
+                    addVerticalSpace(8),
+                    TextFormField(
+                      controller: fullNameController,
+                      style: GoogleFonts.manrope(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: 'Enter your name',
+                        hintStyle: GoogleFonts.manrope(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.greyText),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 13),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Color(0xFFE1E7EE),
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter your full name';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
                 addVerticalSpace(16),
-                CustomTextField(
-                  labelText: "Email",
-                  hinText: "example@gmail.com",
-                  controller: emailController,
-                  validator: (String? value) =>
-                      !EmailValidator.validate(value!, true)
-                          ? 'Not a valid email.'
-                          : null,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Email',
+                      style: GoogleFonts.manrope(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Palette.greyText),
+                    ),
+                    addVerticalSpace(8),
+                    TextFormField(
+                      controller: emailController,
+                      style: GoogleFonts.manrope(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: 'example@gmail.com',
+                        hintStyle: GoogleFonts.manrope(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.greyText),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 13),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Color(0xFFE1E7EE),
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'email is required';
+                        } else if (!EmailValidator.validate(value)) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
                 addVerticalSpace(16),
-                CustomTextField(
-                  labelText: "Password",
-                  hinText: "enter your password",
-                  controller: passwordController,
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password is required';
-                    } else if (value.length < 8) {
-                      return 'Password must be more than 8 characters';
-                    }
-                    return null;
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Password',
+                      style: GoogleFonts.manrope(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Palette.greyText),
+                    ),
+                    addVerticalSpace(8),
+                    TextFormField(
+                      controller: passwordController,
+                      style: GoogleFonts.manrope(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: 'Enter your password',
+                        hintStyle: GoogleFonts.manrope(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.greyText),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 13),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Color(0xFFE1E7EE),
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Passaword cannot be empty';
+                        } else if (value.length < 8) {
+                          return 'Password mus be longer than 8 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
                 addVerticalSpace(16),
                 Column(
@@ -219,7 +327,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: const BorderSide(
                                   width: 2,
-                                  
                                   color: Color(0xFFE1E7EE),
                                 ),
                               ),
@@ -241,13 +348,39 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 addVerticalSpace(53),
                 CustomPrimaryButton(
                   text: "Create Account",
-                  onPressed: () {
+                  onPressed: () async {
                     bool isValidated = _formKey.currentState!.validate();
                     if (isValidated) {
-                      pushNamedRoute(
-                        context,
-                        OtpVerifyScreen.routeName,
-                      );
+                      showProgressLoader();
+
+                      try {
+                        var resp = await postDataToServer(
+                          "https://bus-booking-server-test.azurewebsites.net/api/v1/auth/signup",
+                          {
+                            "fullName": fullNameController.text,
+                            "email": emailController.text,
+                            "password": passwordController.text,
+                            "phone": mobileNumController.text,
+                          },
+                          context,
+                        );
+
+                        final jresp = jsonDecode(resp);
+                        // logs.d(jresp);
+                        if (jresp != null) {
+                          User userModel = User.fromJson(jresp["user"]);
+                          UserHiveMethods().addUser(userModel);
+                          up.setUser = userModel;
+                          cancelLoader();
+                          // ignore: use_build_context_synchronously
+                          pushNamedRoute(context, OtpVerifyScreen.routeName);
+                        } else {
+                          cancelLoader();
+                        }
+                      } on Exception catch (e) {
+                        cancelLoader();
+                        logs.d("Error: $e");
+                      }
                     }
                   },
                 ),

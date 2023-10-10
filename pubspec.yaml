@@ -48,6 +48,9 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.1.1
   email_validator: ^2.1.17
+  logger: ^2.0.2+1
+  bot_toast: ^4.1.0
+  fluttertoast: ^8.2.2
 
 dev_dependencies:
   flutter_test:
