@@ -64,12 +64,27 @@ class BasicInformationScreen extends StatelessWidget {
               ),
             ),
             addVerticalSpace(30),
-            const CustomTextField(labelText: "Full Name", hinText: "Enter your name"),
+             CustomTextField(
+              labelText: "Full Name",
+              hinText: "Enter your name",
+              validator: (String? value) {
+                return null;
+              },
+            ),
             addVerticalSpace(16),
-            const CustomTextField(labelText: "Email", hinText: "example@gmail.com"),
+             CustomTextField(
+                labelText: "Email", hinText: "example@gmail.com",
+                 validator: (String? value) {
+                return null;
+              },
+                ),
             addVerticalSpace(16),
-            const CustomTextField(
-                labelText: "Mobile Number", hinText: "024 000 0000"),
+             CustomTextField(
+                labelText: "Mobile Number", hinText: "024 000 0000",
+                 validator: (String? value) {
+                return null;
+              },
+                ),
             addVerticalSpace(16),
             const Spacer(),
             CustomPrimaryButton(

@@ -4,10 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField(
-      {super.key, required this.labelText, required this.hinText});
+  const CustomTextField({
+    super.key,
+    required this.labelText,
+    required this.hinText,
+    this.controller,
+    required this.validator,
+  });
   final String labelText;
   final String hinText;
+  final TextEditingController? controller;
+  final String? Function(String?) validator;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +34,13 @@ class CustomTextField extends StatelessWidget {
               fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black),
           decoration: InputDecoration(
             hintText: hinText,
+          
             hintStyle: GoogleFonts.manrope(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: Palette.greyText),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
@@ -60,7 +69,9 @@ class CustomTextField extends StatelessWidget {
             //   ),
             // ),
           ),
+          validator: validator,
         ),
+        
       ],
     );
   }

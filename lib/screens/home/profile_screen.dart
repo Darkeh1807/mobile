@@ -366,8 +366,13 @@ class BookingRetrieveBottomSheet extends StatelessWidget {
             ],
           ),
           addVerticalSpace(35),
-          const CustomTextField(
-              labelText: "Booking Code", hinText: "Enter Code or Ticket ID"),
+          CustomTextField(
+            labelText: "Booking Code",
+            hinText: "Enter Code or Ticket ID",
+            validator: (String? value) {
+              return null;
+            },
+          ),
           addVerticalSpace(33),
           CustomPrimaryButton(text: "Retrieve Booking", onPressed: () {}),
         ],

@@ -44,10 +44,18 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500),
               ),
               addVerticalSpace(23),
-              const CustomTextField(
-                  labelText: "Email", hinText: "example@gmail.com"),
+               CustomTextField(
+                  labelText: "Email", hinText: "example@gmail.com",
+                   validator: (String? value) {
+                return null;
+              },
+                  ),
               addVerticalSpace(20),
-              const CustomTextField(labelText: "Password", hinText: ""),
+               CustomTextField(labelText: "Password", hinText: "",
+               validator: (String? value) {
+                return null;
+              },
+              ),
               addVerticalSpace(30),
               CustomPrimaryButton(text: "Log in", onPressed: () {}),
               addVerticalSpace(14),

@@ -27,10 +27,9 @@ Future<String> postUrlEncodeToServer(
 
     final body = Uri.encodeQueryComponent(
         data.entries.map((entry) => "${entry.key}=${entry.value}").join("&"));
-    final response = await http.post(
-      url,
-      body: body,
-    );
+    final response = await http.post(url, body: body, headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
 
     if (response.statusCode == 201) {
       return response.body.toString();
