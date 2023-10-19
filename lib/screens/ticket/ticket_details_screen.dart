@@ -29,9 +29,7 @@ class TicketDetailsScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              //TODO: Handle external link icon pressed
-            },
+            onPressed: () {},
             icon: SvgPicture.string(
                 """<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.7057 14.2071L17.9986 7.91421V11.5H19.9986V4.5H12.9986V6.5H16.5844L10.2915 12.7929L11.7057 14.2071Z" fill="#201F20"/>
@@ -42,8 +40,8 @@ class TicketDetailsScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding:
-            const EdgeInsets.symmetric(horizontal: Spacing.pageHorizontalPadding),
+        padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.pageHorizontalPadding),
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           addVerticalSpace(20),
@@ -236,7 +234,8 @@ class TicketDetailsScreen extends StatelessWidget {
                   height: 22,
                   child: Stack(
                     children: [
-                      const Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
+                      const Center(
+                          child: DottedLine(dashColor: Color(0xFFEEF2F8))),
                       Positioned(
                           left: 0,
                           top: 0,
@@ -322,7 +321,8 @@ class TicketDetailsScreen extends StatelessWidget {
                   height: 22,
                   child: Stack(
                     children: [
-                      const Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
+                      const Center(
+                          child: DottedLine(dashColor: Color(0xFFEEF2F8))),
                       Positioned(
                           left: 0,
                           top: 0,

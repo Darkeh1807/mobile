@@ -1,10 +1,14 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/hive/token_hive_methods.dart';
+import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/screens/home/bookings_screen.dart';
 import 'package:bus_booking/screens/home/home_screen.dart';
 import 'package:bus_booking/screens/home/profile_screen.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -18,6 +22,22 @@ class AppHome extends StatefulWidget {
 class _AppHomeState extends State<AppHome> {
   int _currentBottomNavIndex = 0;
   final _scafoldKey = GlobalKey<ScaffoldState>();
+  String status = 'unkown';
+
+  @override
+  void initState() {
+    super.initState();
+    final localUser = UserHiveMethods().getHiveUser();
+    final token = TokenHiveMethods().getToken();
+    // logs.d(localUser);
+    // logs.d(token);
+  }
+
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +46,7 @@ class _AppHomeState extends State<AppHome> {
       const BookingsScreen(),
       const ProfileScreen()
     ];
+
     return Scaffold(
       key: _scafoldKey,
       drawer: SafeArea(

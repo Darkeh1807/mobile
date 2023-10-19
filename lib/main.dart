@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
@@ -13,6 +14,7 @@ import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
+import 'package:bus_booking/utils/hive_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +33,7 @@ void main() async {
       statusBarIconBrightness: Brightness.light));
 
   Directory dir = await getApplicationCacheDirectory();
+  Hive.registerAdapter(UserAdapter());
   Hive.init(dir.path);
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
@@ -49,6 +52,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TokenProvider(),
         )
       ],
       child: MaterialApp(

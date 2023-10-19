@@ -3,12 +3,11 @@ import 'package:bus_booking/utils/logger.dart';
 import 'package:hive/hive.dart';
 
 class UserHiveMethods {
-  String hivebox = 'user-box';
-
+  String userbox = 'user-box';
 
 //Add user locally
-  addUser(User user) async {
-    var box = await Hive.openBox(hivebox);
+  Future<void> addUser(User user) async {
+    var box = await Hive.openBox(userbox);
     var userMap = user.toJson();
     await box.put(user.id, userMap);
     logs.d(userMap);
@@ -16,29 +15,38 @@ class UserHiveMethods {
   }
 
 //Update local user
-  updateUser(User user) async {
-    var box = await Hive.openBox(hivebox);
+  Future<void> updateUser(User user) async {
+    var box = await Hive.openBox(userbox);
     var userMap = user.toJson();
     await box.put(user.id, userMap);
   }
 
-  deleteUser(User user) async {
-    var box = await Hive.openBox(hivebox);
+  Future<void> deleteUser(User user) async {
+    var box = await Hive.openBox(userbox);
     await box.delete(user.id);
   }
 
-  Future<User?> getHiveUser(User user) async {
+  Future<User?> getHiveUser() async {
     try {
-      if (user.id != null && user.id!.isNotEmpty) {
-        var box = await Hive.openBox(hivebox);
-        var userMap = box.get(user.id);
-        if (userMap != null) {
-          return User.fromJson(userMap);
-        }
+      var box = await Hive.openBox(userbox);
+      if (box.isEmpty) {
+        return null;
+      }
+      var userId = box.keys.first;
+      Map<String, dynamic> userMap = box.get(userId);
+
+      if (userMap.isNotEmpty) {
+        User user = User.fromJson(userMap);
+        logs.d(user);
+
+        return user;
+      } else {
+        logs.d("No user found");
+        return null;
       }
     } catch (e) {
       logs.d(e.toString());
+      return null;
     }
-    return null;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
+import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_button.dart';
@@ -10,12 +11,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
   Widget build(BuildContext context) {
+    UserProvider up = context.read();
+   
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
@@ -37,15 +46,23 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             addVerticalSpace(30),
-            const Center(
+            Center(
               child: CircleAvatar(
                 radius: 100 / 2,
-                backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+                child: Center(
+                  child: Text(
+                    up.userModel.profilePic.toString(),
+                    style: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
             ),
             addVerticalSpace(5),
             Text(
-              'Emmanuel Adjei',
+              up.userModel.fullName.toString(),
               textAlign: TextAlign.center,
               style: GoogleFonts.manrope(
                 color: Palette.baseBlack,
@@ -87,17 +104,6 @@ class ProfileScreen extends StatelessWidget {
               },
             ),
             addVerticalSpace(20),
-            // SettingTile(
-            //   icon: Icon(
-            //     Iconsax.moneys,
-            //     color: Colors.black,
-            //     size: 18,
-            //   ),
-            //   title: "Currency",
-            //   onTap: () {},
-            // ),
-
-            // addVerticalSpace(20),
             SettingTile(
               icon: const Icon(
                 Iconsax.profile_2user,

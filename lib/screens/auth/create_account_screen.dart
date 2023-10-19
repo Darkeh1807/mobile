@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:bus_booking/config/theme/palette.dart';
-import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/hive/token_hive_methods.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
+import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
@@ -28,7 +27,7 @@ class CreateAccountScreen extends StatefulWidget {
 }
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
-  String selectedCountryCode = "+250";
+  String selectedCountryCode = "250";
   final _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -38,6 +37,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   Widget build(BuildContext context) {
     final up = context.watch<UserProvider>();
+    final tp = context.watch<TokenProvider>();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -175,6 +175,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     addVerticalSpace(8),
                     TextFormField(
                       controller: passwordController,
+                      obscureText: true,
                       style: GoogleFonts.manrope(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -263,7 +264,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                   ],
                               items: <DropdownMenuItem<String>>[
                                 DropdownMenuItem(
-                                  value: "+250",
+                                  value: "250",
                                   alignment: Alignment.center,
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -275,13 +276,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                           FlagsCode.RW,
                                           height: 17,
                                           width: 23,
+                                          
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 DropdownMenuItem(
-                                  value: "+233",
+                                  value: "233",
                                   alignment: Alignment.center,
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -334,9 +336,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Phone number is required';
-                              } else if (value.length != 10) {
-                                return 'Phone number is incorrect';
+                              } else if (value.length >= 10) {
+                                return "Enter phone number without the zero";
                               }
+
                               return null;
                             },
                           ),
@@ -360,7 +363,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             "fullName": fullNameController.text,
                             "email": emailController.text,
                             "password": passwordController.text,
-                            "phone": mobileNumController.text,
+                            "phone":
+                                "$selectedCountryCode${mobileNumController.text}",
                           },
                           context,
                         );
@@ -369,11 +373,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         // logs.d(jresp);
                         if (jresp != null) {
                           User userModel = User.fromJson(jresp["user"]);
-                          UserHiveMethods().addUser(userModel);
+                          var token = jresp['token'];
+
+                          await UserHiveMethods().addUser(userModel);
+                          await TokenHiveMethods().addToken(token);
+
                           up.setUser = userModel;
+                          tp.setToken = token;
                           cancelLoader();
                           // ignore: use_build_context_synchronously
-                          pushNamedRoute(context, OtpVerifyScreen.routeName);
+                          await Navigator.of(context)
+                              .pushNamed(OtpVerifyScreen.routeName);
                         } else {
                           cancelLoader();
                         }
@@ -457,9 +467,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     "Sign in",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.manrope(
-                        color: Palette.primaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
+                      color: Palette.primaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],

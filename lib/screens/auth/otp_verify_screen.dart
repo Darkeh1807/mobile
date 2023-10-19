@@ -1,11 +1,18 @@
+import 'dart:convert';
+import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
+import 'package:bus_booking/services/get_from_server.dart';
+import 'package:bus_booking/services/post_to_server.dart';
+import 'package:bus_booking/utils/loaders.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/base_outlined_input.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:provider/provider.dart';
 import '../../config/theme/palette.dart';
 
 class OtpVerifyScreen extends StatefulWidget {
@@ -28,8 +35,13 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     return true;
   }
 
+  String getOtp() {
+    return otp.join();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final tp = Provider.of<TokenProvider>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -103,19 +115,42 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
             SizedBox(
               width: double.maxFinite,
               child: CustomPrimaryButton(
-                text: "Next",
+                text: "Verify",
                 onPressed: otpIsFilled() == false
                     ? null
-                    : () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, AppHome.routeName, (route) => false);
+                    : () async {
+                        showProgressLoader();
+                        try {
+                          String otpValue = getOtp();
+                          String token = tp.authToken;
+
+                          final resp = await postDataToServer(
+                            "https://bus-booking-server-test.azurewebsites.net/api/v1/auth/verifyphone",
+                            {
+                              "code": otpValue,
+                            },
+                            context,
+                            authToken: token,
+                          );
+
+                          final jresp = jsonDecode(resp);
+
+                          if (jresp != null && jresp["status"] == "success") {
+                            cancelLoader();
+                            // ignore: use_build_context_synchronously
+                            pushNamedRoute(context, AppHome.routeName);
+                          }
+                        } catch (e) {
+                          cancelLoader();
+                          logs.d(e);
+                        }
                       },
               ),
             ),
             addVerticalSpace(10),
             Center(
               child: TextButton(
-                onPressed: () {},
+                onPressed: null,
                 child: Row(
                     // mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -128,13 +163,27 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           color: Palette.baseBlack,
                         ),
                       ),
-                      Text(
-                        " Send again",
-                        style: GoogleFonts.inter(
-                          decoration: TextDecoration.underline,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Palette.primaryColor,
+                      InkWell(
+                        onTap: () async {
+                          final token = tp.authToken;
+                          final resp = await getFromServer(
+                            '${Url.authUrl}/resendsms',
+                            authToken: token,
+                          );
+
+                          final jresp = jsonDecode(resp);
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('${jresp["message"]}')));
+                        },
+                        child: Text(
+                          " Send again",
+                          style: GoogleFonts.inter(
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.primaryColor,
+                          ),
                         ),
                       ),
                     ]),
