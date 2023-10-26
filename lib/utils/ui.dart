@@ -17,3 +17,11 @@ void pushNamedRoute(BuildContext context, String routeName) {
 void pushWidgetRoute(BuildContext context, Widget route) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => route));
 }
+
+void pushNamedRomovePrevious(BuildContext context, String routeName) {
+  Navigator.of(context).pushNamedAndRemoveUntil(routeName, (route) => false);
+}
+
+void goBack(BuildContext context){
+  Navigator.of(context).pop();
+}

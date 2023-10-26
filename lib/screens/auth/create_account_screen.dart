@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/hive/token_hive_methods.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
@@ -10,12 +11,12 @@ import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
+import 'package:bus_booking/utils/snackbar.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -28,11 +29,15 @@ class CreateAccountScreen extends StatefulWidget {
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
   String selectedCountryCode = "250";
+  bool _isChecked = false;
   final _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   final mobileNumController = TextEditingController();
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +46,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: const Icon(
-            Icons.arrow_back_ios,
-            color: Palette.baseBlack,
+          leading: InkWell(
+            onTap: () {
+              goBack(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Palette.baseBlack,
+            ),
           ),
           title: Text(
             "Create Account",
@@ -73,7 +83,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ),
                   ),
                 ),
-                addVerticalSpace(50),
+                addVerticalSpace(45),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -121,7 +131,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Email',
+                      'Email(optional)',
                       style: GoogleFonts.manrope(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -137,11 +147,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       decoration: InputDecoration(
                         hintText: 'example@gmail.com',
                         hintStyle: GoogleFonts.manrope(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Palette.greyText),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Palette.greyText,
+                        ),
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 13),
+                          horizontal: 18,
+                          vertical: 13,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(
@@ -150,14 +163,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           ),
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'email is required';
-                        } else if (!EmailValidator.validate(value)) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return 'email is required';
+                      //   } else if (!EmailValidator.validate(value)) {
+                      //     return 'Please enter a valid email';
+                      //   }
+                      //   return null;
+                      // },
                     ),
                   ],
                 ),
@@ -201,6 +214,53 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           return 'Passaword cannot be empty';
                         } else if (value.length < 8) {
                           return 'Password mus be longer than 8 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+                addVerticalSpace(16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Confirm Password',
+                      style: GoogleFonts.manrope(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Palette.greyText),
+                    ),
+                    addVerticalSpace(8),
+                    TextFormField(
+                      controller: confirmPasswordController,
+                      obscureText: true,
+                      style: GoogleFonts.manrope(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: 'Enter your password',
+                        hintStyle: GoogleFonts.manrope(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.greyText),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 13),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Color(0xFFE1E7EE),
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Passaword cannot be empty';
+                        } else if (passwordController.text !=
+                            confirmPasswordController.text) {
+                          return 'Passwords do not match';
                         }
                         return null;
                       },
@@ -276,7 +336,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                           FlagsCode.RW,
                                           height: 17,
                                           width: 23,
-                                          
                                         ),
                                       ),
                                     ],
@@ -358,13 +417,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
                       try {
                         var resp = await postDataToServer(
-                          "https://bus-booking-server-test.azurewebsites.net/api/v1/auth/signup",
+                          "${Url.authUrl}/signup",
                           {
-                            "fullName": fullNameController.text,
-                            "email": emailController.text,
-                            "password": passwordController.text,
+                            "fullName": fullNameController.text.trim(),
+                            "email": emailController.text.trim(),
+                            "password": passwordController.text.trim(),
                             "phone":
-                                "$selectedCountryCode${mobileNumController.text}",
+                                "$selectedCountryCode${mobileNumController.text.trim()}",
                           },
                           context,
                         );
@@ -388,6 +447,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           cancelLoader();
                         }
                       } on Exception catch (e) {
+                        // ignore: use_build_context_synchronously
+                        showSnackBar(context,'An error occured');
                         cancelLoader();
                         logs.d("Error: $e");
                       }
@@ -397,7 +458,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Checkbox(value: false, onChanged: (bool? value) {}),
+                    Checkbox(
+                        value: _isChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isChecked = value!;
+                          });
+                        }),
                     addHorizontalSpace(3),
                     const Text(
                       "Send me travel tips and promotions by email.",

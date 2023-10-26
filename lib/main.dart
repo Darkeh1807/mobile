@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
             displayColor: Palette.baseBlack,
           ),
         ),
-        initialRoute: AppHome.routeName,
+        initialRoute: SignUpScreen.routeName,
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case AppHome.routeName:

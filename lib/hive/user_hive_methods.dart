@@ -24,6 +24,7 @@ class UserHiveMethods {
   Future<void> deleteUser(User user) async {
     var box = await Hive.openBox(userbox);
     await box.delete(user.id);
+    logs.d('User delted succesffuly');
   }
 
   Future<User?> getHiveUser() async {
@@ -34,6 +35,7 @@ class UserHiveMethods {
       }
       var userId = box.keys.first;
       Map<String, dynamic> userMap = box.get(userId);
+      logs.d(userMap);
 
       if (userMap.isNotEmpty) {
         User user = User.fromJson(userMap);

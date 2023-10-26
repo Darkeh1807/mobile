@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/services/post_to_server.dart';
@@ -25,6 +27,8 @@ class OtpVerifyScreen extends StatefulWidget {
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   List<String> otp = ['', '', '', '', '', ''];
+  late int _timeRemaining;
+  late Timer _timer;
 
   bool otpIsFilled() {
     for (var i = 0; i < otp.length; i++) {
@@ -39,31 +43,52 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     return otp.join();
   }
 
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_timeRemaining > 0) {
+          _timeRemaining -= 1;
+        } else {
+          _timer.cancel();
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    _timeRemaining = 5 * 60;
+    _startTimer();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final tp = Provider.of<TokenProvider>(context);
+    final up = Provider.of<UserProvider>(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Create Account',
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Palette.baseBlack,
-            ),
-          ),
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Palette.baseBlack,
-            ),
+      appBar: AppBar(
+        title: Text(
+          'Create Account',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Palette.baseBlack,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Palette.baseBlack,
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
               "We sent you a verificaiton code",
               style: GoogleFonts.quicksand(
@@ -74,7 +99,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
             ),
             addVerticalSpace(6),
             Text(
-              "Kindly enter the 6-digits code we sent to +233554276833",
+              "Kindly enter the 6-digits code we sent to ${up.userModel.phone}",
               style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -110,44 +135,6 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 ),
               ),
             )),
-            addVerticalSpace(26),
-            const Spacer(),
-            SizedBox(
-              width: double.maxFinite,
-              child: CustomPrimaryButton(
-                text: "Verify",
-                onPressed: otpIsFilled() == false
-                    ? null
-                    : () async {
-                        showProgressLoader();
-                        try {
-                          String otpValue = getOtp();
-                          String token = tp.authToken;
-
-                          final resp = await postDataToServer(
-                            "https://bus-booking-server-test.azurewebsites.net/api/v1/auth/verifyphone",
-                            {
-                              "code": otpValue,
-                            },
-                            context,
-                            authToken: token,
-                          );
-
-                          final jresp = jsonDecode(resp);
-
-                          if (jresp != null && jresp["status"] == "success") {
-                            cancelLoader();
-                            // ignore: use_build_context_synchronously
-                            pushNamedRoute(context, AppHome.routeName);
-                          }
-                        } catch (e) {
-                          cancelLoader();
-                          logs.d(e);
-                        }
-                      },
-              ),
-            ),
-            addVerticalSpace(10),
             Center(
               child: TextButton(
                 onPressed: null,
@@ -189,7 +176,57 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                     ]),
               ),
             ),
-          ]),
-        ));
+            addVerticalSpace(26),
+            const Spacer(),
+            SizedBox(
+              width: double.maxFinite,
+              child: CustomPrimaryButton(
+                text: "Verify",
+                onPressed: otpIsFilled() == false
+                    ? null
+                    : () async {
+                        showProgressLoader();
+                        try {
+                          String otpValue = getOtp();
+                          String token = tp.authToken;
+
+                          final resp = await postDataToServer(
+                            "${Url.authUrl}/verifyphone",
+                            {
+                              "code": otpValue,
+                            },
+                            context,
+                            authToken: token,
+                          );
+
+                          final jresp = jsonDecode(resp);
+
+                          if (jresp != null && jresp["status"] == "success") {
+                            cancelLoader();
+                            // ignore: use_build_context_synchronously
+                            pushNamedRoute(context, AppHome.routeName);
+                          }
+                        } catch (e) {
+                          cancelLoader();
+                          logs.d(e);
+                        }
+                      },
+              ),
+            ),
+            addVerticalSpace(10),
+            Align(
+              child: Text(
+                'Code expires in $_timeRemaining seconds',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Palette.baseBlack,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

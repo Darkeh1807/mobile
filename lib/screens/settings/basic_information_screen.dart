@@ -27,7 +27,7 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = context.read();
+    UserProvider up = context.read<UserProvider>();
 
     fullNameController.text = up.userModel.fullName.toString();
     emailController.text = up.userModel.email.toString();

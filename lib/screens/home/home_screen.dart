@@ -1,5 +1,4 @@
 import 'package:bus_booking/config/theme/palette.dart';
-import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/locations/location_select_screen.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -8,7 +7,6 @@ import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-
 import '../booking/search_results_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,7 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(
           'App Name',
           style: GoogleFonts.manrope(
-              fontSize: 18, color: Colors.white, fontWeight: FontWeight.w700),
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         elevation: 1,
         leading: Row(
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
             addHorizontalSpace(5),
             IconButton(
               onPressed: () {
-                widget.scafoldKey.currentState!.openDrawer();
+                widget.scafoldKey.currentState?.openDrawer();
               },
               // constraints: BoxConstraints.tight(const Size.square(40)),
               icon: const CircleAvatar(
@@ -96,7 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 26,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -294,14 +298,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             addVerticalSpace(50),
             CustomOutlinedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUpScreen(),
-                      ));
-                },
-                text: "Register")
+              onPressed: () {},
+              text: "Register",
+            )
           ],
         ),
       ),

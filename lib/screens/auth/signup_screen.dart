@@ -1,23 +1,76 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/hive/user_hive_methods.dart';
+import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
+import 'package:bus_booking/screens/auth/login_screen.dart';
+import 'package:bus_booking/screens/home/app_home.dart';
+import 'package:bus_booking/utils/loaders.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
   static const routeName = '/signup';
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool _isChecked = false;
+  String status = '';
+
+  Future<String?> _isExistingUser(context) async {
+    showProgressLoader();
+    User? usermodel = await UserHiveMethods().getHiveUser();
+    if (usermodel != null) {
+      cancelLoader();
+      return 'localuser';
+    } else {
+      cancelLoader();
+      return 'nouser';
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isExistingUser(context).then((value) {
+      setState(() {
+        status = value!;
+        logs.d(value);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (status == 'localuser') {
+      Future.delayed(const Duration(seconds: 2)).then((value) {
+        pushNamedRoute(
+          context,
+          AppHome.routeName,
+        );
+      });
+    }
+    return welcomeAccount(context);
+  }
+
+  Widget welcomeAccount(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: const Icon(
-            Icons.arrow_back_ios,
-            color: Palette.baseBlack,
-          ),
+          automaticallyImplyLeading: false,
           title: Text(
             "Create Account",
             style: GoogleFonts.quicksand(
@@ -27,13 +80,17 @@ class SignUpScreen extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 60,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 50 / 375),
+                  horizontal: MediaQuery.of(context).size.width * 50 / 375,
+                ),
                 child: Text(
                   "Faster booking and boarding by saving your information.",
                   style: GoogleFonts.manrope(
@@ -43,86 +100,87 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              addVerticalSpace(50),
-              CustomButton(
-                color: const Color(0xFF1877F2),
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/svg/facebook_logo.svg",
-                        width: 20, height: 20),
-                    addHorizontalSpace(8),
-                    Text(
-                      "Continue with Facebook",
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white),
-                    )
-                  ],
-                ),
-              ),
-              addVerticalSpace(14),
-              CustomButton(
-                color: const Color(0xFF8FACC1).withOpacity(0.1),
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/svg/google_logo.svg",
-                        width: 30, height: 30),
-                    addHorizontalSpace(8),
-                    Text(
-                      "Continue with Google",
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Palette.tertiaryColor),
-                    )
-                  ],
-                ),
-              ),
+              // addVerticalSpace(50),
+              // CustomButton(
+              //   color: const Color(0xFF1877F2),
+              //   onPressed: () {},
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       SvgPicture.asset("assets/svg/facebook_logo.svg",
+              //           width: 20, height: 20),
+              //       addHorizontalSpace(8),
+              //       Text(
+              //         "Continue with Facebook",
+              //         style: GoogleFonts.manrope(
+              //             fontSize: 14,
+              //             fontWeight: FontWeight.w700,
+              //             color: Colors.white),
+              //       )
+              //     ],
+              //   ),
+              // ),
+              // addVerticalSpace(14),
+              // CustomButton(
+              //   color: const Color(0xFF8FACC1).withOpacity(0.1),
+              //   onPressed: () {},
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       SvgPicture.asset("assets/svg/google_logo.svg",
+              //           width: 30, height: 30),
+              //       addHorizontalSpace(8),
+              //       Text(
+              //         "Continue with Google",
+              //         style: GoogleFonts.manrope(
+              //             fontSize: 14,
+              //             fontWeight: FontWeight.w700,
+              //             color: Palette.tertiaryColor),
+              //       )
+              //     ],
+              //   ),
+              // ),
+              // addVerticalSpace(16),
+              // CustomButton(
+              //   color: Colors.black,
+              //   onPressed: () {},
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       SvgPicture.asset("assets/svg/apple_logo.svg",
+              //           width: 30, height: 30),
+              //       addHorizontalSpace(8),
+              //       Text(
+              //         "Continue with Apple",
+              //         style: GoogleFonts.manrope(
+              //             fontSize: 14,
+              //             fontWeight: FontWeight.w700,
+              //             color: Colors.white),
+              //       )
+              //     ],
+              //   ),
+              // ),
               addVerticalSpace(16),
-              CustomButton(
-                color: Colors.black,
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/svg/apple_logo.svg",
-                        width: 30, height: 30),
-                    addHorizontalSpace(8),
-                    Text(
-                      "Continue with Apple",
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white),
-                    )
-                  ],
-                ),
-              ),
-              addVerticalSpace(16),
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(
-                      color: Palette.tertiaryColor.withOpacity(0.2),
-                    ),
-                  ),
-                  child: Text(
-                    "OR",
-                    style: GoogleFonts.manrope(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Palette.tertiaryColor),
-                  ),
-                ),
-              ),
-              addVerticalSpace(15),
+              // Center(
+              //   child: Container(
+              //     padding:
+              //         const EdgeInsets.symmetric(horizontal: 17, vertical: 5),
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(999),
+              //       border: Border.all(
+              //         color: Palette.tertiaryColor.withOpacity(0.2),
+              //       ),
+              //     ),
+              //     child: Text(
+              //       "OR",
+              //       style: GoogleFonts.manrope(
+              //           fontSize: 12,
+              //           fontWeight: FontWeight.w700,
+              //           color: Palette.tertiaryColor),
+              //     ),
+              //   ),
+              // ),
+              // addVerticalSpace(15),
               CustomButton(
                 color: const Color(0xFF2EAFFF).withOpacity(0.1),
                 onPressed: () {
@@ -132,7 +190,7 @@ class SignUpScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Continue with email",
+                      "Continue with phone",
                       style: GoogleFonts.manrope(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -144,7 +202,14 @@ class SignUpScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Checkbox(value: false, onChanged: (bool? value) {}),
+                  Checkbox(
+                    value: _isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isChecked = value!;
+                      });
+                    },
+                  ),
                   addHorizontalSpace(3),
                   const Text(
                     "Send me travel tips and promotions by email.",
@@ -198,7 +263,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               addVerticalSpace(40),
               Text(
-                "Don’t have an account? ",
+                "Already have an account? ",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.manrope(
                     color: Palette.tertiaryColor,
@@ -208,10 +273,13 @@ class SignUpScreen extends StatelessWidget {
               addVerticalSpace(5),
               TextButton(
                 onPressed: () {
-                  pushNamedRoute(context, SignUpScreen.routeName);
+                  pushNamedRoute(
+                    context,
+                    LoginScreen.routeName,
+                  );
                 },
                 child: Text(
-                  "Sign up",
+                  "Sign in",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.manrope(
                       color: Palette.primaryColor,

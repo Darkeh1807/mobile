@@ -31,6 +31,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
+        automaticallyImplyLeading: false,
         title: Text(
           'My Bookings',
           style: GoogleFonts.manrope(
@@ -296,7 +297,8 @@ class TicketDisplayWidget extends StatelessWidget {
                 height: 22,
                 child: Stack(
                   children: [
-                    const Center(child: DottedLine(dashColor: Color(0xFFEEF2F8))),
+                    const Center(
+                        child: DottedLine(dashColor: Color(0xFFEEF2F8))),
                     Positioned(
                         left: 0,
                         top: 0,

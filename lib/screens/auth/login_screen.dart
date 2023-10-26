@@ -6,11 +6,12 @@ import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
-import 'package:bus_booking/screens/auth/signup_screen.dart';
+import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
+import 'package:bus_booking/utils/snackbar.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:email_validator/email_validator.dart';
@@ -36,8 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = context.watch();
-    TokenProvider tp = context.watch();
+    UserProvider up = context.watch<UserProvider>();
+    TokenProvider tp = context.watch<TokenProvider>();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -129,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       addVerticalSpace(8),
                       TextFormField(
                         controller: passwordController,
+                        obscureText: true,
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -170,10 +172,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         showProgressLoader();
                         try {
                           var resp = await postDataToServer(
-                            'https://bus-booking-server-test.azurewebsites.net/api/v1/auth/signin-user',
+                            '${Url.authUrl}/signin-user',
                             {
-                              "email": emailController.text,
-                              "password": passwordController.text,
+                              "email": emailController.text.trim(),
+                              "password": passwordController.text.trim(),
                             },
                             context,
                           );
@@ -199,6 +201,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         } on Exception catch (e) {
                           cancelLoader();
+                          // ignore: use_build_context_synchronously
+                          showSnackBar(context, "Incorrect email or password");
                           logs.d("Error: $e");
                         }
                       }
@@ -218,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       pushNamedRoute(
                         context,
-                        SignUpScreen.routeName,
+                        CreateAccountScreen.routeName,
                       );
                     },
                     child: Text(

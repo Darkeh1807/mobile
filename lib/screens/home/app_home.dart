@@ -1,16 +1,18 @@
 import 'package:bus_booking/config/theme/palette.dart';
-import 'package:bus_booking/hive/token_hive_methods.dart';
-import 'package:bus_booking/hive/user_hive_methods.dart';
+import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/home/bookings_screen.dart';
 import 'package:bus_booking/screens/home/home_screen.dart';
 import 'package:bus_booking/screens/home/profile_screen.dart';
 import 'package:bus_booking/utils/logger.dart';
+import 'package:bus_booking/utils/toast.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AppHome extends StatefulWidget {
   const AppHome({super.key});
@@ -27,10 +29,6 @@ class _AppHomeState extends State<AppHome> {
   @override
   void initState() {
     super.initState();
-    final localUser = UserHiveMethods().getHiveUser();
-    final token = TokenHiveMethods().getToken();
-    // logs.d(localUser);
-    // logs.d(token);
   }
 
   @override
@@ -46,6 +44,8 @@ class _AppHomeState extends State<AppHome> {
       const BookingsScreen(),
       const ProfileScreen()
     ];
+
+    final up = context.read<UserProvider>();
 
     return Scaffold(
       key: _scafoldKey,
@@ -121,9 +121,24 @@ class _AppHomeState extends State<AppHome> {
                   ),
                 ),
                 ListTile(
-                  onTap: () {},
-                  leading:
-                      const Icon(Iconsax.logout, color: Palette.destructive600),
+                  onTap: () async {
+                    try {
+                      //Clear local user
+                      // final user - up.
+
+                      //clear token
+
+                      //Navigate to auth page
+                      showToast('Signed out as ${up.userModel.fullName}');
+                      pushNamedRoute(context, SignUpScreen.routeName);
+                    } catch (e) {
+                      logs.d("Error $e");
+                    }
+                  },
+                  leading: const Icon(
+                    Iconsax.logout,
+                    color: Palette.destructive600,
+                  ),
                   title: Text(
                     "Sign out",
                     style: GoogleFonts.manrope(
