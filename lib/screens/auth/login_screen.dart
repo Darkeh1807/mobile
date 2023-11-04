@@ -12,6 +12,7 @@ import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/snackbar.dart';
+import 'package:bus_booking/utils/toast.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:email_validator/email_validator.dart';
@@ -196,13 +197,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             // ignore: use_build_context_synchronously
                             await Navigator.of(context)
                                 .pushNamed(AppHome.routeName);
+                          } else if (jresp["message"] == "Wrong Password") {
+                            showToast("Incorrect password");
                           } else {
                             cancelLoader();
                           }
                         } on Exception catch (e) {
                           cancelLoader();
                           // ignore: use_build_context_synchronously
-                          showSnackBar(context, "Incorrect email or password");
+                          showSnackBar(context, "$e");
                           logs.d("Error: $e");
                         }
                       }

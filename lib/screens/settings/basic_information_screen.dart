@@ -37,7 +37,10 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context, null),
-          icon: const Icon(Icons.arrow_back_ios, size: 20),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+          ),
         ),
         title: Text(
           "Basic Information",

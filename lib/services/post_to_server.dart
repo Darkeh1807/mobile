@@ -20,7 +20,7 @@ Future<String> postDataToServer(
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return response.body.toString();
     } else if (response.statusCode == 400) {
       // ignore: use_build_context_synchronously

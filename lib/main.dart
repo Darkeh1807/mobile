@@ -10,6 +10,7 @@ import 'package:bus_booking/screens/booking/booking_details_cofirm_screen.dart';
 import 'package:bus_booking/screens/booking/payment_success_screen.dart';
 import 'package:bus_booking/screens/booking/search_results_screen.dart';
 import 'package:bus_booking/screens/booking/select_trip_proceed_screen.dart';
+import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
@@ -157,6 +158,11 @@ class MyApp extends StatelessWidget {
             case BasicInformationScreen.routeName:
               return MaterialPageRoute(
                 builder: (context) => const BasicInformationScreen(),
+              );
+
+            case CreateBusScreen.routeName:
+              return MaterialPageRoute(
+                builder: (context) => const CreateBusScreen(),
               );
             default:
               return MaterialPageRoute(

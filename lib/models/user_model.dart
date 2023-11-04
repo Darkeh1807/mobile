@@ -3,6 +3,7 @@ class User {
   late String? fullName;
   late String? email;
   late String? phone;
+  // late String? password;
   late String? profilePic;
   late bool? isPhoneNumberVerified;
   late bool? isEmailVerified;
@@ -13,6 +14,7 @@ class User {
     this.fullName = '',
     this.email = '',
     this.phone = '',
+    // this.password = '',
     this.profilePic = '',
     this.isPhoneNumberVerified = false,
     this.isEmailVerified = false,
@@ -24,7 +26,8 @@ class User {
       id: json["_id"],
       fullName: json["fullName"],
       email: json["email"],
-      phone: json["phone"].toString(),
+      phone: json["phone"],
+      // password: json["password"],
       profilePic: json["profilePic"],
       isPhoneNumberVerified: json["isPhoneNumberVerified"],
       isEmailVerified: json["isEmailVerified"],
@@ -38,6 +41,7 @@ class User {
       "fullName": fullName,
       "email": email,
       "phone": phone,
+      // "password": password,
       "profilePic": profilePic,
       "isPhoneNumberVerified": isPhoneNumberVerified,
       "isEmailVerified": isEmailVerified,

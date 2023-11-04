@@ -1,4 +1,5 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/locations/location_select_screen.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -298,7 +299,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             addVerticalSpace(50),
             CustomOutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                pushNamedRoute(
+                  context,
+                  CreateBusScreen.routeName,
+                );
+              },
               text: "Register",
             )
           ],

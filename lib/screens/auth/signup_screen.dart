@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
+import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -28,12 +32,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     showProgressLoader();
     User? usermodel = await UserHiveMethods().getHiveUser();
     if (usermodel != null) {
-      cancelLoader();
-      return 'localuser';
+      // try {
+      //   final resp = await postDataToServer(
+      //     '${Url.authUrl}/signin-user',
+      //     {
+      //       "email": usermodel.email,
+      //       "password": usermodel.password,
+      //     },
+      //     context,
+      //   );
+
+       
+
+      //   final jresp = jsonDecode(resp);
+
+      
+      // } catch (e) {
+      //   cancelLoader();
+      //   logs.d(e);
+      // }
     } else {
       cancelLoader();
       return 'nouser';
     }
+    return null;
   }
 
   @override
