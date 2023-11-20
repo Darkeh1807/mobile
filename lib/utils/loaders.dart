@@ -18,6 +18,6 @@ void cancelLoader() {
 SpinKitCircle spinLoader() {
   return const SpinKitCircle(
     color: Palette.primaryColor,
-    size: 25,
+    size: 20,
   );
 }

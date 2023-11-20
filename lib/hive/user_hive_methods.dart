@@ -8,7 +8,7 @@ class UserHiveMethods {
 //Add user locally
   Future<void> addUser(User user) async {
     var box = await Hive.openBox(userbox);
-    var userMap = user.toJson();
+    var userMap = userToJson(user);
     await box.put(user.id, userMap);
     logs.d(userMap);
     logs.d('User added locally');
@@ -17,14 +17,15 @@ class UserHiveMethods {
 //Update local user
   Future<void> updateUser(User user) async {
     var box = await Hive.openBox(userbox);
-    var userMap = user.toJson();
+    var userMap = userToJson(user);
     await box.put(user.id, userMap);
   }
 
   Future<void> deleteUser(User user) async {
     var box = await Hive.openBox(userbox);
     await box.delete(user.id);
-    logs.d('User delted succesffuly');
+    box.close();
+    logs.d('User deleted succesffuly');
   }
 
   Future<User?> getHiveUser() async {
@@ -34,11 +35,11 @@ class UserHiveMethods {
         return null;
       }
       var userId = box.keys.first;
-      Map<String, dynamic> userMap = box.get(userId);
+      dynamic userMap = box.get(userId);
       logs.d(userMap);
 
-      if (userMap.isNotEmpty) {
-        User user = User.fromJson(userMap);
+      if (userMap != null && userMap.isNotEmpty) {
+        User user = userFromJson(userMap);
         logs.d(user);
 
         return user;

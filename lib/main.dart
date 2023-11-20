@@ -16,6 +16,7 @@ import 'package:bus_booking/screens/notifications/notifications_screen.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/utils/hive_adapter.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';

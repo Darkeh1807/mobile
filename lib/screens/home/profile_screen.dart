@@ -24,7 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     UserProvider up = context.read<UserProvider>();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,

@@ -1,4 +1,6 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/hive/user_hive_methods.dart';
+import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/home/bookings_screen.dart';
@@ -45,7 +47,7 @@ class _AppHomeState extends State<AppHome> {
       const ProfileScreen()
     ];
 
-    final up = context.read<UserProvider>();
+    UserProvider up = Provider.of<UserProvider>(context, listen: false);
 
     return Scaffold(
       key: _scafoldKey,
@@ -130,6 +132,9 @@ class _AppHomeState extends State<AppHome> {
 
                       //Navigate to auth page
                       showToast('Signed out as ${up.userModel.fullName}');
+                      User? user = up.userModel;
+                      await UserHiveMethods().deleteUser(user);
+                      // ignore: use_build_context_synchronously
                       pushNamedRoute(context, SignUpScreen.routeName);
                     } catch (e) {
                       logs.d("Error $e");
@@ -166,11 +171,18 @@ class _AppHomeState extends State<AppHome> {
           });
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Iconsax.home_15), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Iconsax.ticket), label: 'Bookings'),
+            icon: Icon(Iconsax.home_15),
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
+            icon: Icon(Iconsax.ticket),
+            label: 'Bookings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            label: 'Profile',
+          ),
         ],
       ),
     );

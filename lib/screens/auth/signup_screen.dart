@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:bus_booking/config/theme/palette.dart';
-import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
+import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
-import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -15,6 +12,7 @@ import 'package:bus_booking/widgets/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -26,36 +24,18 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isChecked = false;
-  String status = '';
+  String? status = '';
 
   Future<String?> _isExistingUser(context) async {
     showProgressLoader();
     User? usermodel = await UserHiveMethods().getHiveUser();
     if (usermodel != null) {
-      // try {
-      //   final resp = await postDataToServer(
-      //     '${Url.authUrl}/signin-user',
-      //     {
-      //       "email": usermodel.email,
-      //       "password": usermodel.password,
-      //     },
-      //     context,
-      //   );
-
-       
-
-      //   final jresp = jsonDecode(resp);
-
-      
-      // } catch (e) {
-      //   cancelLoader();
-      //   logs.d(e);
-      // }
+      cancelLoader();
+      return "localuser";
     } else {
       cancelLoader();
       return 'nouser';
     }
-    return null;
   }
 
   @override
@@ -63,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.initState();
     _isExistingUser(context).then((value) {
       setState(() {
-        status = value!;
+        status = value;
         logs.d(value);
       });
     });
@@ -77,12 +57,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider up = Provider.of<UserProvider>(context,listen: false);
     if (status == 'localuser') {
-      Future.delayed(const Duration(seconds: 2)).then((value) {
+      Future.delayed(const Duration(seconds: 0)).then((value) async {
         pushNamedRoute(
           context,
           AppHome.routeName,
         );
+        User? usermodel = await UserHiveMethods().getHiveUser();
+        up.setUser = usermodel!;
       });
     }
     return welcomeAccount(context);

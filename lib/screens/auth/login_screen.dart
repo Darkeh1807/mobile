@@ -12,7 +12,6 @@ import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/snackbar.dart';
-import 'package:bus_booking/utils/toast.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:email_validator/email_validator.dart';
@@ -182,10 +181,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
 
                           final jresp = jsonDecode(resp);
+                          logs.d(jresp);
 
                           if (jresp != null && jresp["status"] == "success") {
                             User userModel =
-                                User.fromJson(jresp["data"]["user"]);
+                               User.fromJson(jresp["data"]["user"]);
                             var token = jresp["data"]["token"];
 
                             await UserHiveMethods().addUser(userModel);
@@ -197,15 +197,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             // ignore: use_build_context_synchronously
                             await Navigator.of(context)
                                 .pushNamed(AppHome.routeName);
+                          } else if (jresp["message"] == "User not found") {
+                            // ignore: use_build_context_synchronously
+                            showSnackBar(context, "User not found");
+                            cancelLoader();
                           } else if (jresp["message"] == "Wrong Password") {
-                            showToast("Incorrect password");
+                            // ignore: use_build_context_synchronously
+                            showSnackBar(context, "incorrect password");
+                            cancelLoader();
                           } else {
                             cancelLoader();
                           }
                         } on Exception catch (e) {
                           cancelLoader();
                           // ignore: use_build_context_synchronously
-                          showSnackBar(context, "$e");
+                          showSnackBar(
+                              context, "Error: please check your internet");
                           logs.d("Error: $e");
                         }
                       }
@@ -213,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   addVerticalSpace(14),
                   Text(
-                    "Don’t have an account? ",
+                    "Don’t have an account?",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.manrope(
                         color: Palette.tertiaryColor,

@@ -37,8 +37,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final confirmPasswordController = TextEditingController();
   final mobileNumController = TextEditingController();
 
-  
-
   @override
   Widget build(BuildContext context) {
     final up = context.watch<UserProvider>();
@@ -257,7 +255,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Passaword cannot be empty';
+                          return 'Enter password to confirm';
                         } else if (passwordController.text !=
                             confirmPasswordController.text) {
                           return 'Passwords do not match';
@@ -443,13 +441,19 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           // ignore: use_build_context_synchronously
                           await Navigator.of(context)
                               .pushNamed(OtpVerifyScreen.routeName);
+                        } else if (jresp["message"] == "User already exits") {
+                          cancelLoader();
+                          // ignore: use_build_context_synchronously
+                          showSnackBar(context, "User already exists");
                         } else {
                           cancelLoader();
                         }
                       } on Exception catch (e) {
-                        // ignore: use_build_context_synchronously
-                        showSnackBar(context,'An error occured');
                         cancelLoader();
+                        // ignore: use_build_context_synchronously
+                        showSnackBar(context,
+                            'An error occured, check your internet connection');
+
                         logs.d("Error: $e");
                       }
                     }

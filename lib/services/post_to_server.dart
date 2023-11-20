@@ -24,9 +24,8 @@ Future<String> postDataToServer(
       return response.body.toString();
     } else if (response.statusCode == 400) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(ctx)
-          .showSnackBar(const SnackBar(content: Text('User already exist')));
-      return 'User already exists';
+
+      return response.body.toString();
     } else if (response.statusCode == 401) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(ctx)
@@ -35,6 +34,8 @@ Future<String> postDataToServer(
       // ignore: use_build_context_synchronously
       pushNamedRoute(ctx, LoginScreen.routeName);
       return 'Token has expired';
+    } else if (response.statusCode == 500) {
+      return response.body.toString();
     } else {
       return 'HTTP error ${response.statusCode}: ${response.reasonPhrase}';
     }
