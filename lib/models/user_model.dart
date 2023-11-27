@@ -1,8 +1,8 @@
-import 'dart:convert';
+
 
 User userFromJson(Map data) => User.fromJson(data);
 
-String userToJson(User data) => json.encode(data.toJson());
+Map userToJson(User data) => data.toJson();
 
 class User {
   String? id;

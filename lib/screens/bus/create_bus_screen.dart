@@ -73,10 +73,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = Provider.of(context, listen: false);
-    TokenProvider tp = Provider.of(context, listen: false);
-    emailController.text = up.userModel.email!;
-    mobileController.text = up.userModel.phone!;
+    TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(

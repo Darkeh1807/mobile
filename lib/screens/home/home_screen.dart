@@ -1,4 +1,7 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/provider/destination_provider.dart';
+import 'package:bus_booking/provider/origin_provider.dart';
+import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/locations/location_select_screen.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
@@ -8,6 +11,8 @@ import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../booking/search_results_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,8 +25,34 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> _tripChoices = ["One way", "Round-trip"];
   String selectedTripType = "One way";
+  String? selectedDate;
+  Future<void> showDate() async {
+    DateTime now = DateTime.now();
+    DateTime firstDate = DateTime(now.year, 7, 1);
+    DateTime lastDate = now.add(const Duration(days: 30));
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: firstDate,
+      lastDate: lastDate,
+    );
+
+    if (pickedDate != null) {
+      final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      setState(() {
+        selectedDate = formattedDate;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
+    DestinationProvider dp =
+        Provider.of<DestinationProvider>(context, listen: false);
+    TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -197,26 +228,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     LocationButtonWidget(
-                      innerLabel: "Leaving from",
+                      innerLabel: op.originModel.id?.isNotEmpty ?? false
+                          ? op.originModel.name.toString()
+                          : "Leaving from",
                       topLabel: "Origin",
                       onTap: () {
                         pushWidgetRoute(
-                            context,
-                            const LocationSelectScreen(
-                              selecting: "Origin",
-                            ));
+                          context,
+                          const LocationSelectScreen(
+                            selecting: "Origin",
+                          ),
+                        );
                       },
                     ),
                     addVerticalSpace(10),
                     LocationButtonWidget(
-                      innerLabel: "Going to",
+                      innerLabel: dp.destinationModel.id?.isNotEmpty ?? false
+                          ? dp.destinationModel.name.toString()
+                          : "Going to",
                       topLabel: "Destination",
                       onTap: () {
                         pushWidgetRoute(
-                            context,
-                            const LocationSelectScreen(
-                              selecting: "Destination",
-                            ));
+                          context,
+                          const LocationSelectScreen(
+                            selecting: "Destination",
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -250,33 +287,49 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             addVerticalSpace(10),
             LocationButtonWidget(
-              innerLabel: "Sat, 20 May",
+              innerLabel: selectedDate != null
+                  ? selectedDate.toString()
+                  : "Sat, 20 May",
               topLabel: "Departure",
               leading: const Icon(
                 Iconsax.calendar_1,
                 color: Palette.greyText,
               ),
               onTap: () {
-                showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(
-                    const Duration(
-                      days: 30,
-                    ),
-                  ),
-                );
+                showDate();
               },
             ),
             addVerticalSpace(30),
             CustomPrimaryButton(
               text: "Search",
               onPressed: () {
-                pushNamedRoute(
-                  context,
-                  SearchResultsScreen.routeName,
-                );
+                if (selectedDate == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content:
+                          Text('Make sure you selected a departure date')));
+                } else if (op.originModel.id!.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Select Origin')));
+                } else if (dp.destinationModel.id!.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Select Destination')));
+                } else if (selectedDate == null &&
+                    op.originModel.id!.isEmpty &&
+                    dp.destinationModel.id!.isEmpty) {
+                  const SnackBar(
+                      content: Text('Make sure you added the required fields'));
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchResultsScreen(
+                          departureTime: selectedDate,
+                          destinationId: dp.destinationModel.id,
+                          originId: op.originModel.id,
+                          authToken: tp.authToken,
+                        ),
+                      ));
+                }
               },
             ),
             addVerticalSpace(50),

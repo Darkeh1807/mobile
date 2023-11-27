@@ -5,4 +5,6 @@ class Url {
   static String authUrl = "$baseUrl/auth";
   static String busCompany = "$baseUrl/busCompany";
   static String assets = "$baseUrl/assets";
+  static String locations = "$baseUrl/locations";
+  static String  trips =  "$baseUrl/trips";
 }

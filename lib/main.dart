@@ -1,5 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/provider/destination_provider.dart';
+import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
@@ -57,6 +59,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => TokenProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => OriginProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DestinationProvider(),
         )
       ],
       child: MaterialApp(

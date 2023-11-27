@@ -39,6 +39,7 @@ class UserHiveMethods {
       logs.d(userMap);
 
       if (userMap != null && userMap.isNotEmpty) {
+        logs.d("This is the user");
         User user = userFromJson(userMap);
         logs.d(user);
 

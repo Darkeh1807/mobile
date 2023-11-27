@@ -1,22 +1,44 @@
+import 'dart:convert';
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/models/trip_model.dart';
+import 'package:bus_booking/provider/destination_provider.dart';
+import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/screens/booking/search_results_filters_screen.dart';
 import 'package:bus_booking/screens/booking/select_trip_proceed_screen.dart';
+import 'package:bus_booking/services/get_from_server.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SearchResultsScreen extends StatefulWidget {
-  const SearchResultsScreen({super.key});
+  const SearchResultsScreen({
+    super.key,
+    this.departureTime,
+    this.destinationId,
+    this.originId,
+    this.authToken,
+  });
+  final String? departureTime;
+  final String? destinationId;
+  final String? originId;
+  final String? authToken;
+
   static const routeName = 'search_results_screen';
 
   @override
   State<SearchResultsScreen> createState() => _SearchResultsScreenState();
 }
 
+class Place {}
+
 class _SearchResultsScreenState extends State<SearchResultsScreen> {
+  List<Trip> trips = [];
   final List<String> _tripTypes = [
     "All",
     "Cheapest",
@@ -27,8 +49,36 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
 
   String selectedTripType = "All";
 
+  Future<void> getAvailableTrips() async {
+    try {
+      final res = await getFromServer(
+          "${Url.trips}/search?origin=${widget.originId}&date=${widget.departureTime}&destination=${widget.destinationId}&populate=origin,bus,destination,busCompany&skip=0&limit=4",
+          authToken: widget.authToken);
+      final jresp = jsonDecode(res);
+      if (jresp["status"] == "success") {
+        var dtrips = jresp["data"]["trips"] as List<dynamic>;
+        logs.d(dtrips);
+        List<Trip> allTrips = dtrips.map((trip) => tripFromJson(trip)).toList();
+        setState(() {
+          trips = allTrips;
+        });
+      }
+    } catch (e) {
+      logs.d(e);
+    }
+  }
+
+  @override
+  void initState() {
+    getAvailableTrips();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
+    DestinationProvider dp =
+        Provider.of<DestinationProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -36,7 +86,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
-          "Accra, Ghana - Lagos, Nigeria",
+          "${op.originModel.name} - ${dp.destinationModel.name}",
           style: GoogleFonts.manrope(
               fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500),
         ),
@@ -98,12 +148,18 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
               ),
             ),
             addVerticalSpace(20),
-            const AvailableTicketCard(),
-            const AvailableTicketCard(),
-            const AvailableTicketCard(),
-            const AvailableTicketCard(),
-            const AvailableTicketCard(),
-            const AvailableTicketCard(),
+            trips.isEmpty
+                ? const CircularProgressIndicator()
+                : ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: trips.length,
+                    itemBuilder: (context, index) {
+                      return AvailableTicketCard(
+                        trips: trips[index],
+                      );
+                    },
+                  )
           ],
         ),
       ),
@@ -112,12 +168,14 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
 }
 
 class AvailableTicketCard extends StatelessWidget {
-  const AvailableTicketCard({
-    super.key,
-  });
+  final Trip trips;
+  const AvailableTicketCard({super.key, required this.trips});
 
   @override
   Widget build(BuildContext context) {
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
+    DestinationProvider dp =
+        Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
         pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
@@ -136,7 +194,7 @@ class AvailableTicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "VIP BUS",
+                  trips.busCompany!.name.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -144,7 +202,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total 23 seats left",
+                  "Total ${trips.bus!.numberOfSeats} seats left",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -168,7 +226,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "06:30AM",
+                  "${trips.timeScheduled}",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -177,7 +235,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "Accra, Ghana -  ",
+                  "${op.originModel.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -215,7 +273,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "06:30AM",
+                  "${trips.timeScheduled}",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -224,7 +282,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "Accra, Ghana -  ",
+                  "${dp.destinationModel.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -269,7 +327,7 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      "7hrs 50m",
+                      "10hrs",
                       style: GoogleFonts.manrope(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -279,7 +337,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "\$50",
+                  "\$${trips.price}",
                   style: GoogleFonts.manrope(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

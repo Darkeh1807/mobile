@@ -4,7 +4,6 @@ import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
-import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -12,7 +11,6 @@ import 'package:bus_booking/widgets/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -25,6 +23,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isChecked = false;
   String? status = '';
+  UserProvider up = UserProvider();
 
   Future<String?> _isExistingUser(context) async {
     showProgressLoader();
@@ -51,23 +50,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    Hive.close();
     super.dispose();
+    Hive.close();
   }
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = Provider.of<UserProvider>(context,listen: false);
-    if (status == 'localuser') {
-      Future.delayed(const Duration(seconds: 0)).then((value) async {
-        pushNamedRoute(
-          context,
-          AppHome.routeName,
-        );
-        User? usermodel = await UserHiveMethods().getHiveUser();
-        up.setUser = usermodel!;
-      });
-    }
+    // UserProvider up = Provider.of<UserProvider>(context, listen: false);
+    // if (status == 'localuser') {
+    //   Future.delayed(const Duration(seconds: 3)).then((value) async {
+    //     pushNamedRoute(
+    //       context,
+    //       AppHome.routeName,
+    //     );
+    //     User? usermodel = await UserHiveMethods().getHiveUser();
+    //     up.setUser = usermodel!;
+    //   });
+    // }
     return welcomeAccount(context);
   }
 
