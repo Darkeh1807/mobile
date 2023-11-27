@@ -611,10 +611,12 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                             if (jresp["status"] == "success") {
                               cancelLoader();
                               showToast("Successfully created bus company");
+                              // ignore: use_build_context_synchronously
                               pushNamedRoute(context, AppHome.routeName);
                             } else if (jresp["message"] ==
                                 "Bus Operator already exits") {
                               cancelLoader();
+                              // ignore: use_build_context_synchronously
                               showSnackBar(
                                   context, 'Bus company already exists');
                             } else {

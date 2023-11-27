@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/locations_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';

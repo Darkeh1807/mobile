@@ -18,12 +18,13 @@ import 'package:provider/provider.dart';
 
 class SearchResultsScreen extends StatefulWidget {
   const SearchResultsScreen({
-    super.key,
+    Key? key,
     this.departureTime,
     this.destinationId,
     this.originId,
     this.authToken,
-  });
+  }) : super(key: key);
+
   final String? departureTime;
   final String? destinationId;
   final String? originId;
@@ -35,10 +36,7 @@ class SearchResultsScreen extends StatefulWidget {
   State<SearchResultsScreen> createState() => _SearchResultsScreenState();
 }
 
-class Place {}
-
 class _SearchResultsScreenState extends State<SearchResultsScreen> {
-  List<Trip> trips = [];
   final List<String> _tripTypes = [
     "All",
     "Cheapest",
@@ -46,10 +44,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     "Earliest",
     "Latest"
   ];
-
   String selectedTripType = "All";
 
-  Future<void> getAvailableTrips() async {
+  Future<List<Trip>> getAvailableTrips() async {
     try {
       final res = await getFromServer(
           "${Url.trips}/search?origin=${widget.originId}&date=${widget.departureTime}&destination=${widget.destinationId}&populate=origin,bus,destination,busCompany&skip=0&limit=4",
@@ -59,19 +56,14 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         var dtrips = jresp["data"]["trips"] as List<dynamic>;
         logs.d(dtrips);
         List<Trip> allTrips = dtrips.map((trip) => tripFromJson(trip)).toList();
-        setState(() {
-          trips = allTrips;
-        });
+        return allTrips;
+      } else {
+        return [];
       }
     } catch (e) {
       logs.d(e);
+      return [];
     }
-  }
-
-  @override
-  void initState() {
-    getAvailableTrips();
-    super.initState();
   }
 
   @override
@@ -79,6 +71,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
     DestinationProvider dp =
         Provider.of<DestinationProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -114,52 +107,67 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: _tripTypes
-                    .map((e) => Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          child: ChoiceChip(
-                            label: Text(e),
-                            // padding: EdgeInsets.symmetric(
-                            //     horizontal: 12, vertical: 12),
-                            backgroundColor: Colors.white,
-                            elevation: 0,
-                            side: BorderSide(
-                              color: selectedTripType == e
-                                  ? const Color(0xFF0402FC)
-                                  : Palette.lightBorder,
-                              width: 1,
-                            ),
-                            selectedColor: Palette.primaryColor,
-                            labelStyle: GoogleFonts.quicksand(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: selectedTripType == e
-                                  ? Colors.white
-                                  : const Color(0xFF808099),
-                            ),
-                            selected: selectedTripType == e,
-                            onSelected: (bool selected) {
-                              setState(() {
-                                selectedTripType = selected ? e : "";
-                              });
-                            },
+                    .map(
+                      (e) => Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        child: ChoiceChip(
+                          label: Text(e),
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                          side: BorderSide(
+                            color: selectedTripType == e
+                                ? const Color(0xFF0402FC)
+                                : Palette.lightBorder,
+                            width: 1,
                           ),
-                        ))
+                          selectedColor: Palette.primaryColor,
+                          labelStyle: GoogleFonts.quicksand(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: selectedTripType == e
+                                ? Colors.white
+                                : const Color(0xFF808099),
+                          ),
+                          selected: selectedTripType == e,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              selectedTripType = selected ? e : "";
+                            });
+                          },
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
             ),
             addVerticalSpace(20),
-            trips.isEmpty
-                ? const CircularProgressIndicator()
-                : ListView.builder(
+            FutureBuilder<List<Trip>>(
+              future: getAvailableTrips(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Error loading data"),
+                  );
+                } else if (snapshot.data?.isEmpty ?? true) {
+                  return const Center(
+                    child: Text("No trip found"),
+                  );
+                } else {
+                  return ListView.builder(
                     primary: false,
                     shrinkWrap: true,
-                    itemCount: trips.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return AvailableTicketCard(
-                        trips: trips[index],
+                        trips: snapshot.data![index],
                       );
                     },
-                  )
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
