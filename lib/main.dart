@@ -11,20 +11,16 @@ import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/booking/booking_details_cofirm_screen.dart';
 import 'package:bus_booking/screens/booking/payment_success_screen.dart';
 import 'package:bus_booking/screens/booking/search_results_screen.dart';
-import 'package:bus_booking/screens/booking/select_trip_proceed_screen.dart';
 import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
-import 'package:bus_booking/utils/hive_adapter.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Directory;
 import 'package:path_provider/path_provider.dart';
-
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
@@ -37,12 +33,7 @@ void main() async {
       statusBarIconBrightness: Brightness.light));
 
   Directory dir = await getApplicationCacheDirectory();
-  Hive.registerAdapter(UserAdapter());
   Hive.init(dir.path);
-
-  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-  //   SystemUiOverlay.bottom, //This line is used for showing the bottom bar
-  // ]);
   runApp(const MyApp());
 }
 
@@ -136,10 +127,7 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (context) => const CreateAccountScreen(),
               );
-            case SelectedScreenProceedScreen.routeName:
-              return MaterialPageRoute(
-                builder: (context) => const SelectedScreenProceedScreen(),
-              );
+
             case OtpVerifyScreen.routeName:
               return MaterialPageRoute(
                 builder: (context) => const OtpVerifyScreen(),

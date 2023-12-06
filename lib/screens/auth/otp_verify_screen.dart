@@ -155,6 +155,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           final token = tp.authToken;
                           final resp = await getFromServer(
                             '${Url.authUrl}/resendsms',
+                            context,
                             authToken: token,
                           );
 

@@ -37,6 +37,7 @@ class UserHiveMethods {
       var userId = box.keys.first;
       dynamic userMap = box.get(userId);
       logs.d(userMap);
+      await box.close();
 
       if (userMap != null && userMap.isNotEmpty) {
         logs.d("This is the user");

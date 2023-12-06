@@ -48,9 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: true);
     DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: false);
+        Provider.of<DestinationProvider>(context, listen: true);
     TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
 
     return Scaffold(
@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Palette.primaryColor,
         title: Text(
-          'App Name',
+          'Molidom',
           style: GoogleFonts.manrope(
             fontSize: 18,
             color: Colors.white,
@@ -303,21 +303,15 @@ class _HomeScreenState extends State<HomeScreen> {
             CustomPrimaryButton(
               text: "Search",
               onPressed: () {
-                if (selectedDate == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content:
-                          Text('Make sure you selected a departure date')));
-                } else if (op.originModel.id!.isEmpty) {
+                if (op.originModel.id!.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Select Origin')));
+                      const SnackBar(content: Text('Origin  is required')));
                 } else if (dp.destinationModel.id!.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Select Destination')));
-                } else if (selectedDate == null &&
-                    op.originModel.id!.isEmpty &&
-                    dp.destinationModel.id!.isEmpty) {
-                  const SnackBar(
-                      content: Text('Make sure you added the required fields'));
+                      const SnackBar(content: Text('Department is required')));
+                } else if (selectedDate == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Departure date is required')));
                 } else {
                   Navigator.push(
                       context,

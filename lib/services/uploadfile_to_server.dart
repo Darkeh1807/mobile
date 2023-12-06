@@ -36,8 +36,6 @@ Future<String?> uploadFileToServer(File selectedfile, String path) async {
 
   if (response.statusCode == 201) {
     return  response.toString();
-     
-    
   } else {
     return 'Error during connection to the server';
     

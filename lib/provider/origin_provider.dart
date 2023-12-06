@@ -12,4 +12,9 @@ class OriginProvider extends ChangeNotifier {
     originModel = place;
     notifyListeners();
   }
+
+  void clearOrigin() {
+    originModel = Place();
+    notifyListeners();
+  }
 }

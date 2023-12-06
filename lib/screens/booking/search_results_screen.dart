@@ -46,10 +46,11 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   ];
   String selectedTripType = "All";
 
-  Future<List<Trip>> getAvailableTrips() async {
+  Future<List<Trip>> getAvailableTrips(BuildContext context) async {
     try {
       final res = await getFromServer(
           "${Url.trips}/search?origin=${widget.originId}&date=${widget.departureTime}&destination=${widget.destinationId}&populate=origin,bus,destination,busCompany&skip=0&limit=4",
+          context,
           authToken: widget.authToken);
       final jresp = jsonDecode(res);
       if (jresp["status"] == "success") {
@@ -138,11 +139,11 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                       ),
                     )
                     .toList(),
-              ),
+              ),                                                                                                                                                   
             ),
             addVerticalSpace(20),
             FutureBuilder<List<Trip>>(
-              future: getAvailableTrips(),
+              future: getAvailableTrips(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -179,14 +180,21 @@ class AvailableTicketCard extends StatelessWidget {
   final Trip trips;
   const AvailableTicketCard({super.key, required this.trips});
 
-  @override
+ @override
   Widget build(BuildContext context) {
     OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
     DestinationProvider dp =
         Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
-        pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
+        // pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SelectedScreenProceedScreen(
+                trip: trips,
+              ),
+            ));
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
@@ -234,7 +242,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "${trips.timeScheduled}",
+                  trips.timeScheduled!.startTime.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -281,7 +289,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "${trips.timeScheduled}",
+                    trips.timeScheduled!.endTime.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

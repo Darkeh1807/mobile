@@ -314,7 +314,8 @@ class SearchResultsFilterScreen extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 30 / 375,
-                        margin: const EdgeInsets.only(left: 10, right: 10, top: 25),
+                        margin:
+                            const EdgeInsets.only(left: 10, right: 10, top: 25),
                         height: 1,
                         color: Palette.lightBorder,
                       ),
@@ -385,7 +386,8 @@ class SearchResultsFilterScreen extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 30 / 375,
-                        margin: const EdgeInsets.only(left: 10, right: 10, top: 25),
+                        margin:
+                            const EdgeInsets.only(left: 10, right: 10, top: 25),
                         height: 1,
                         color: Palette.lightBorder,
                       ),

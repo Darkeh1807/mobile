@@ -25,11 +25,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? status = '';
   UserProvider up = UserProvider();
 
-  Future<String?> _isExistingUser(context) async {
+  Future<String?> _isExistingUser(BuildContext context) async {
     showProgressLoader();
     User? usermodel = await UserHiveMethods().getHiveUser();
-    if (usermodel != null) {
+    if (usermodel != null && usermodel.id!.isNotEmpty) {
       cancelLoader();
+      // Provider.of<UserProvider>(context, listen: false).setUser = usermodel;
+
       return "localuser";
     } else {
       cancelLoader();
@@ -56,17 +58,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // UserProvider up = Provider.of<UserProvider>(context, listen: false);
-    // if (status == 'localuser') {
-    //   Future.delayed(const Duration(seconds: 3)).then((value) async {
-    //     pushNamedRoute(
-    //       context,
-    //       AppHome.routeName,
-    //     );
-    //     User? usermodel = await UserHiveMethods().getHiveUser();
-    //     up.setUser = usermodel!;
-    //   });
-    // }
+    if (status == 'localuser') {
+      // Future.delayed(const Duration(seconds: 3));
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => const AppHome(),
+      //     ));
+    }
     return welcomeAccount(context);
   }
 

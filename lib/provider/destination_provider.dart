@@ -12,4 +12,9 @@ class DestinationProvider extends ChangeNotifier {
     destinationModel = place;
     notifyListeners();
   }
+
+  void clearDestination(){
+    destinationModel = Place();
+    notifyListeners();
+  }
 }

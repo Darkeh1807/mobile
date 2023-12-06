@@ -25,9 +25,9 @@ class LocationSelectScreen extends StatefulWidget {
 class _LocationSelectScreenState extends State<LocationSelectScreen> {
   List<Place> places = [];
 
-  Future<void> getAllAvailableLocations() async {
+  Future<void> getAllAvailableLocations(BuildContext context) async {
     try {
-      final res = await getFromServer(Url.locations);
+      final res = await getFromServer(Url.locations, context);
       final jresp = jsonDecode(res);
       if (jresp["status"] == "success") {
         var locs = jresp["data"]["locations"] as List<dynamic>;
@@ -59,7 +59,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
 
   @override
   void initState() {
-    getAllAvailableLocations();
+    getAllAvailableLocations(context);
     super.initState();
   }
 

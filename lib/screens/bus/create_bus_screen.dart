@@ -49,7 +49,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   String uploadedDocUrl = '';
   bool isLoading = false;
 
-  selectFile() async {
+  void selectFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -73,7 +73,14 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
+    TokenProvider tp = Provider.of<TokenProvider>(context, listen: true);
+    UserProvider up = Provider.of<UserProvider>(context, listen: true);
+
+    emailController.text = up.userModel.email.toString();
+    mobileController.text = up.userModel.phone.toString();
+    contactPersonNameController.text = up.userModel.fullName.toString();
+    contactPersonPhoneController.text = up.userModel.phone.toString();
+    contactPersonEmailController.text = up.userModel.email.toString();
 
     return SafeArea(
       child: Scaffold(
@@ -521,7 +528,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                       addVerticalSpace(8),
                       InkWell(
                         onTap: () async {
-                          await selectFile();
+                          selectFile();
                           // ignore: unnecessary_null_comparison
                           if (selectedfile != null) {
                             setState(() {
@@ -565,7 +572,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                               ? Row(
                                   children: [
                                     spinLoader(),
-                                    addHorizontalSpace(5),
+                                    addHorizontalSpace(10),
                                     const Text(
                                         'Uploading document, this will take sometime'),
                                   ],
