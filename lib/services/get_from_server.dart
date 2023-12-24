@@ -25,6 +25,7 @@ Future<String> getFromServer(String uri, BuildContext ctx,
       return 'HTTP error ${response.statusCode}: ${response.reasonPhrase}';
     }
   } catch (e) {
+    showToast("Check your internet  connection ");
     return 'An error occured: ${e.toString()}';
   }
 }

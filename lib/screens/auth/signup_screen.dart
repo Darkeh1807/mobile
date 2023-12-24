@@ -1,16 +1,10 @@
 import 'package:bus_booking/config/theme/palette.dart';
-import 'package:bus_booking/hive/user_hive_methods.dart';
-import 'package:bus_booking/models/user_model.dart';
-import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
-import 'package:bus_booking/utils/loaders.dart';
-import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -22,54 +16,13 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isChecked = false;
-  String? status = '';
-  UserProvider up = UserProvider();
-
-  Future<String?> _isExistingUser(BuildContext context) async {
-    showProgressLoader();
-    User? usermodel = await UserHiveMethods().getHiveUser();
-    if (usermodel != null && usermodel.id!.isNotEmpty) {
-      cancelLoader();
-      // Provider.of<UserProvider>(context, listen: false).setUser = usermodel;
-
-      return "localuser";
-    } else {
-      cancelLoader();
-      return 'nouser';
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _isExistingUser(context).then((value) {
-      setState(() {
-        status = value;
-        logs.d(value);
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    Hive.close();
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (status == 'localuser') {
-      // Future.delayed(const Duration(seconds: 3));
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => const AppHome(),
-      //     ));
-    }
-    return welcomeAccount(context);
+    return signUpAccount(context);
   }
 
-  Widget welcomeAccount(BuildContext context) {
+  Widget signUpAccount(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

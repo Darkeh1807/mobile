@@ -1,3 +1,6 @@
+import 'package:bus_booking/models/trip_model.dart';
+import 'package:bus_booking/provider/destination_provider.dart';
+import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
@@ -6,11 +9,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/theme/palette.dart';
 
 class BookingDetailsConfirmScreen extends StatefulWidget {
-  const BookingDetailsConfirmScreen({super.key});
+  final Trip trip;
+  const BookingDetailsConfirmScreen({super.key, required this.trip});
   static const routeName = '/booking_details_confirm_screen';
 
   @override
@@ -33,7 +38,7 @@ class _BookingDetailsConfirmScreenState
               icon: const Icon(Icons.arrow_back_ios),
             ),
             title: Text(
-              "Accra, Ghana - Lagos, Nigeria",
+              "${widget.trip.origin?.name} - ${widget.trip.destination?.name}",
               style: GoogleFonts.manrope(
                   fontSize: 14,
                   color: Colors.black,
@@ -44,16 +49,18 @@ class _BookingDetailsConfirmScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: AvailableTicketCard(),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: AvailableTicketCard(
+                    trips: widget.trip,
+                  ),
                 ),
                 const Divider(
                   height: 1,
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 22, top: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -76,7 +83,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "Air conditioning",
+                            widget.trip.bus!.model.toString(),
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -96,7 +103,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "12am - 6am",
+                            "${widget.trip.timeScheduled!.startTime}",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -116,7 +123,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "12am - 6am",
+                            "${widget.trip.timeScheduled!.endTime}",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -136,7 +143,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "VIP Transport",
+                            "${widget.trip.busCompany?.name}",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -156,7 +163,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "Boarding  point ",
+                            "${widget.trip.origin!.name.toString()} VIP station",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -176,7 +183,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "Dropping  point ",
+                            "${widget.trip.destination!.name.toString()} VIP station",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -196,7 +203,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "A1, B3",
+                            "S5",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -212,8 +219,8 @@ class _BookingDetailsConfirmScreenState
                   height: 1,
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 22, top: 10),
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 22, top: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -229,7 +236,7 @@ class _BookingDetailsConfirmScreenState
                             ),
                           ),
                           Text(
-                            "\$100.00",
+                            "\$${widget.trip.price}",
                             style: GoogleFonts.manrope(
                               color: Colors.black,
                               fontSize: 18,
@@ -249,7 +256,9 @@ class _BookingDetailsConfirmScreenState
                               context: context,
                               barrierColor: Colors.black.withOpacity(0.0),
                               barrierDismissible: false,
-                              builder: (context) => const PaymentSuccessDialog(),
+                              builder: (context) => PaymentSuccessDialog(
+                                trip: widget.trip,
+                              ),
                             );
                           })
                     ],
@@ -278,9 +287,8 @@ class _BookingDetailsConfirmScreenState
 }
 
 class PaymentSuccessDialog extends StatelessWidget {
-  const PaymentSuccessDialog({
-    super.key,
-  });
+  final Trip trip;
+  const PaymentSuccessDialog({super.key, required this.trip});
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +346,13 @@ class PaymentSuccessDialog extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 height: 44,
                 onPressed: () {
-                  pushNamedRoute(context, TicketDetailsScreen.routeName);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TicketDetailsScreen(
+                          trip: trip,
+                        ),
+                      ));
                 })
           ],
         ),
@@ -348,19 +362,21 @@ class PaymentSuccessDialog extends StatelessWidget {
 }
 
 class AvailableTicketCard extends StatelessWidget {
-  const AvailableTicketCard({
-    super.key,
-  });
+  final Trip trips;
+  const AvailableTicketCard({super.key, required this.trips});
 
   @override
   Widget build(BuildContext context) {
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
+    DestinationProvider dp =
+        Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
         // pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
-        // margin: EdgeInsets.only(right: 20, bottom: 20, left: 20),
+        margin: const EdgeInsets.only(right: 20, bottom: 20, left: 20),
         decoration: BoxDecoration(
           border: Border.all(color: const Color(0xFFE5ECF0), width: 1),
           borderRadius: BorderRadius.circular(8),
@@ -372,7 +388,7 @@ class AvailableTicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "VIP BUS",
+                  trips.busCompany!.name.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -380,7 +396,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total 23 seats left",
+                  "Total ${trips.bus!.numberOfSeats} seats left",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -404,7 +420,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "06:30AM",
+                  "${trips.timeScheduled!.startTime}",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -413,7 +429,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "Selected Trip",
+                  "${op.originModel.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -451,7 +467,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "06:30AM",
+                  "${trips.timeScheduled!.endTime}",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -460,7 +476,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "Accra, Ghana -  ",
+                  "${dp.destinationModel.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -505,7 +521,7 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      "7hrs 50m",
+                      " ${(int.parse(trips.timeScheduled!.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled!.startTime.toString().split(":")[0])).toString()}hrs",
                       style: GoogleFonts.manrope(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -515,7 +531,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "\$50",
+                  "\$${trips.price}",
                   style: GoogleFonts.manrope(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

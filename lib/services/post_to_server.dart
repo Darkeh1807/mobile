@@ -10,7 +10,6 @@ Future<String> postDataToServer(
   try {
     logs.d(data);
     final url = Uri.parse(uri);
-    logs.d(url);
     final response = await http.post(
       url,
       body: data,
@@ -37,7 +36,7 @@ Future<String> postDataToServer(
     } else if (response.statusCode == 500) {
       return response.body.toString();
     } else {
-      return 'HTTP error ${response.statusCode}: ${response.reasonPhrase}';
+      return 'HTTP error ${response.statusCode} : ${response.reasonPhrase}';
     }
   } catch (e) {
     return 'An error occured: ${e.toString()}';

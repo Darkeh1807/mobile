@@ -1,6 +1,8 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
+import 'package:bus_booking/models/trip_model.dart';
+import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_outlined_button.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -11,7 +13,11 @@ import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TicketDetailsScreen extends StatelessWidget {
-  const TicketDetailsScreen({super.key});
+  final Trip trip;
+  const TicketDetailsScreen({
+    super.key,
+    required this.trip,
+  });
   static const routeName = "/ticket-details-screen";
   // final bool isFromBooking;
   @override
@@ -19,7 +25,11 @@ class TicketDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pop(context, null),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AppHome(),
+              )),
           icon: const Icon(Icons.arrow_back_ios, size: 20),
         ),
         title: Text(
@@ -41,7 +51,8 @@ class TicketDetailsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.pageHorizontalPadding),
+          horizontal: Spacing.pageHorizontalPadding,
+        ),
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           addVerticalSpace(20),
@@ -106,7 +117,7 @@ class TicketDetailsScreen extends StatelessWidget {
                           ),
                           addHorizontalSpace(8),
                           Text(
-                            "06:30AM",
+                            trip.timeScheduled!.startTime.toString(),
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -115,7 +126,7 @@ class TicketDetailsScreen extends StatelessWidget {
                           ),
                           addHorizontalSpace(10),
                           Text(
-                            "Selected Trip",
+                            "Selected Trip -",
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,

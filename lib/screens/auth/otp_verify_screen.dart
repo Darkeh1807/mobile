@@ -64,8 +64,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tp = Provider.of<TokenProvider>(context);
-    final up = Provider.of<UserProvider>(context);
+    final tp = Provider.of<TokenProvider>(context,listen: false);
+    final up = Provider.of<UserProvider>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(

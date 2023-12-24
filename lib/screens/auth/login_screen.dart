@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {                                                           
   const LoginScreen({
     super.key,
   });
@@ -184,8 +184,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           logs.d(jresp);
 
                           if (jresp != null && jresp["status"] == "success") {
+                            cancelLoader();
                             User userModel =
-                               User.fromJson(jresp["data"]["user"]);
+                                User.fromJson(jresp["data"]["user"]);
                             var token = jresp["data"]["token"];
 
                             await UserHiveMethods().addUser(userModel);
@@ -193,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             up.setUser = userModel;
                             tp.setToken = token;
-                            cancelLoader();
+
                             // ignore: use_build_context_synchronously
                             await Navigator.of(context)
                                 .pushNamed(AppHome.routeName);

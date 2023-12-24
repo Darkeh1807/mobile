@@ -1,8 +1,10 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
+import 'package:bus_booking/provider/destination_provider.dart';
+import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
-import 'package:bus_booking/screens/auth/signup_screen.dart';
+import 'package:bus_booking/screens/auth/auth_page.dart';
 import 'package:bus_booking/screens/home/bookings_screen.dart';
 import 'package:bus_booking/screens/home/home_screen.dart';
 import 'package:bus_booking/screens/home/profile_screen.dart';
@@ -11,14 +13,13 @@ import 'package:bus_booking/utils/toast.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AppHome extends StatefulWidget {
   const AppHome({super.key});
-  static const routeName = 'app_home';
+  static const routeName = '/app_home';
   @override
   State<AppHome> createState() => _AppHomeState();
 }
@@ -26,18 +27,6 @@ class AppHome extends StatefulWidget {
 class _AppHomeState extends State<AppHome> {
   int _currentBottomNavIndex = 0;
   final _scafoldKey = GlobalKey<ScaffoldState>();
-  String status = 'unkown';
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    Hive.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +37,9 @@ class _AppHomeState extends State<AppHome> {
     ];
 
     UserProvider up = Provider.of<UserProvider>(context, listen: false);
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
+    DestinationProvider dp =
+        Provider.of<DestinationProvider>(context, listen: false);
 
     return Scaffold(
       key: _scafoldKey,
@@ -125,18 +117,19 @@ class _AppHomeState extends State<AppHome> {
                 ListTile(
                   onTap: () async {
                     try {
-                      //Clear local user
-                      // final user - up.
-
-                      //clear token
-
-                      //Navigate to auth page
-                      showToast('Signed out as ${up.userModel.fullName}');
+                      showToast('Signed out successfully');
                       User? user = up.userModel;
+                      //clear user
                       await UserHiveMethods().deleteUser(user);
+                      //clear origin
+                      op.clearOrigin();
+                      //clear destination
+                      dp.clearDestination();
+
                       // ignore: use_build_context_synchronously
-                      pushNamedRoute(context, SignUpScreen.routeName);
+                      pushNamedRoute(context, AuthPage.routeName);
                     } catch (e) {
+                      showToast('Unable to signe out successfully');
                       logs.d("Error $e");
                     }
                   },

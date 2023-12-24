@@ -48,10 +48,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: true);
-    DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: true);
-    TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
+    OriginProvider op = Provider.of<OriginProvider>(
+      context,
+      listen: true,
+    );
+    DestinationProvider dp = Provider.of<DestinationProvider>(
+      context,
+      listen: true,
+    );
+    TokenProvider tp = Provider.of<TokenProvider>(
+      context,
+      listen: false,
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -303,12 +311,12 @@ class _HomeScreenState extends State<HomeScreen> {
             CustomPrimaryButton(
               text: "Search",
               onPressed: () {
-                if (op.originModel.id!.isEmpty) {
+                if (op.originModel.id?.isEmpty ?? true) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Origin  is required')));
-                } else if (dp.destinationModel.id!.isEmpty) {
+                } else if (dp.destinationModel.id?.isEmpty ?? true) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Department is required')));
+                      const SnackBar(content: Text('Destination is required')));
                 } else if (selectedDate == null) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Departure date is required')));
@@ -332,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: GoogleFonts.quicksand(
                   color: Colors.black,
                   fontSize: 16,
-                  fontWeight: FontWeight.w600),
+                  fontWeight: FontWeight.w600,),
             ),
             addVerticalSpace(8),
             const Divider(),

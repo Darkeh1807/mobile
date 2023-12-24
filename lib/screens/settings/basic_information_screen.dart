@@ -50,7 +50,7 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
-        child: ListView(
+        child: Column(
           children: [
             Center(
               child: Stack(
@@ -230,6 +230,7 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
             addVerticalSpace(16),
             const Spacer(),
             CustomPrimaryButton(
+              
               text: "Save",
               onPressed: () {},
               fontWeight: FontWeight.w600,

@@ -18,6 +18,7 @@ class TokenHiveMethods {
 
     var tokenKey = box.keys.first;
     final token = box.get(tokenKey);
+    logs.d(token);
     return token;
   }
 }

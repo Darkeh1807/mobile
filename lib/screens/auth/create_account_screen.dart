@@ -427,6 +427,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         );
 
                         final jresp = jsonDecode(resp);
+                        
                         // logs.d(jresp);
                         if (jresp != null) {
                           User userModel = User.fromJson(jresp["user"]);

@@ -139,7 +139,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                       ),
                     )
                     .toList(),
-              ),                                                                                                                                                   
+              ),
             ),
             addVerticalSpace(20),
             FutureBuilder<List<Trip>>(
@@ -180,7 +180,7 @@ class AvailableTicketCard extends StatelessWidget {
   final Trip trips;
   const AvailableTicketCard({super.key, required this.trips});
 
- @override
+  @override
   Widget build(BuildContext context) {
     OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
     DestinationProvider dp =
@@ -289,7 +289,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                    trips.timeScheduled!.endTime.toString(),
+                  trips.timeScheduled!.endTime.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -343,12 +343,11 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      "10hrs",
+                      " ${(int.parse(trips.timeScheduled!.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled!.startTime.toString().split(":")[0])).toString()}hrs",
                       style: GoogleFonts.manrope(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Palette.primaryColor,
-                      ),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Palette.primaryColor),
                     ),
                   ],
                 ),

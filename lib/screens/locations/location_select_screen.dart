@@ -24,6 +24,7 @@ class LocationSelectScreen extends StatefulWidget {
 
 class _LocationSelectScreenState extends State<LocationSelectScreen> {
   List<Place> places = [];
+  bool isLoading = true;
 
   Future<void> getAllAvailableLocations(BuildContext context) async {
     try {
@@ -34,26 +35,30 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
         List<Place> allLocs = locs.map((loc) => placeFromJson(loc)).toList();
         setState(() {
           places = allLocs;
+          isLoading = !isLoading;
         });
-      }
+      } else {}
     } catch (e) {
+      setState(() {
+        isLoading = !isLoading;
+      });
       logs.d(e);
     }
   }
 
-  _search(String enteredKeyword) {
-    List<Place> results = [];
+  void _searchLocation(String query) {
+    List<Place> result = [];
 
-    if (enteredKeyword.isEmpty) {
-      results = places;
+    if (query.isEmpty) {
+      result = places;
     } else {
-      results = places.where((place) {
-        return place.name!.toLowerCase().contains(enteredKeyword.toLowerCase());
+      result = places.where((place) {
+        return place.name!.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
 
     setState(() {
-      places = results;
+      places = result;
     });
   }
 
@@ -61,6 +66,14 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
   void initState() {
     getAllAvailableLocations(context);
     super.initState();
+  }
+
+  Future<void> _refreshLocations() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await getAllAvailableLocations(context);
   }
 
   @override
@@ -77,9 +90,17 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
         ),
         title: Text(widget.selecting,
             style: GoogleFonts.manrope(
-                fontSize: 14,
-                color: Colors.black,
-                fontWeight: FontWeight.w500)),
+              fontSize: 14,
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            )),
+        actions: [
+          IconButton(
+              onPressed: _refreshLocations,
+              icon: const Icon(
+                Iconsax.refresh,
+              ))
+        ],
       ),
       body: Column(
         children: [
@@ -97,7 +118,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                 size: 20,
               ),
               onChanged: (value) {
-                _search(value);
+                _searchLocation(value);
               },
             ),
           ),
@@ -105,27 +126,29 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
             height: 1,
           ),
           addVerticalSpace(10),
-          places.isEmpty || places == []
+          isLoading
               ? const CircularProgressIndicator()
-              : Expanded(
-                  child: ListView.builder(
-                  itemCount: places.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        if (widget.selecting == "Origin") {
-                          op.setOrigin = places[index];
-                          Navigator.pop(context);
-                        } else if (widget.selecting == "Destination") {
-                          dp.setDestionation = places[index];
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: LocationResultTile(
-                          location: places[index].name.toString()),
-                    );
-                  },
-                )),
+              : places.isEmpty
+                  ? const Text("No location found")
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: places.length,
+                        itemBuilder: (context, index) => InkWell(
+                          onTap: () {
+                            if (widget.selecting == "Origin") {
+                              op.setOrigin = places[index];
+                              Navigator.pop(context);
+                            } else if (widget.selecting == 'Destination') {
+                              dp.setDestionation = places[index];
+                              Navigator.pop(context);
+                            } else {}
+                          },
+                          child: LocationResultTile(
+                            location: places[index].name.toString(),
+                          ),
+                        ),
+                      ),
+             ),
         ],
       ),
     );
