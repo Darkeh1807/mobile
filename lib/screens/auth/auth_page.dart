@@ -34,7 +34,7 @@ class _AuthPageState extends State<AuthPage> {
     }
   }
 
-  Future<void> getLocalToken() async {
+  Future<void> getLocalToken(BuildContext context) async {
     try {
       String? ltoken = await TokenHiveMethods().getToken();
       if (ltoken != null && ltoken.isNotEmpty) {
@@ -42,9 +42,9 @@ class _AuthPageState extends State<AuthPage> {
           token = ltoken;
         });
       } else if (ltoken == "" && ltoken!.isEmpty) {
-        Future.delayed(const Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 3));
         // ignore: use_build_context_synchronously
-        pushNamedRoute(context, LoginScreen.routeName);
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
       }
     } catch (e) {
       logs.d('Error: $e');
@@ -53,21 +53,20 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   void initState() {
-    getLocalToken();
+    getLocalToken(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = Provider.of<UserProvider>(context, listen: false);
-    TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
+    UserProvider up = context.read<UserProvider>();
+    TokenProvider tp = context.read<TokenProvider>();
     return FutureBuilder(
       future: _isExistingUser(context),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           up.setUser = snapshot.data!;
           token.isNotEmpty ? tp.setToken = token : null;
-
           return const AppHome();
         } else {
           return const SignUpScreen();

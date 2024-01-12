@@ -80,7 +80,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
-          "${op.originModel.name} - ${dp.destinationModel.name}",
+          "${op.originModel.name} - ${dp.getDestination.name}",
           style: GoogleFonts.manrope(
               fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500),
         ),
@@ -298,7 +298,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${dp.destinationModel.name} -  ",
+                  "${dp.getDestination.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

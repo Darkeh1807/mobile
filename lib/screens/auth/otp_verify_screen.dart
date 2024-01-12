@@ -64,8 +64,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tp = Provider.of<TokenProvider>(context,listen: false);
-    final up = Provider.of<UserProvider>(context,listen: false);
+    final tp = Provider.of<TokenProvider>(context, listen: false);
+    final up = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -99,7 +99,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
             ),
             addVerticalSpace(6),
             Text(
-              "Kindly enter the 6-digits code we sent to ${up.userModel.phone}",
+              "Kindly enter the 6-digits code we sent to ${up.getUser.phone}",
               style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -152,7 +152,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       ),
                       InkWell(
                         onTap: () async {
-                          final token = tp.authToken;
+                          final token = tp.getToken;
                           final resp = await getFromServer(
                             '${Url.authUrl}/resendsms',
                             context,
@@ -189,7 +189,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                         showProgressLoader();
                         try {
                           String otpValue = getOtp();
-                          String token = tp.authToken;
+                          String token = tp.getToken;
 
                           final resp = await postDataToServer(
                             "${Url.authUrl}/verifyphone",

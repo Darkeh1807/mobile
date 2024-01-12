@@ -10,6 +10,7 @@ ThemeData? theme(String thememode, BuildContext context) {
             primary: Palette.primaryColor,
             secondary: Palette.tertiaryColor,
           ),
+          useMaterial3:false,
       appBarTheme: AppBarTheme.of(context).copyWith(
         backgroundColor: Colors.white,
         elevation: 0,

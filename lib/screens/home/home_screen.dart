@@ -28,18 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
   String? selectedDate;
   Future<void> showDate() async {
     DateTime now = DateTime.now();
-    DateTime firstDate = DateTime(now.year, 7, 1);
     DateTime lastDate = now.add(const Duration(days: 30));
-
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: now,
-      firstDate: firstDate,
+      firstDate: DateTime(DateTime.now().year - 1),
       lastDate: lastDate,
     );
 
     if (pickedDate != null) {
-      final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      final String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       setState(() {
         selectedDate = formattedDate;
       });
@@ -251,8 +248,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     addVerticalSpace(10),
                     LocationButtonWidget(
-                      innerLabel: dp.destinationModel.id?.isNotEmpty ?? false
-                          ? dp.destinationModel.name.toString()
+                      innerLabel: dp.getDestination.id?.isNotEmpty ?? false
+                          ? dp.getDestination.name.toString()
                           : "Going to",
                       topLabel: "Destination",
                       onTap: () {
@@ -314,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (op.originModel.id?.isEmpty ?? true) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Origin  is required')));
-                } else if (dp.destinationModel.id?.isEmpty ?? true) {
+                } else if (dp.getDestination.id?.isEmpty ?? true) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Destination is required')));
                 } else if (selectedDate == null) {
@@ -326,9 +323,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(
                         builder: (context) => SearchResultsScreen(
                           departureTime: selectedDate,
-                          destinationId: dp.destinationModel.id,
+                          destinationId: dp.getDestination.id,
                           originId: op.originModel.id,
-                          authToken: tp.authToken,
+                          authToken: tp.getToken,
                         ),
                       ));
                 }
@@ -338,9 +335,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               'Are you a car rental/ bus company?',
               style: GoogleFonts.quicksand(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,),
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             addVerticalSpace(8),
             const Divider(),

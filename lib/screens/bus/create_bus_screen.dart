@@ -76,11 +76,11 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
     TokenProvider tp = Provider.of<TokenProvider>(context, listen: true);
     UserProvider up = Provider.of<UserProvider>(context, listen: true);
 
-    emailController.text = up.userModel.email.toString();
-    mobileController.text = up.userModel.phone.toString();
-    contactPersonNameController.text = up.userModel.fullName.toString();
-    contactPersonPhoneController.text = up.userModel.phone.toString();
-    contactPersonEmailController.text = up.userModel.email.toString();
+    emailController.text = up.getUser.email.toString();
+    mobileController.text = up.getUser.phone.toString();
+    contactPersonNameController.text = up.getUser.fullName.toString();
+    contactPersonPhoneController.text = up.getUser.phone.toString();
+    contactPersonEmailController.text = up.getUser.email.toString();
 
     return SafeArea(
       child: Scaffold(
@@ -611,7 +611,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                               '${Url.busCompany}/bus-company',
                               data,
                               context,
-                              authToken: tp.authToken,
+                              authToken: tp.getToken,
                             );
                             final jresp = jsonDecode(resp);
                             logs.d(jresp);

@@ -118,7 +118,7 @@ class _AppHomeState extends State<AppHome> {
                   onTap: () async {
                     try {
                       showToast('Signed out successfully');
-                      User? user = up.userModel;
+                      User? user = up.getUser;
                       //clear user
                       await UserHiveMethods().deleteUser(user);
                       //clear origin

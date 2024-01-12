@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: 100 / 2,
                 child: Center(
                   child: Text(
-                    up.userModel.profilePic.toString(),
+                    up.getUser.profilePic.toString(),
                     style: const TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             addVerticalSpace(5),
             Text(
-              up.userModel.fullName.toString(),
+              up.getUser.fullName.toString(),
               textAlign: TextAlign.center,
               style: GoogleFonts.manrope(
                 color: Palette.baseBlack,
@@ -239,8 +239,8 @@ class SignoutDialog extends StatelessWidget {
                   child: CustomButton(
                     onPressed: () async {
                       try {
-                        showToast('Signed out as ${up.userModel.fullName}');
-                        User? user = up.userModel;
+                        showToast('Signed out as ${up.getUser.fullName}');
+                        User? user = up.getUser;
                         await UserHiveMethods().deleteUser(user);
                         // ignore: use_build_context_synchronously
                         pushNamedRoute(context, AuthPage.routeName);

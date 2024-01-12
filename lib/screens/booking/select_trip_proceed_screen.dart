@@ -24,7 +24,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
-          "${trip.origin?.name} - ${trip.destination?.name}",
+          "${trip.origin.name} - ${trip.destination.name}",
           style: GoogleFonts.manrope(
               fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500),
         ),
@@ -67,7 +67,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        trip.bus!.model.toString(),
+                        trip.bus.model.toString(),
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -87,7 +87,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "${trip.timeScheduled!.startTime}",
+                        trip.timeScheduled.startTime,
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -107,7 +107,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "${trip.timeScheduled!.endTime}",
+                        trip.timeScheduled.endTime,
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -127,7 +127,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "${trip.busCompany?.name}",
+                        trip.busCompany.name,
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -147,7 +147,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "${trip.origin!.name.toString()} VIP station",
+                        "${trip.origin.name.toString()} VIP station",
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -167,7 +167,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "${trip.destination!.name.toString()} VIP station",
+                        "${trip.destination.name.toString()} VIP station",
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -179,151 +179,12 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(
-              height: 1,
-            ),
             Padding(
               padding: const EdgeInsets.only(
                   left: 20, right: 20, bottom: 22, top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    "Assigned Seat",
-                    style: GoogleFonts.manrope(
-                        fontSize: 14,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  addVerticalSpace(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Text("Seat"),
-                          addHorizontalSpace(100 * 2.7),
-                          const SeatNumberDisplayWidget(
-                            seatNumberTitle: "S5",
-                            status: "booked",
-                          )
-                        ],
-                      ),
-
-                      // Row(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: [
-                      //     Container(
-                      //       width: 9,
-                      //       height: 9,
-                      //       decoration: BoxDecoration(
-                      //         border: Border.all(
-                      //           color: Palette.greyText,
-                      //           width: 1,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     addHorizontalSpace(4),
-                      //     Text(
-                      //       "Available",
-                      //       style: GoogleFonts.manrope(
-                      //           fontSize: 12,
-                      //           color: const Color(0xFF20415B),
-                      //           fontWeight: FontWeight.w400,
-                      //           height: 1.2),
-                      //     ),
-                      //   ],
-                      // ),
-                      // Row(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: [
-                      //     Container(
-                      //       width: 9,
-                      //       height: 9,
-                      //       decoration: const BoxDecoration(
-                      //           color: Palette.primaryColor),
-                      //     ),
-                      //     addHorizontalSpace(4),
-                      //     Text(
-                      //       "Booked",
-                      //       style: GoogleFonts.manrope(
-                      //           fontSize: 12,
-                      //           color: const Color(0xFF20415B),
-                      //           fontWeight: FontWeight.w400,
-                      //           height: 1.2),
-                      //     ),
-                      //   ],
-                      // ),
-                      // Row(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: [
-                      //     Container(
-                      //       width: 9,
-                      //       height: 9,
-                      //       decoration:
-                      //           const BoxDecoration(color: Palette.baseBlack),
-                      //     ),
-                      //     addHorizontalSpace(4),
-                      //     Text(
-                      //       "Unavailable",
-                      //       style: GoogleFonts.manrope(
-                      //           fontSize: 12,
-                      //           color: const Color(0xFF20415B),
-                      //           fontWeight: FontWeight.w400,
-                      //           height: 1.2),
-                      //     ),
-                      //   ],
-                      // ),
-                    ],
-                  ),
-                  // addVerticalSpace(30),
-                  // GridView(
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   shrinkWrap: true,
-                  //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //       crossAxisSpacing:
-                  //           MediaQuery.of(context).size.width * 50 / 375,
-                  //       mainAxisSpacing: 12,
-                  //       mainAxisExtent: 43,
-                  //       crossAxisCount: 4),
-                  //   children: const [
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "A1"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "A2"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "A3"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "A4"),
-                  //     //DO same for B, C  D , E and F
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "B1"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "B2"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "B3"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "B4"),
-
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "C1"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "C2"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "C3"),
-                  //     SeatNumberDisplayWidget(
-                  //         seatNumberTitle: "C4", status: "unavailable"),
-
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "D1"),
-                  //     SeatNumberDisplayWidget(
-                  //         seatNumberTitle: "D2", status: "booked"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "D3"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "D4"),
-
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "E1"),
-                  //     SeatNumberDisplayWidget(
-                  //         seatNumberTitle: "E2", status: "booked"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "E3"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "E4"),
-
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "F1"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "F2"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "F3"),
-                  //     SeatNumberDisplayWidget(seatNumberTitle: "F4")
-                  //   ],
-                  // ),
-                  // addVerticalSpace(
-                  //   50,
-                  // ),
                   addVerticalSpace(50),
                   CustomPrimaryButton(
                       text: "Continue",
@@ -431,7 +292,7 @@ class AvailableTicketCard extends StatelessWidget {
             ));
       },
       child: Container(
-        padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
+        padding: const EdgeInsets.fromLTRB(8, 12, 8, 15),
         margin: const EdgeInsets.only(right: 20, bottom: 20, left: 20),
         decoration: BoxDecoration(
           border: Border.all(color: const Color(0xFFE5ECF0), width: 1),
@@ -444,7 +305,7 @@ class AvailableTicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  trips.busCompany!.name.toString(),
+                  trips.busCompany.name.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -452,7 +313,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total ${trips.bus!.numberOfSeats} seats left",
+                  "Total ${trips.bus.numberOfSeats} seats left",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -476,7 +337,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "${trips.timeScheduled!.startTime}",
+                  trips.timeScheduled.startTime,
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -523,7 +384,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  "${trips.timeScheduled!.endTime}",
+                  trips.timeScheduled.endTime,
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -532,7 +393,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${dp.destinationModel.name} -  ",
+                  "${dp.getDestination.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -577,7 +438,7 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      " ${(int.parse(trips.timeScheduled!.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled!.startTime.toString().split(":")[0])).toString()}hrs",
+                      " ${(int.parse(trips.timeScheduled.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled.startTime.toString().split(":")[0])).toString()}hrs",
                       style: GoogleFonts.manrope(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,

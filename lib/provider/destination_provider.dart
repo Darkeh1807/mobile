@@ -2,19 +2,19 @@ import 'package:bus_booking/models/locations_model.dart';
 import 'package:flutter/material.dart';
 
 class DestinationProvider extends ChangeNotifier {
-  Place destinationModel = Place();
+  Place _destinationModel = Place();
 
   Place get getDestination {
-    return destinationModel;
+    return _destinationModel;
   }
 
   set setDestionation(Place place) {
-    destinationModel = place;
+    _destinationModel = place;
     notifyListeners();
   }
 
   void clearDestination(){
-    destinationModel = Place();
+    _destinationModel = Place();
     notifyListeners();
   }
 }

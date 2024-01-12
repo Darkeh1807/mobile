@@ -6,5 +6,6 @@ class Url {
   static String busCompany = "$baseUrl/busCompany";
   static String assets = "$baseUrl/assets";
   static String locations = "$baseUrl/locations";
-  static String  trips =  "$baseUrl/trips";
+  static String trips = "$baseUrl/trips";
+  static String booking = "$baseUrl/payment";
 }

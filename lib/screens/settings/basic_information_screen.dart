@@ -29,9 +29,9 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
   Widget build(BuildContext context) {
     UserProvider up = context.read<UserProvider>();
 
-    fullNameController.text = up.userModel.fullName.toString();
-    emailController.text = up.userModel.email.toString();
-    mobileNumberController.text = up.userModel.phone.toString();
+    fullNameController.text = up.getUser.fullName.toString();
+    emailController.text = up.getUser.email.toString();
+    mobileNumberController.text = up.getUser.phone.toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -48,18 +48,18 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
               fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
-        child: Column(
-          children: [
-            Center(
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+            child: Center(
               child: Stack(
                 children: [
                   CircleAvatar(
                     radius: 100 / 2,
                     child: Center(
                       child: Text(
-                        up.userModel.profilePic.toString(),
+                        up.getUser.profilePic.toString(),
                         style: const TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
@@ -96,8 +96,11 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
                 ],
               ),
             ),
-            addVerticalSpace(30),
-            Column(
+          ),
+          addVerticalSpace(30),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -139,8 +142,14 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
                 ),
               ],
             ),
-            addVerticalSpace(16),
-            Column(
+          ),
+          addVerticalSpace(0),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -184,8 +193,14 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
                 ),
               ],
             ),
-            addVerticalSpace(16),
-            Column(
+          ),
+          addVerticalSpace(30),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -227,16 +242,18 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
                 ),
               ],
             ),
-            addVerticalSpace(16),
-            const Spacer(),
-            CustomPrimaryButton(
-              
+          ),
+          addVerticalSpace(40),
+        
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20,),
+            child: CustomPrimaryButton(
               text: "Save",
               onPressed: () {},
               fontWeight: FontWeight.w600,
             ),
-          ],
-        ),
+          ), 
+        ],
       ),
     );
   }

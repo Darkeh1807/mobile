@@ -2,14 +2,19 @@ import 'package:bus_booking/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
-  User userModel = User();
+  User _userModel = User();
 
   User get getUser {
-    return userModel;
+    return _userModel;
   }
 
   set setUser(User user) {
-    userModel = user;
-    notifyListeners();
+    // ignore: unnecessary_null_comparison
+    if (user != null) {
+      _userModel = user;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
+    }
   }
 }

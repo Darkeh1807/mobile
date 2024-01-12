@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class TokenProvider extends ChangeNotifier {
-  String authToken = '';
+  String _authToken = '';
 
-  String get getToken => authToken;
+  String get getToken => _authToken;
 
-  set setToken(String token){
-    authToken = token;
-    notifyListeners();
+  set setToken(String token) {
+    _authToken = token;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 }

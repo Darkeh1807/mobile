@@ -78,9 +78,8 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
-    DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: false);
+    OriginProvider op = context.read<OriginProvider>();
+    DestinationProvider dp = context.read<DestinationProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -148,7 +147,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                           ),
                         ),
                       ),
-             ),
+                    ),
         ],
       ),
     );
