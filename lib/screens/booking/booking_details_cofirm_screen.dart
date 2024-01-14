@@ -1,12 +1,15 @@
-import 'dart:convert';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/screens/payment/payment_screen..dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/services/post_to_server.dart';
+import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
@@ -32,17 +35,27 @@ class BookingDetailsConfirmScreen extends StatefulWidget {
 class _BookingDetailsConfirmScreenState
     extends State<BookingDetailsConfirmScreen> {
   bool hasPaid = false;
-
-  Future<void> bookTrip(
+  Future<String?> bookTrip(
       BuildContext context, Map<String, dynamic> data, String authToken) async {
+    showProgressLoader();
     try {
       final String res = await postDataToServer(Url.booking, data, context,
           authToken: authToken);
+
       final jresp = jsonDecode(res);
-      logs.d(jresp);
+      if (jresp["success"] == true) {
+        cancelLoader();
+        return jresp["data"]["paymentUrl"]["data"]["authorization_url"];
+      } else if (jresp["message"] == "You have already booked this trip") {
+        cancelLoader();
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("You have already booked this trip")));
+      }
     } catch (e) {
+      cancelLoader();
       logs.d(e);
     }
+    return null;
   }
 
   @override
@@ -210,26 +223,6 @@ class _BookingDetailsConfirmScreenState
                         ],
                       ),
                       addVerticalSpace(20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Seat",
-                            style: GoogleFonts.manrope(
-                                fontSize: 12,
-                                color: Palette.greyText,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Text(
-                            "S5",
-                            style: GoogleFonts.manrope(
-                                fontSize: 12,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                      addVerticalSpace(20),
                     ],
                   ),
                 ),
@@ -267,26 +260,36 @@ class _BookingDetailsConfirmScreenState
                       CustomPrimaryButton(
                           text: "Book",
                           onPressed: () async {
-                            final tp = context.read<TokenProvider>();
-                            await bookTrip(
-                              context,
-                              {
-                                "Trip": widget.trip.id,
-                                "amount": widget.trip.price.toString()
-                              },
-                              tp.getToken,
-                            );
-                            // setState(() {
-                            //   hasPaid = true;
-                            // });
-                            // showDialog(
-                            //   context: context,
-                            //   barrierColor: Colors.black.withOpacity(0.0),
-                            //   barrierDismissible: false,
-                            //   builder: (context) => PaymentSuccessDialog(
-                            //     trip: widget.trip,
-                            //   ),
-                            // );
+                            try {
+                              final tp = context.read<TokenProvider>();
+                              String? authorizationUrl = await bookTrip(
+                                context,
+                                {
+                                  "Trip": widget.trip.id,
+                                  "amount": widget.trip.price.toString(),
+                                },
+                                tp.getToken,
+                              );
+
+                              if (authorizationUrl != null &&
+                                  authorizationUrl.isNotEmpty) {
+                                await Future.delayed(
+                                    const Duration(seconds: 2));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PaymentScreeen(
+                                      authorizationUrl: authorizationUrl,
+                                      tripId: widget.trip.id,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return;
+                              }
+                            } catch (e) {
+                              logs.d(e);
+                            }
                           })
                     ],
                   ),

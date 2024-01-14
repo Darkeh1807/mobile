@@ -1,5 +1,3 @@
-
-
 Place placeFromJson(Map data) => Place.fromJson(data);
 
 Map placeToJson(Place data) => data.toJson();
