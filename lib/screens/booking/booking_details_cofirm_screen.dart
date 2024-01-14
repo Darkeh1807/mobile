@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/trip_model.dart';
@@ -53,7 +52,8 @@ class _BookingDetailsConfirmScreenState
       }
     } catch (e) {
       cancelLoader();
-      logs.d(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Check your internet connection")));
     }
     return null;
   }
@@ -274,7 +274,10 @@ class _BookingDetailsConfirmScreenState
                               if (authorizationUrl != null &&
                                   authorizationUrl.isNotEmpty) {
                                 await Future.delayed(
-                                    const Duration(seconds: 2));
+                                  const Duration(
+                                    seconds: 2,
+                                  ),
+                                );
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -290,6 +293,18 @@ class _BookingDetailsConfirmScreenState
                             } catch (e) {
                               logs.d(e);
                             }
+
+                            // setState(() {
+                            //   hasPaid = true;
+                            // });
+                            // showDialog(
+                            //   context: context,
+                            //   barrierColor: Colors.black.withOpacity(0.0),
+                            //   barrierDismissible: false,
+                            //   builder: (context) => PaymentSuccessDialog(
+                            //     trip: widget.trip,
+                            //   ),
+                            // );
                           })
                     ],
                   ),

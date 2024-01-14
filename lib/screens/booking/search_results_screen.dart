@@ -210,7 +210,7 @@ class AvailableTicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  trips.busCompany!.name.toString(),
+                  trips.busCompany.name.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -218,7 +218,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total ${trips.bus!.numberOfSeats} seats left",
+                  "Total ${trips.bus.numberOfSeats} seats left",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -242,7 +242,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled!.startTime.toString(),
+                  trips.timeScheduled.startTime.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -289,7 +289,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled!.endTime.toString(),
+                  trips.timeScheduled.endTime.toString(),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -343,7 +343,7 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      " ${(int.parse(trips.timeScheduled!.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled!.startTime.toString().split(":")[0])).toString()}hrs",
+                      " ${(int.parse(trips.timeScheduled.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled.startTime.toString().split(":")[0])).toString()}hrs",
                       style: GoogleFonts.manrope(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,

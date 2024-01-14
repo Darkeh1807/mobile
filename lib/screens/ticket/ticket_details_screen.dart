@@ -117,7 +117,7 @@ class TicketDetailsScreen extends StatelessWidget {
                           ),
                           addHorizontalSpace(8),
                           Text(
-                            trip.timeScheduled!.startTime.toString(),
+                            trip.timeScheduled.startTime.toString(),
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
