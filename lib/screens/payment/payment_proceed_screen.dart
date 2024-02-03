@@ -5,7 +5,8 @@ import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
-import 'package:bus_booking/screens/payment/payment_proceed_screen.dart';
+import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/screens/payment/payment_screen..dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -17,63 +18,67 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-
 import '../../config/theme/palette.dart';
 
-class BookingDetailsConfirmScreen extends StatefulWidget {
+class PaymentProceedScreen extends StatefulWidget {
   final Trip trip;
-  const BookingDetailsConfirmScreen({super.key, required this.trip});
+  final String bookingId;
+  const PaymentProceedScreen({
+    super.key,
+    required this.trip,
+    required this.bookingId,
+  });
   static const routeName = '/booking_details_confirm_screen';
 
   @override
-  State<BookingDetailsConfirmScreen> createState() =>
-      _BookingDetailsConfirmScreenState();
+  State<PaymentProceedScreen> createState() => _PaymentProceedScreenState();
 }
 
-class _BookingDetailsConfirmScreenState
-    extends State<BookingDetailsConfirmScreen> {
-  bool hasPaid = false;
-   String bookingId = "";
-  Future<String?> bookTrip(
+class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
+  Future<String?> initPayment(
     BuildContext context,
     Map<String, dynamic> data,
     String authToken,
   ) async {
     showProgressLoader();
     try {
-      final String res = await postDataToServer(
-        Url.booking,
+      final resp = await postDataToServer(
+        Url.payment,
         data,
         context,
         authToken: authToken,
       );
-
-      final jresp = jsonDecode(res);
-
+      final jresp = jsonDecode(resp);
+      logs.d(jresp);
       if (jresp["success"] == true) {
         cancelLoader();
-        setState(() {
-          bookingId = jresp["data"]["booking"]["_id"];
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Successfully booked trip")));
-        return "booked";
-      } else if (jresp["message"] == "You have already booked this trip") {
+        return jresp["data"]["data"]["authorization_url"];
+      } else {
         cancelLoader();
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("You have already booked this trip")));
+          const SnackBar(
+            content: Text(
+              "Request failed",
+            ),
+          ),
+        );
       }
     } catch (e) {
       cancelLoader();
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Check your internet connection")));
-      logs.d("Error: $e");
+        const SnackBar(
+          content: Text(
+            "Check your internet connection",
+          ),
+        ),
+      );
     }
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
+    final tp = Provider.of<TokenProvider>(context);
     return Stack(
       children: [
         Scaffold(
@@ -272,47 +277,33 @@ class _BookingDetailsConfirmScreenState
                       ),
                       addVerticalSpace(20),
                       CustomPrimaryButton(
-                          text: "Book",
+                          text: "Pay",
                           onPressed: () async {
                             try {
                               final tp = context.read<TokenProvider>();
+                              final up = context.read<UserProvider>();
 
-                              String? booked = await bookTrip(
+                              final authorizationUrl = await initPayment(
                                 context,
                                 {
-                                  "Trip": widget.trip.id,
                                   "amount": widget.trip.price.toString(),
+                                  "email": up.getUser.email,
+                                  "reference": widget.bookingId,
                                 },
                                 tp.getToken,
                               );
-
-                              if (booked != null && booked == "booked") {
-                                showDialog(
-                                  context: context,
-                                  barrierColor: Colors.black.withOpacity(0.5),
-                                  barrierDismissible: false,
-                                  builder: (context) => SuccessDialog(
-                                    trip: widget.trip,
-                                    dialogtitle: 'Booked succesfully',
-                                    dialogMsg:
-                                        'You have successfully booked the trip',
-                                    callback: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PaymentProceedScreen(
-                                            trip: widget.trip,
-                                            bookingId: bookingId,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    btnMsg: 'Proceed to pay',
-                                  ),
-                                );
-                              } else {
-                                return;
+                              if (authorizationUrl != null &&
+                                  authorizationUrl.isNotEmpty) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PaymentScreeen(
+                                        authorizationUrl: authorizationUrl,
+                                        tripId: widget.trip.id,
+                                        bookingId: widget.bookingId,
+                                        authToken:tp.getToken ,
+                                      ),
+                                    ));
                               }
                             } catch (e) {
                               logs.d(e);
@@ -331,20 +322,18 @@ class _BookingDetailsConfirmScreenState
 }
 
 class SuccessDialog extends StatelessWidget {
-  final Trip? trip;
-  final String? dialogtitle;
-  final String? dialogMsg;
-  final VoidCallback? callback;
-  final String? btnMsg;
-  final String? bookingId;
+  final Trip trip;
+  final String dialogtitle;
+  final String dialogMsg;
+  final VoidCallback callback;
+  final String btnMsg;
   const SuccessDialog({
     super.key,
-     this.trip,
-     this.dialogtitle,
-     this.dialogMsg,
-     this.callback,
-     this.btnMsg,
-     this.bookingId
+    required this.trip,
+    required this.dialogtitle,
+    required this.dialogMsg,
+    required this.callback,
+    required this.btnMsg,
   });
 
   @override
@@ -377,7 +366,7 @@ class SuccessDialog extends StatelessWidget {
             ),
             addVerticalSpace(6),
             Text(
-              dialogtitle!,
+              dialogtitle,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Color(0xFF111827),
@@ -387,7 +376,7 @@ class SuccessDialog extends StatelessWidget {
               ),
             ),
             Text(
-              dialogMsg!,
+              dialogMsg,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Color(0xFF1D1D1F),
@@ -398,7 +387,7 @@ class SuccessDialog extends StatelessWidget {
             ),
             addVerticalSpace(25),
             CustomPrimaryButton(
-                text: btnMsg.toString(),
+                text: btnMsg,
                 radius: 4,
                 fontWeight: FontWeight.w500,
                 height: 44,

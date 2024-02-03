@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -9,7 +10,9 @@ Future<String> postDataToServer(
     {String? authToken}) async {
   try {
     logs.d(data);
+
     final url = Uri.parse(uri);
+    logs.d(url);
     final response = await http.post(
       url,
       body: data,
@@ -22,15 +25,12 @@ Future<String> postDataToServer(
     if (response.statusCode == 200 || response.statusCode == 201) {
       return response.body.toString();
     } else if (response.statusCode == 400) {
-      // ignore: use_build_context_synchronously
-
       return response.body.toString();
     } else if (response.statusCode == 401) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(ctx)
           .showSnackBar(const SnackBar(content: Text('Token has expired')));
       await Future.delayed(const Duration(seconds: 3));
-      // ignore: use_build_context_synchronously
+
       pushNamedRoute(ctx, LoginScreen.routeName);
       return 'Token has expired';
     } else if (response.statusCode == 500) {

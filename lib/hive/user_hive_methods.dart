@@ -36,11 +36,9 @@ class UserHiveMethods {
       }
       var userId = box.keys.first;
       dynamic userMap = box.get(userId);
-      logs.d(userMap);
-      box.close();
+
       if (userMap != null && userMap.isNotEmpty) {
         User user = userFromJson(userMap);
-
         return user;
       } else {
         logs.d("No user found");

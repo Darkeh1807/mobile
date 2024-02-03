@@ -10,7 +10,6 @@ import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
 import 'package:bus_booking/screens/auth/signup_screen.dart';
-import 'package:bus_booking/screens/booking/payment_success_screen.dart';
 import 'package:bus_booking/screens/booking/search_results_screen.dart';
 import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
@@ -97,10 +96,6 @@ class MyApp extends StatelessWidget {
                 builder: (context) => const SearchResultsScreen(),
               );
 
-            case PaymentSuccessScreen.routeName:
-              return MaterialPageRoute(
-                builder: (context) => const PaymentSuccessScreen(),
-              );
 
             case NotificationsScreen.routeName:
               return MaterialPageRoute(

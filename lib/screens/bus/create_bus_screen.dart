@@ -66,10 +66,6 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

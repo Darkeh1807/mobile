@@ -1,5 +1,6 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
+import 'package:bus_booking/hive/token_hive_methods.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/user_provider.dart';
@@ -193,6 +194,7 @@ class SignoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider up = Provider.of<UserProvider>(context);
+   
     return Dialog(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -242,6 +244,7 @@ class SignoutDialog extends StatelessWidget {
                         showToast('Signed out as ${up.getUser.fullName}');
                         User? user = up.getUser;
                         await UserHiveMethods().deleteUser(user);
+                        await TokenHiveMethods().deleteToken();
                         // ignore: use_build_context_synchronously
                         pushNamedRoute(context, AuthPage.routeName);
                       } catch (e) {

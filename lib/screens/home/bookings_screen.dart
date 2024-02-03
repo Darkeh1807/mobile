@@ -155,9 +155,7 @@ class TicketDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        pushNamedRoute(context, TicketDetailsScreen.routeName);
-      },
+      onTap: () {},
       child: Ink(
         child: Container(
           decoration: ShapeDecoration(

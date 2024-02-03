@@ -4,33 +4,47 @@ import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/toast.dart';
 import 'package:dio/dio.dart';
 
-Future<String?> uploadFileToServer(File selectedfile, String path) async {
-  late Response response;
-  Dio dio = Dio();
+Future<String?> uploadFileToServer(File selectedFile, String path) async {
+  final dio = Dio();
 
-  if (selectedfile.path.isEmpty) {
-    showToast("Please select a file first");
-    return "";
-  }
+  try {
+    if (selectedFile.path.isEmpty) {
+      showToast("Please select a file first");
+      return null;
+    }
+    final uploadUrl = "${Url.assets}/$path";
+    logs.d(uploadUrl);
 
-  String uploadurl = "${Url.assets}/$path";
-  logs.d(uploadurl);
+   
+    final formData = FormData.fromMap({
+      "company_docs": await MultipartFile.fromFile(
+        selectedFile.path,
+        filename: selectedFile.path.split('/').last,
+      ),
+    });
 
-  FormData formdata = FormData.fromMap({
-    "company_docs": await MultipartFile.fromFile(
-      selectedfile.path,
-      filename: selectedfile.path.split('/').last,
-    ),
-  });
+  
+    final response = await dio.post(uploadUrl, data: formData);
 
-  response = await dio.post(
-    uploadurl,
-    data: formdata,
-  );
-
-  if (response.statusCode == 200 || response.statusCode == 201) {
-    return response.toString();
-  } else {
-    return 'Error during connection to the server';
+    
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return response.toString();
+    } else {
+     
+      final errorMessage =
+          "Error: ${response.statusCode} - ${response.statusMessage}";
+      showToast(errorMessage);
+      return null;
+    }
+  } on DioException catch (e) {
+    final errorMessage = "Error: ${e.message}";
+    showToast(errorMessage);
+    return null;
+  } catch (e) {
+    // Handle other unexpected errors
+    const errorMessage = "Unexpected error occurred";
+    showToast(errorMessage);
+    logs.e("Error uploading file: $e");
+    return null;
   }
 }

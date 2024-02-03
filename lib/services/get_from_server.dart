@@ -1,4 +1,5 @@
 import 'package:bus_booking/screens/auth/login_screen.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/toast.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ Future<String> getFromServer(String uri, BuildContext ctx,
 //Method to get from server and return the body of the response as s String which will then be encoded
   try {
     final url = Uri.parse(uri);
+    logs.d(url);
     final response = await http.get(
       url,
       headers: {'authorization': 'Bearer $authToken'},

@@ -18,7 +18,13 @@ class TokenHiveMethods {
 
     var tokenKey = box.keys.first;
     final token = box.get(tokenKey);
-    logs.d(token);
     return token;
+  }
+
+  Future<void> deleteToken() async {
+    final box = await Hive.openBox(tokenbox);
+    await box.delete("token");
+    box.close();
+    logs.d("Token deleted succesfully");
   }
 }

@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
-import 'package:bus_booking/models/trip_model.dart';
+import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/models/ticket_model.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
+import 'package:bus_booking/services/get_from_server.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_outlined_button.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -12,14 +17,29 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class TicketDetailsScreen extends StatelessWidget {
-  final Trip trip;
+class TicketDetailsScreen extends StatefulWidget {
+  final String bookingId;
+  final String authToken;
   const TicketDetailsScreen({
     super.key,
-    required this.trip,
+    required this.bookingId,
+    required this.authToken,
   });
   static const routeName = "/ticket-details-screen";
-  // final bool isFromBooking;
+
+  @override
+  State<TicketDetailsScreen> createState() => _TicketDetailsScreenState();
+}
+
+class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
+ 
+
+  @override
+  void initState() {
+    // getTicket();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +102,7 @@ class TicketDetailsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Ticket ID goes here',
+                            "12-3-12",
                             style: TextStyle(
                               color: Color(0xFF2465C2),
                               fontSize: 12,
@@ -101,47 +121,48 @@ class TicketDetailsScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      addVerticalSpace(22),
-                      Row(
-                        children: [
-                          addHorizontalSpace(4),
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: const ShapeDecoration(
-                              shape: CircleBorder(
-                                side: BorderSide(
-                                    color: Palette.primaryColor, width: 2),
+                      SizedBox(
+                        child: Row(
+                          children: [
+                            addHorizontalSpace(4),
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const ShapeDecoration(
+                                shape: CircleBorder(
+                                  side: BorderSide(
+                                      color: Palette.primaryColor, width: 2),
+                                ),
                               ),
                             ),
-                          ),
-                          addHorizontalSpace(8),
-                          Text(
-                            trip.timeScheduled.startTime.toString(),
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Palette.greyText,
+                            addHorizontalSpace(8),
+                            Text(
+                              "12-16-2022",
+                              style: GoogleFonts.manrope(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Palette.greyText,
+                              ),
                             ),
-                          ),
-                          addHorizontalSpace(10),
-                          Text(
-                            "Selected Trip -",
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
+                            addHorizontalSpace(10),
+                            Text(
+                              "Selected Trip -",
+                              style: GoogleFonts.manrope(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "VIP Bus Station",
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Palette.greyText,
+                            Text(
+                              "VIP Bus Station",
+                              style: GoogleFonts.manrope(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Palette.greyText,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Container(
                         height: 18,

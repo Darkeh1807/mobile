@@ -412,7 +412,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     bool isValidated = _formKey.currentState!.validate();
                     if (isValidated) {
                       showProgressLoader();
-
                       try {
                         var resp = await postDataToServer(
                           "${Url.authUrl}/signup",
@@ -427,7 +426,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         );
 
                         final jresp = jsonDecode(resp);
-                        
+                        logs.d(jresp);
                         // logs.d(jresp);
                         if (jresp != null) {
                           User userModel = User.fromJson(jresp["user"]);

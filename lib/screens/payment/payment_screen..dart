@@ -1,18 +1,30 @@
 // ignore_for_file: file_names
 
+import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
-import 'package:bus_booking/screens/home/app_home.dart';
+import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
+import 'package:bus_booking/utils/ui.dart';
+import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentScreeen extends StatefulWidget {
   final String authorizationUrl;
   final String tripId;
+  final String bookingId;
+  final String authToken;
 
   const PaymentScreeen(
-      {Key? key, required this.authorizationUrl, required this.tripId})
+      {Key? key,
+      required this.authorizationUrl,
+      required this.tripId,
+      required this.bookingId,
+      required this.authToken})
       : super(key: key);
 
   @override
@@ -32,14 +44,32 @@ class _PaymentScreeenState extends State<PaymentScreeen> {
           onProgress: (int progress) {},
           onPageStarted: (url) {
             if (url.contains(
-                "https://bus-booking-server-test.azurewebsites.net/api/v1/payment/callback")) {
+                "https://molidom.adjuma.io/api/v1/payment/callback")) {
               context.read<DestinationProvider>().clearDestination();
               context.read<OriginProvider>().clearOrigin();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AppHome(),
-                  ));
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return SuccessDialog(
+                    dialogtitle: "Transaction Successful",
+                    dialogMsg:
+                        "Psyment for ticket has successfully been\n completed",
+                    btnMsg: "View ticket",
+                    bookingId: widget.bookingId,
+                    callback: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TicketDetailsScreen(
+                            bookingId: widget.bookingId,
+                            authToken: widget.authToken,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
             }
           },
         ),
@@ -54,6 +84,85 @@ class _PaymentScreeenState extends State<PaymentScreeen> {
       body: SafeArea(
         child: WebViewWidget(
           controller: controller,
+        ),
+      ),
+    );
+  }
+}
+
+class SuccessDialog extends StatelessWidget {
+  final Trip? trip;
+  final String? dialogtitle;
+  final String? dialogMsg;
+  final VoidCallback? callback;
+  final String? btnMsg;
+  final String? bookingId;
+  const SuccessDialog(
+      {super.key,
+      this.trip,
+      this.dialogtitle,
+      this.dialogMsg,
+      this.callback,
+      this.btnMsg,
+      this.bookingId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(18, 10, 18, 32),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Center(
+              child: Icon(
+                Iconsax.tick_circle,
+                color: Palette.primaryColor,
+                size: 48,
+              ),
+            ),
+            addVerticalSpace(6),
+            Text(
+              dialogtitle!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Color(0xFF111827),
+                fontSize: 18,
+                fontFamily: 'Manrope',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              dialogMsg!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Color(0xFF1D1D1F),
+                fontSize: 14,
+                fontFamily: 'Manrope',
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            addVerticalSpace(25),
+            CustomPrimaryButton(
+                text: btnMsg.toString(),
+                radius: 4,
+                fontWeight: FontWeight.w500,
+                height: 44,
+                onPressed: callback)
+          ],
         ),
       ),
     );

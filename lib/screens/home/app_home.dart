@@ -1,4 +1,5 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/hive/token_hive_methods.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
@@ -121,6 +122,7 @@ class _AppHomeState extends State<AppHome> {
                       User? user = up.getUser;
                       //clear user
                       await UserHiveMethods().deleteUser(user);
+                      await TokenHiveMethods().deleteToken();
                       //clear origin
                       op.clearOrigin();
                       //clear destination
@@ -129,7 +131,7 @@ class _AppHomeState extends State<AppHome> {
                       // ignore: use_build_context_synchronously
                       pushNamedRoute(context, AuthPage.routeName);
                     } catch (e) {
-                      showToast('Unable to signe out successfully');
+                      showToast('Unable to signout');
                       logs.d("Error $e");
                     }
                   },
