@@ -5,6 +5,8 @@ import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/ticket_model.dart';
+import 'package:bus_booking/provider/destination_provider.dart';
+import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class TicketDetailsScreen extends StatefulWidget {
   final String bookingId;
@@ -32,24 +35,60 @@ class TicketDetailsScreen extends StatefulWidget {
 }
 
 class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
- 
+  Ticket tickets = Ticket();
+  bool isLoading = true;
+
+  Future<void> getTicket(BuildContext context) async {
+    try {
+      final res = await getFromServer(
+        "${Url.ticket}?bookingId=${widget.bookingId}&populate=Booking,Booking.Trip",
+        context,
+        authToken: widget.authToken,
+      );
+      final jresp = jsonDecode(res);
+      // logs.d(jresp);
+      if (jresp != null) {
+        var serverTicket = jresp as List<dynamic>;
+        List<Ticket> assignedTicket =
+            serverTicket.map((ticket) => ticketFromJson(ticket)).toList();
+        for (var i = 0; i < serverTicket.length; i++) {
+          setState(() {
+            tickets = assignedTicket[i];
+            logs.d(tickets.booking?.status);
+            isLoading = !isLoading;
+          });
+        }
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = !isLoading;
+      });
+      logs.d(e);
+    }
+  }
 
   @override
   void initState() {
-    // getTicket();
+    getTicket(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final op = Provider.of<OriginProvider>(context);
+    final dp = Provider.of<DestinationProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AppHome(),
-              )),
+          onPressed: () {
+            context.read<DestinationProvider>().clearDestination();
+            context.read<OriginProvider>().clearOrigin();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AppHome(),
+                ));
+          },
           icon: const Icon(Icons.arrow_back_ios, size: 20),
         ),
         title: Text(
@@ -98,12 +137,12 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "12-3-12",
-                            style: TextStyle(
+                            tickets.id ?? '',
+                            style: const TextStyle(
                               color: Color(0xFF2465C2),
                               fontSize: 12,
                               fontFamily: 'Manrope',
@@ -111,8 +150,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                             ),
                           ),
                           Text(
-                            '20/06/2023',
-                            style: TextStyle(
+                            "${tickets.createdAt?.day}/${tickets.createdAt?.month}/${tickets.createdAt?.year}",
+                            style: const TextStyle(
                               color: Color(0xFF2465C2),
                               fontSize: 12,
                               fontFamily: 'Manrope',
@@ -121,6 +160,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                           )
                         ],
                       ),
+                      addVerticalSpace(10),
                       SizedBox(
                         child: Row(
                           children: [
@@ -137,7 +177,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                             ),
                             addHorizontalSpace(8),
                             Text(
-                              "12-16-2022",
+                              tickets.booking?.trip!.timeScheduled?.startTime ??
+                                  '',
                               style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -146,7 +187,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                             ),
                             addHorizontalSpace(10),
                             Text(
-                              "Selected Trip -",
+                              "${op.getOrigin.name} -",
                               style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -185,7 +226,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                           ),
                           addHorizontalSpace(8),
                           Text(
-                            "06:30AM",
+                            tickets.booking?.trip!.timeScheduled?.endTime ?? '',
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -194,7 +235,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                           ),
                           addHorizontalSpace(10),
                           Text(
-                            "Accra, Ghana -  ",
+                            "${dp.getDestination.name} -  ",
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -302,9 +343,11 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                               value: "Air conditioning",
                             ),
                             addVerticalSpace(24),
-                            const DetailDisplayWidget(
+                            DetailDisplayWidget(
                               title: "Departure Time",
-                              value: "12am - 6am",
+                              value: tickets.booking!.trip?.timeScheduled
+                                      ?.startTime ??
+                                  '',
                             ),
                             addVerticalSpace(24),
                             const DetailDisplayWidget(
@@ -329,9 +372,11 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                               value: "VIP Transport",
                             ),
                             addVerticalSpace(24),
-                            const DetailDisplayWidget(
+                            DetailDisplayWidget(
                               title: "Arrival Time",
-                              value: "12am - 6am",
+                              value: tickets.booking!.trip?.timeScheduled
+                                      ?.startTime ??
+                                  '',
                             ),
                             addVerticalSpace(24),
                             const DetailDisplayWidget(
@@ -339,9 +384,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                               value: "12am - 6am",
                             ),
                             addVerticalSpace(24),
-                            const DetailDisplayWidget(
+                            DetailDisplayWidget(
                               title: "Seat ",
-                              value: "A2",
+                              value:
+                                  tickets.booking?.seatNumber.toString() ?? '',
                             ),
                           ],
                         ),
@@ -382,7 +428,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/qr_code.png"),
+                      Image.network(
+                        tickets.qrCode ?? '',
+                        width: MediaQuery.of(context).size.width * 0.35,
+                      ),
                       addVerticalSpace(5),
                       const Text(
                         'Show the QR Code at the boarding point',

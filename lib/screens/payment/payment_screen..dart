@@ -45,8 +45,6 @@ class _PaymentScreeenState extends State<PaymentScreeen> {
           onPageStarted: (url) {
             if (url.contains(
                 "https://molidom.adjuma.io/api/v1/payment/callback")) {
-              context.read<DestinationProvider>().clearDestination();
-              context.read<OriginProvider>().clearOrigin();
               showDialog(
                 context: context,
                 builder: (context) {
