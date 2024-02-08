@@ -24,7 +24,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
-          "${trip.origin.name} - ${trip.destination.name}",
+          "${trip.origin?.name} - ${trip.destination?.name}",
           style: GoogleFonts.manrope(
               fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500),
         ),
@@ -67,7 +67,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        trip.bus.model.toString(),
+                        trip.bus?.model ?? '',
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -87,7 +87,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        trip.timeScheduled.startTime,
+                        trip.timeScheduled?.startTime ?? '',
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -107,7 +107,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        trip.timeScheduled.endTime,
+                        trip.timeScheduled?.endTime ?? '',
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -127,7 +127,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        trip.busCompany.name,
+                        trip.busCompany?.name ?? '',
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -147,7 +147,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "${trip.origin.name.toString()} VIP station",
+                        "${trip.origin?.name.toString()} VIP station",
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -167,7 +167,7 @@ class SelectedScreenProceedScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "${trip.destination.name.toString()} VIP station",
+                        "${trip.destination?.name.toString()} VIP station",
                         style: GoogleFonts.manrope(
                             fontSize: 12,
                             color: Colors.black,
@@ -305,7 +305,7 @@ class AvailableTicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  trips.busCompany.name.toString(),
+                  trips.busCompany?.name ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -313,7 +313,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total ${trips.bus.numberOfSeats} seats left",
+                  "Total ${trips.bus?.numberOfSeats} seats left",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -337,7 +337,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled.startTime,
+                  trips.timeScheduled?.startTime ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -384,7 +384,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled.endTime,
+                  trips.timeScheduled?.endTime ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -438,7 +438,7 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      " ${(int.parse(trips.timeScheduled.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled.startTime.toString().split(":")[0])).toString()}hrs",
+                      " ${(int.parse(trips.timeScheduled!.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled!.startTime.toString().split(":")[0])).toString()}hrs",
                       style: GoogleFonts.manrope(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,

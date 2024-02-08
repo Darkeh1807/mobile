@@ -15,7 +15,8 @@ import 'package:provider/provider.dart';
 import '../../config/theme/palette.dart';
 
 class LocationSelectScreen extends StatefulWidget {
-  const LocationSelectScreen({super.key, required this.selecting});
+  const LocationSelectScreen({Key? key, required this.selecting})
+      : super(key: key);
   final String selecting;
 
   @override
@@ -24,7 +25,14 @@ class LocationSelectScreen extends StatefulWidget {
 
 class _LocationSelectScreenState extends State<LocationSelectScreen> {
   List<Place> places = [];
+  List<Place> filteredPlaces = [];
   bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getAllAvailableLocations(context);
+  }
 
   Future<void> getAllAvailableLocations(BuildContext context) async {
     try {
@@ -35,12 +43,17 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
         List<Place> allLocs = locs.map((loc) => placeFromJson(loc)).toList();
         setState(() {
           places = allLocs;
-          isLoading = !isLoading;
+          filteredPlaces = allLocs;
+          isLoading = false;
         });
-      } else {}
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
-        isLoading = !isLoading;
+        isLoading = false;
       });
       logs.d(e);
     }
@@ -50,7 +63,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
     List<Place> result = [];
 
     if (query.isEmpty) {
-      result = places;
+      result = List<Place>.from(places);
     } else {
       result = places.where((place) {
         return place.name!.toLowerCase().contains(query.toLowerCase());
@@ -58,22 +71,8 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
     }
 
     setState(() {
-      places = result;
+      filteredPlaces = result;
     });
-  }
-
-  @override
-  void initState() {
-    getAllAvailableLocations(context);
-    super.initState();
-  }
-
-  Future<void> _refreshLocations() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    await getAllAvailableLocations(context);
   }
 
   @override
@@ -95,7 +94,9 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
             )),
         actions: [
           IconButton(
-              onPressed: _refreshLocations,
+              onPressed: () {
+                getAllAvailableLocations(context);
+              },
               icon: const Icon(
                 Iconsax.refresh,
               ))
@@ -127,23 +128,23 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
           addVerticalSpace(10),
           isLoading
               ? const CircularProgressIndicator()
-              : places.isEmpty
+              : filteredPlaces.isEmpty
                   ? const Text("No location found")
                   : Expanded(
                       child: ListView.builder(
-                        itemCount: places.length,
+                        itemCount: filteredPlaces.length,
                         itemBuilder: (context, index) => InkWell(
                           onTap: () {
                             if (widget.selecting == "Origin") {
-                              op.setOrigin = places[index];
+                              op.setOrigin = filteredPlaces[index];
                               Navigator.pop(context);
                             } else if (widget.selecting == 'Destination') {
-                              dp.setDestionation = places[index];
+                              dp.setDestionation = filteredPlaces[index];
                               Navigator.pop(context);
-                            } else {}
+                            }
                           },
                           child: LocationResultTile(
-                            location: places[index].name.toString(),
+                            location: filteredPlaces[index].name.toString(),
                           ),
                         ),
                       ),
@@ -156,9 +157,9 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
 
 class LocationResultTile extends StatelessWidget {
   const LocationResultTile({
-    super.key,
+    Key? key,
     required this.location,
-  });
+  }) : super(key: key);
   final String location;
 
   @override

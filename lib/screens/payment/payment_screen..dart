@@ -2,15 +2,11 @@
 
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/models/trip_model.dart';
-import 'package:bus_booking/provider/destination_provider.dart';
-import 'package:bus_booking/provider/origin_provider.dart';
-import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentScreeen extends StatefulWidget {

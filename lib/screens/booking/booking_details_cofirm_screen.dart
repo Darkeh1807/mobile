@@ -5,6 +5,7 @@ import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/screens/payment/payment_proceed_screen.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
@@ -33,7 +34,7 @@ class BookingDetailsConfirmScreen extends StatefulWidget {
 class _BookingDetailsConfirmScreenState
     extends State<BookingDetailsConfirmScreen> {
   bool hasPaid = false;
-   String bookingId = "";
+  String bookingId = "";
   Future<String?> bookTrip(
     BuildContext context,
     Map<String, dynamic> data,
@@ -55,8 +56,7 @@ class _BookingDetailsConfirmScreenState
         setState(() {
           bookingId = jresp["data"]["booking"]["_id"];
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Successfully booked trip")));
+
         return "booked";
       } else if (jresp["message"] == "You have already booked this trip") {
         cancelLoader();
@@ -74,6 +74,7 @@ class _BookingDetailsConfirmScreenState
 
   @override
   Widget build(BuildContext context) {
+    final tripProvider = Provider.of<TripProvider>(context);
     return Stack(
       children: [
         Scaffold(
@@ -83,7 +84,7 @@ class _BookingDetailsConfirmScreenState
               icon: const Icon(Icons.arrow_back_ios),
             ),
             title: Text(
-              "${widget.trip.origin.name} - ${widget.trip.destination.name}",
+              "${widget.trip.origin?.name} - ${widget.trip.destination?.name}",
               style: GoogleFonts.manrope(
                   fontSize: 14,
                   color: Colors.black,
@@ -128,7 +129,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.bus.model.toString(),
+                            widget.trip.bus?.model ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -148,7 +149,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.timeScheduled.startTime,
+                            widget.trip.timeScheduled?.startTime ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -168,7 +169,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.timeScheduled.endTime,
+                            widget.trip.timeScheduled?.endTime ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -188,7 +189,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.busCompany.name,
+                            widget.trip.busCompany?.name ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -208,7 +209,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "${widget.trip.origin.name.toString()} VIP station",
+                            "${widget.trip.origin?.name.toString()} VIP station",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -228,7 +229,7 @@ class _BookingDetailsConfirmScreenState
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "${widget.trip.destination.name.toString()} VIP station",
+                            "${widget.trip.destination?.name.toString()} VIP station",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -287,6 +288,7 @@ class _BookingDetailsConfirmScreenState
                               );
 
                               if (booked != null && booked == "booked") {
+                                tripProvider.setTrip = widget.trip;
                                 showDialog(
                                   context: context,
                                   barrierColor: Colors.black.withOpacity(0.5),
@@ -337,15 +339,14 @@ class SuccessDialog extends StatelessWidget {
   final VoidCallback? callback;
   final String? btnMsg;
   final String? bookingId;
-  const SuccessDialog({
-    super.key,
-     this.trip,
-     this.dialogtitle,
-     this.dialogMsg,
-     this.callback,
-     this.btnMsg,
-     this.bookingId
-  });
+  const SuccessDialog(
+      {super.key,
+      this.trip,
+      this.dialogtitle,
+      this.dialogMsg,
+      this.callback,
+      this.btnMsg,
+      this.bookingId});
 
   @override
   Widget build(BuildContext context) {
@@ -437,7 +438,7 @@ class AvailableTicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  trips.busCompany.name.toString(),
+                  trips.busCompany?.name ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -445,7 +446,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total ${trips.bus.numberOfSeats} seats left",
+                  "Total ${trips.bus?.numberOfSeats} seats left",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -469,7 +470,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled.startTime,
+                  trips.timeScheduled?.startTime ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -516,7 +517,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled.endTime,
+                  trips.timeScheduled?.endTime ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -570,7 +571,7 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      " ${(int.parse(trips.timeScheduled.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled.startTime.toString().split(":")[0])).toString()}hrs",
+                      " ${(int.parse(trips.timeScheduled!.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled!.startTime.toString().split(":")[0])).toString()}hrs",
                       style: GoogleFonts.manrope(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,

@@ -4,6 +4,7 @@ import 'package:bus_booking/config/theme/theme.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/auth_page.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => DestinationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TripProvider(),
         )
       ],
       child: MaterialApp(
@@ -95,7 +99,6 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (context) => const SearchResultsScreen(),
               );
-
 
             case NotificationsScreen.routeName:
               return MaterialPageRoute(

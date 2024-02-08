@@ -1,7 +1,6 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
-import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';

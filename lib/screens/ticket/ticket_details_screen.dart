@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
@@ -7,6 +6,7 @@ import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/ticket_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
+import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -55,13 +55,13 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
           setState(() {
             tickets = assignedTicket[i];
             logs.d(tickets.booking?.status);
-            isLoading = !isLoading;
+            isLoading = false;
           });
         }
       }
     } catch (e) {
       setState(() {
-        isLoading = !isLoading;
+        isLoading = false;
       });
       logs.d(e);
     }
@@ -77,12 +77,15 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
   Widget build(BuildContext context) {
     final op = Provider.of<OriginProvider>(context);
     final dp = Provider.of<DestinationProvider>(context);
+    final tripProvider = Provider.of<TripProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             context.read<DestinationProvider>().clearDestination();
             context.read<OriginProvider>().clearOrigin();
+            context.read<TripProvider>().clearTrip();
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -112,350 +115,378 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.pageHorizontalPadding,
         ),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          addVerticalSpace(20),
-          Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: ShapeDecoration(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(width: 0.50, color: Color(0xFF5E90CC)),
-                borderRadius: BorderRadius.circular(Sizing.baseBorderRadius),
-              ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width * 0.08,
-                      20,
-                      20,
-                      MediaQuery.of(context).size.width * 0.08),
-                  // margin: EdgeInsets.only(right: 20, bottom: 20, left: 20),
-
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            tickets.id ?? '',
-                            style: const TextStyle(
-                              color: Color(0xFF2465C2),
-                              fontSize: 12,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Text(
-                            "${tickets.createdAt?.day}/${tickets.createdAt?.month}/${tickets.createdAt?.year}",
-                            style: const TextStyle(
-                              color: Color(0xFF2465C2),
-                              fontSize: 12,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
+        child: isLoading
+            ? const Align(
+                child: Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    Text(
+                      "Loading your ticket",
+                      style: TextStyle(
+                        color: Color(0xFF2465C2),
+                        fontSize: 16,
+                        fontFamily: 'Manrope',
+                        fontWeight: FontWeight.w500,
                       ),
-                      addVerticalSpace(10),
+                    )
+                  ],
+                ),
+              )
+            : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                addVerticalSpace(20),
+                Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(
+                          width: 0.50, color: Color(0xFF5E90CC)),
+                      borderRadius:
+                          BorderRadius.circular(Sizing.baseBorderRadius),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width * 0.08,
+                            20,
+                            20,
+                            MediaQuery.of(context).size.width * 0.08),
+                        // margin: EdgeInsets.only(right: 20, bottom: 20, left: 20),
+
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  tickets.id ?? '',
+                                  style: const TextStyle(
+                                    color: Color(0xFF2465C2),
+                                    fontSize: 12,
+                                    fontFamily: 'Manrope',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  "${tickets.createdAt?.day}/${tickets.createdAt?.month}/${tickets.createdAt?.year}",
+                                  style: const TextStyle(
+                                    color: Color(0xFF2465C2),
+                                    fontSize: 12,
+                                    fontFamily: 'Manrope',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )
+                              ],
+                            ),
+                            addVerticalSpace(10),
+                            SizedBox(
+                              child: Row(
+                                children: [
+                                  addHorizontalSpace(4),
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: const ShapeDecoration(
+                                      shape: CircleBorder(
+                                        side: BorderSide(
+                                            color: Palette.primaryColor,
+                                            width: 2),
+                                      ),
+                                    ),
+                                  ),
+                                  addHorizontalSpace(8),
+                                  Text(
+                                    tickets.booking?.trip?.timeScheduled
+                                            ?.startTime ??
+                                        '',
+                                    style: GoogleFonts.manrope(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: Palette.greyText,
+                                    ),
+                                  ),
+                                  addHorizontalSpace(10),
+                                  Text(
+                                    "${op.getOrigin.name} -",
+                                    style: GoogleFonts.manrope(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    "VIP Bus Station",
+                                    style: GoogleFonts.manrope(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Palette.greyText,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 18,
+                              margin: const EdgeInsets.only(left: 8),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: SvgPicture.string(
+                                    '''<svg width="2" height="10" viewBox="0 0 2 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.474587" y="0.474587" width="0.949173" height="9.05083" stroke="#2465C2" stroke-width="0.949173" stroke-dasharray="3 3"/>
+                    </svg>
+                  '''),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  size: 18,
+                                  color: Palette.primaryColor,
+                                ),
+                                addHorizontalSpace(8),
+                                Text(
+                                  tickets.booking?.trip?.timeScheduled
+                                          ?.endTime ??
+                                      '',
+                                  style: GoogleFonts.manrope(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Palette.greyText,
+                                  ),
+                                ),
+                                addHorizontalSpace(10),
+                                Text(
+                                  "${dp.getDestination.name} -  ",
+                                  style: GoogleFonts.manrope(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  "VIP Bus Station",
+                                  style: GoogleFonts.manrope(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Palette.greyText,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            addVerticalSpace(16.5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      MdiIcons.bus,
+                                      size: 20,
+                                      color: Palette.primaryColor,
+                                    ),
+                                    addHorizontalSpace(4),
+                                    Text(
+                                      "Bus",
+                                      style: GoogleFonts.manrope(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Palette.primaryColor,
+                                      ),
+                                    ),
+                                    addHorizontalSpace(10),
+                                    Icon(
+                                      MdiIcons.clock,
+                                      size: 20,
+                                      color: Palette.primaryColor,
+                                    ),
+                                    addHorizontalSpace(4),
+                                    Text(
+                                      "7hrs 50m",
+                                      style: GoogleFonts.manrope(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Palette.primaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Text(
+                                  '1 Seat',
+                                  style: TextStyle(
+                                    color: Color(0xFF2465C2),
+                                    fontSize: 12,
+                                    fontFamily: 'Manrope',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                       SizedBox(
+                        height: 22,
+                        child: Stack(
+                          children: [
+                            const Center(
+                                child:
+                                    DottedLine(dashColor: Color(0xFFEEF2F8))),
+                            Positioned(
+                                left: 0,
+                                top: 0,
+                                child: SvgPicture.asset(
+                                  "assets/svg/ellipse.svg",
+                                  height: 22,
+                                )),
+                            Positioned(
+                                right: 0,
+                                top: 0,
+                                child: SvgPicture.asset(
+                                  "assets/svg/ellipse_rotated.svg",
+                                  height: 22,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width * 0.08,
+                            20,
+                            35,
+                            MediaQuery.of(context).size.width * 0.08),
                         child: Row(
                           children: [
-                            addHorizontalSpace(4),
-                            Container(
-                              width: 10,
-                              height: 10,
-                              decoration: const ShapeDecoration(
-                                shape: CircleBorder(
-                                  side: BorderSide(
-                                      color: Palette.primaryColor, width: 2),
-                                ),
+                            IntrinsicWidth(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  DetailDisplayWidget(
+                                    title: "Bus Type",
+                                    value: tripProvider.trip.bus?.model ?? '',
+                                  ),
+                                  addVerticalSpace(24),
+                                  DetailDisplayWidget(
+                                    title: "Departure Time",
+                                    value: tickets.booking?.trip?.timeScheduled
+                                            ?.startTime ??
+                                        '',
+                                  ),
+                                  addVerticalSpace(24),
+                                  DetailDisplayWidget(
+                                    title: "Dropping Point",
+                                    value: dp.getDestination.name ?? '',
+                                  ),
+                                  addVerticalSpace(24),
+                                  DetailDisplayWidget(
+                                    title: "Buss Number",
+                                    value:
+                                        tripProvider.trip.bus?.vehicleNumber ??
+                                            '',
+                                  ),
+                                ],
                               ),
                             ),
-                            addHorizontalSpace(8),
-                            Text(
-                              tickets.booking?.trip!.timeScheduled?.startTime ??
-                                  '',
-                              style: GoogleFonts.manrope(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Palette.greyText,
-                              ),
-                            ),
-                            addHorizontalSpace(10),
-                            Text(
-                              "${op.getOrigin.name} -",
-                              style: GoogleFonts.manrope(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "VIP Bus Station",
-                              style: GoogleFonts.manrope(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Palette.greyText,
+                            const Spacer(),
+                            IntrinsicWidth(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  DetailDisplayWidget(
+                                    title: "Bus Operator",
+                                    value: tripProvider.trip.busCompany?.name ??
+                                        '',
+                                  ),
+                                  addVerticalSpace(24),
+                                  DetailDisplayWidget(
+                                    title: "Arrival Time",
+                                    value: tickets.booking?.trip?.timeScheduled
+                                            ?.endTime ??
+                                        '',
+                                  ),
+                                  addVerticalSpace(24),
+                                  DetailDisplayWidget(
+                                    title: "Boarding Point",
+                                    value: op.getOrigin.name ?? '',
+                                  ),
+                                  addVerticalSpace(24),
+                                  DetailDisplayWidget(
+                                    title: "Seat ",
+                                    value: tickets.booking?.seatNumber
+                                            .toString() ??
+                                        '',
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Container(
-                        height: 18,
-                        margin: const EdgeInsets.only(left: 8),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: SvgPicture.string(
-                              '''<svg width="2" height="10" viewBox="0 0 2 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="0.474587" y="0.474587" width="0.949173" height="9.05083" stroke="#2465C2" stroke-width="0.949173" stroke-dasharray="3 3"/>
-                    </svg>
-                  '''),
+                      SizedBox(
+                        height: 22,
+                        child: Stack(
+                          children: [
+                            const Center(
+                                child:
+                                    DottedLine(dashColor: Color(0xFFEEF2F8))),
+                            Positioned(
+                                left: 0,
+                                top: 0,
+                                child: SvgPicture.asset(
+                                  "assets/svg/ellipse.svg",
+                                  height: 22,
+                                )),
+                            Positioned(
+                                right: 0,
+                                top: 0,
+                                child: SvgPicture.asset(
+                                  "assets/svg/ellipse_rotated.svg",
+                                  height: 22,
+                                )),
+                          ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on_outlined,
-                            size: 18,
-                            color: Palette.primaryColor,
-                          ),
-                          addHorizontalSpace(8),
-                          Text(
-                            tickets.booking?.trip!.timeScheduled?.endTime ?? '',
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Palette.greyText,
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          MediaQuery.of(context).size.width * 0.08,
+                          0,
+                          0,
+                          MediaQuery.of(context).size.width * 0.08,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.network(
+                              tickets.qrCode ?? '',
+                              width: MediaQuery.of(context).size.width * 0.35,
                             ),
-                          ),
-                          addHorizontalSpace(10),
-                          Text(
-                            "${dp.getDestination.name} -  ",
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
+                            addVerticalSpace(5),
+                            const Text(
+                              'Show the QR Code at the boarding point',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "VIP Bus Station",
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Palette.greyText,
-                            ),
-                          ),
-                        ],
-                      ),
-                      addVerticalSpace(16.5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                MdiIcons.bus,
-                                size: 20,
-                                color: Palette.primaryColor,
-                              ),
-                              addHorizontalSpace(4),
-                              Text(
-                                "Bus",
-                                style: GoogleFonts.manrope(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Palette.primaryColor,
-                                ),
-                              ),
-                              addHorizontalSpace(10),
-                              Icon(
-                                MdiIcons.clock,
-                                size: 20,
-                                color: Palette.primaryColor,
-                              ),
-                              addHorizontalSpace(4),
-                              Text(
-                                "7hrs 50m",
-                                style: GoogleFonts.manrope(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Palette.primaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Text(
-                            '1 Seat',
-                            style: TextStyle(
-                              color: Color(0xFF2465C2),
-                              fontSize: 12,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
+                          ],
+                        ),
                       )
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 22,
-                  child: Stack(
-                    children: [
-                      const Center(
-                          child: DottedLine(dashColor: Color(0xFFEEF2F8))),
-                      Positioned(
-                          left: 0,
-                          top: 0,
-                          child: SvgPicture.asset(
-                            "assets/svg/ellipse.svg",
-                            height: 22,
-                          )),
-                      Positioned(
-                          right: 0,
-                          top: 0,
-                          child: SvgPicture.asset(
-                            "assets/svg/ellipse_rotated.svg",
-                            height: 22,
-                          )),
-                    ],
-                  ),
+                addVerticalSpace(20),
+                CustomOutlinedButton(
+                  text: "Download",
+                  onPressed: () {},
+                  icon: const Icon(Iconsax.document_download),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width * 0.08,
-                      20,
-                      35,
-                      MediaQuery.of(context).size.width * 0.08),
-                  child: Row(
-                    children: [
-                      IntrinsicWidth(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const DetailDisplayWidget(
-                              title: "Bus Type",
-                              value: "Air conditioning",
-                            ),
-                            addVerticalSpace(24),
-                            DetailDisplayWidget(
-                              title: "Departure Time",
-                              value: tickets.booking!.trip?.timeScheduled
-                                      ?.startTime ??
-                                  '',
-                            ),
-                            addVerticalSpace(24),
-                            const DetailDisplayWidget(
-                              title: "Dropping Point",
-                              value: "Dropping Point",
-                            ),
-                            addVerticalSpace(24),
-                            const DetailDisplayWidget(
-                              title: "Buss Number",
-                              value: "GS - 25624-32",
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Spacer(),
-                      IntrinsicWidth(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const DetailDisplayWidget(
-                              title: "Bus Operator",
-                              value: "VIP Transport",
-                            ),
-                            addVerticalSpace(24),
-                            DetailDisplayWidget(
-                              title: "Arrival Time",
-                              value: tickets.booking!.trip?.timeScheduled
-                                      ?.startTime ??
-                                  '',
-                            ),
-                            addVerticalSpace(24),
-                            const DetailDisplayWidget(
-                              title: "Boarding Point",
-                              value: "12am - 6am",
-                            ),
-                            addVerticalSpace(24),
-                            DetailDisplayWidget(
-                              title: "Seat ",
-                              value:
-                                  tickets.booking?.seatNumber.toString() ?? '',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 22,
-                  child: Stack(
-                    children: [
-                      const Center(
-                          child: DottedLine(dashColor: Color(0xFFEEF2F8))),
-                      Positioned(
-                          left: 0,
-                          top: 0,
-                          child: SvgPicture.asset(
-                            "assets/svg/ellipse.svg",
-                            height: 22,
-                          )),
-                      Positioned(
-                          right: 0,
-                          top: 0,
-                          child: SvgPicture.asset(
-                            "assets/svg/ellipse_rotated.svg",
-                            height: 22,
-                          )),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    MediaQuery.of(context).size.width * 0.08,
-                    0,
-                    0,
-                    MediaQuery.of(context).size.width * 0.08,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.network(
-                        tickets.qrCode ?? '',
-                        width: MediaQuery.of(context).size.width * 0.35,
-                      ),
-                      addVerticalSpace(5),
-                      const Text(
-                        'Show the QR Code at the boarding point',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          addVerticalSpace(20),
-          CustomOutlinedButton(
-            text: "Download",
-            onPressed: () {},
-            icon: const Icon(Iconsax.document_download),
-          ),
-          addVerticalSpace(70)
-        ]),
+                addVerticalSpace(70)
+              ]),
       ),
     );
   }

@@ -22,13 +22,13 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   String token = "";
   Future<User?> _isExistingUser(BuildContext context) async {
-    showProgressLoader();
+    // showProgressLoader();
     User? userInfo = await UserHiveMethods().getHiveUser();
     if (userInfo != null && userInfo.id!.isNotEmpty) {
-      cancelLoader();
+      // cancelLoader();
       return userInfo;
     } else {
-      cancelLoader();
+      // cancelLoader();
       return null;
     }
   }

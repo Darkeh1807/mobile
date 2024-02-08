@@ -78,7 +78,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tp = Provider.of<TokenProvider>(context);
+    // final tp = Provider.of<TokenProvider>(context);
     return Stack(
       children: [
         Scaffold(
@@ -88,7 +88,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
               icon: const Icon(Icons.arrow_back_ios),
             ),
             title: Text(
-              "${widget.trip.origin.name} - ${widget.trip.destination.name}",
+              "${widget.trip.origin?.name} - ${widget.trip.destination?.name}",
               style: GoogleFonts.manrope(
                   fontSize: 14,
                   color: Colors.black,
@@ -133,7 +133,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.bus.model.toString(),
+                            widget.trip.bus?.model ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -153,7 +153,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.timeScheduled.startTime,
+                            widget.trip.timeScheduled?.startTime ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -173,7 +173,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.timeScheduled.endTime,
+                            widget.trip.timeScheduled?.endTime ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -193,7 +193,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            widget.trip.busCompany.name,
+                            widget.trip.busCompany?.name ?? '',
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -213,7 +213,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "${widget.trip.origin.name.toString()} VIP station",
+                            "${widget.trip.origin?.name.toString()} VIP station",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -233,7 +233,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "${widget.trip.destination.name.toString()} VIP station",
+                            "${widget.trip.destination?.name.toString()} VIP station",
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.black,
@@ -299,7 +299,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                     MaterialPageRoute(
                                       builder: (context) => PaymentScreeen(
                                         authorizationUrl: authorizationUrl,
-                                        tripId: widget.trip.id,
+                                        tripId: widget.trip.id.toString(),
                                         bookingId: widget.bookingId,
                                         authToken:tp.getToken ,
                                       ),
@@ -426,7 +426,7 @@ class AvailableTicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  trips.busCompany.name.toString(),
+                  trips.busCompany?.name ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -434,7 +434,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total ${trips.bus.numberOfSeats} seats left",
+                  "Total ${trips.bus?.numberOfSeats} seats left",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -458,7 +458,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled.startTime,
+                  trips.timeScheduled?.startTime ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -505,7 +505,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(8),
                 Text(
-                  trips.timeScheduled.endTime,
+                  trips.timeScheduled?.endTime ?? '',
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -559,7 +559,7 @@ class AvailableTicketCard extends StatelessWidget {
                     ),
                     addHorizontalSpace(4),
                     Text(
-                      " ${(int.parse(trips.timeScheduled.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled.startTime.toString().split(":")[0])).toString()}hrs",
+                      " ${(int.parse(trips.timeScheduled!.endTime.toString().split(":")[0]) - int.parse(trips.timeScheduled!.startTime.toString().split(":")[0])).toString()}hrs",
                       style: GoogleFonts.manrope(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,

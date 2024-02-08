@@ -3,40 +3,40 @@ Trip tripFromJson(Map data) => Trip.fromJson(data);
 Map tripToJson(Trip data) => data.toJson();
 
 class Trip {
-  List<dynamic> slots;
-  String id;
-  DateTime date;
-  Destination origin;
-  Destination destination;
-  String numberOfBusAssigned;
-  String tripStatus;
-  String tripType;
-  BusCompany busCompany;
-  Bus bus;
-  int price;
-  String createdBy;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
-  TimeScheduled timeScheduled;
+  List<dynamic>? slots;
+  String? id;
+  DateTime? date;
+  Destination? origin;
+  Destination? destination;
+  String? numberOfBusAssigned;
+  String? tripStatus;
+  String? tripType;
+  BusCompany? busCompany;
+  Bus? bus;
+  int? price;
+  String? createdBy;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
+  TimeScheduled? timeScheduled;
 
   Trip({
-    required this.slots,
-    required this.id,
-    required this.date,
-    required this.origin,
-    required this.destination,
-    required this.numberOfBusAssigned,
-    required this.tripStatus,
-    required this.tripType,
-    required this.busCompany,
-    required this.bus,
-    required this.price,
-    required this.createdBy,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.timeScheduled,
+    this.slots,
+    this.id,
+    this.date,
+    this.origin,
+    this.destination,
+    this.numberOfBusAssigned,
+    this.tripStatus,
+    this.tripType,
+    this.busCompany,
+    this.bus,
+    this.price,
+    this.createdBy,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+    this.timeScheduled,
   });
 
   factory Trip.fromJson(Map<dynamic, dynamic> json) => Trip(
@@ -59,56 +59,56 @@ class Trip {
       );
 
   Map<dynamic, dynamic> toJson() => {
-        "slots": List<dynamic>.from(slots.map((x) => x)),
+        "slots": List<dynamic>.from(slots!.map((x) => x)),
         "_id": id,
-        "date": date.toIso8601String(),
-        "origin": origin.toJson(),
-        "destination": destination.toJson(),
+        "date": date!.toIso8601String(),
+        "origin": origin!.toJson(),
+        "destination": destination!.toJson(),
         "numberOfBusAssigned": numberOfBusAssigned,
         "tripStatus": tripStatus,
         "tripType": tripType,
-        "busCompany": busCompany.toJson(),
-        "bus": bus.toJson(),
+        "busCompany": busCompany!.toJson(),
+        "bus": bus!.toJson(),
         "price": price,
         "createdBy": createdBy,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt!.toIso8601String(),
+        "updatedAt": updatedAt!.toIso8601String(),
         "__v": v,
-        "timeScheduled": timeScheduled.toJson(),
+        "timeScheduled": timeScheduled!.toJson(),
       };
 }
 
 class Bus {
-  String id;
-  String vehicleNumber;
-  String model;
-  int yearOfMake;
-  String colour;
-  int numberOfSeats;
-  String status;
-  String insurance;
-  String roadWorthy;
-  String createdBy;
-  String busCompany;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
+  String? id;
+  String? vehicleNumber;
+  String? model;
+  int? yearOfMake;
+  String? colour;
+  int? numberOfSeats;
+  String? status;
+  String? insurance;
+  String? roadWorthy;
+  String? createdBy;
+  String? busCompany;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
 
   Bus({
-    required this.id,
-    required this.vehicleNumber,
-    required this.model,
-    required this.yearOfMake,
-    required this.colour,
-    required this.numberOfSeats,
-    required this.status,
-    required this.insurance,
-    required this.roadWorthy,
-    required this.createdBy,
-    required this.busCompany,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
+    this.id,
+    this.vehicleNumber,
+    this.model,
+    this.yearOfMake,
+    this.colour,
+    this.numberOfSeats,
+    this.status,
+    this.insurance,
+    this.roadWorthy,
+    this.createdBy,
+    this.busCompany,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
   });
 
   factory Bus.fromJson(Map<dynamic, dynamic> json) => Bus(
@@ -140,53 +140,53 @@ class Bus {
         "roadWorthy": roadWorthy,
         "createdBy": createdBy,
         "busCompany": busCompany,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt!.toIso8601String(),
+        "updatedAt": updatedAt!.toIso8601String(),
         "__v": v,
       };
 }
 
 class BusCompany {
-  String id;
-  String name;
-  String mobileNumber;
-  String email;
-  List<String> users;
-  String companyDocuments;
-  List<String> buses;
-  List<String> drivers;
-  List<dynamic> trips;
-  List<dynamic> bookings;
-  String status;
-  int v;
-  List<Social> socials;
-  String tagline;
-  String logo;
-  String contactPersonEmail;
-  String contactPersonName;
-  String contactPersonPosition;
-  String contactPersonPhone;
+  String? id;
+  String? name;
+  String? mobileNumber;
+  String? email;
+  List<String>? users;
+  String? companyDocuments;
+  List<String>? buses;
+  List<String>? drivers;
+  List<dynamic>? trips;
+  List<dynamic>? bookings;
+  String? status;
+  int? v;
+  List<Social>? socials;
+  String? tagline;
+  String? logo;
+  String? contactPersonEmail;
+  String? contactPersonName;
+  String? contactPersonPosition;
+  String? contactPersonPhone;
 
   BusCompany({
-    required this.id,
-    required this.name,
-    required this.mobileNumber,
-    required this.email,
-    required this.users,
-    required this.companyDocuments,
-    required this.buses,
-    required this.drivers,
-    required this.trips,
-    required this.bookings,
-    required this.status,
-    required this.v,
-    required this.socials,
-    required this.tagline,
-    required this.logo,
-    required this.contactPersonEmail,
-    required this.contactPersonName,
-    required this.contactPersonPosition,
-    required this.contactPersonPhone,
+    this.id,
+    this.name,
+    this.mobileNumber,
+    this.email,
+    this.users,
+    this.companyDocuments,
+    this.buses,
+    this.drivers,
+    this.trips,
+    this.bookings,
+    this.status,
+    this.v,
+    this.socials,
+    this.tagline,
+    this.logo,
+    this.contactPersonEmail,
+    this.contactPersonName,
+    this.contactPersonPosition,
+    this.contactPersonPhone,
   });
 
   factory BusCompany.fromJson(Map<dynamic, dynamic> json) => BusCompany(
@@ -217,15 +217,15 @@ class BusCompany {
         "name": name,
         "mobileNumber": mobileNumber,
         "email": email,
-        "users": List<dynamic>.from(users.map((x) => x)),
+        "users": List<dynamic>.from(users!.map((x) => x)),
         "companyDocuments": companyDocuments,
-        "Buses": List<dynamic>.from(buses.map((x) => x)),
-        "Drivers": List<dynamic>.from(drivers.map((x) => x)),
-        "Trips": List<dynamic>.from(trips.map((x) => x)),
-        "Bookings": List<dynamic>.from(bookings.map((x) => x)),
+        "Buses": List<dynamic>.from(buses!.map((x) => x)),
+        "Drivers": List<dynamic>.from(drivers!.map((x) => x)),
+        "Trips": List<dynamic>.from(trips!.map((x) => x)),
+                "Bookings": List<dynamic>.from(bookings!.map((x) => x)),
         "status": status,
         "__v": v,
-        "socials": List<dynamic>.from(socials.map((x) => x.toJson())),
+        "socials": List<dynamic>.from(socials!.map((x) => x.toJson())),
         "tagline": tagline,
         "logo": logo,
         "contactPersonEmail": contactPersonEmail,
@@ -236,14 +236,14 @@ class BusCompany {
 }
 
 class Social {
-  String name;
-  String link;
-  String id;
+  String? name;
+  String? link;
+  String? id;
 
   Social({
-    required this.name,
-    required this.link,
-    required this.id,
+    this.name,
+    this.link,
+    this.id,
   });
 
   factory Social.fromJson(Map<dynamic, dynamic> json) => Social(
@@ -260,22 +260,22 @@ class Social {
 }
 
 class Destination {
-  String id;
-  String country;
-  String name;
-  String createdBy;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
+  String? id;
+  String? country;
+  String? name;
+  String? createdBy;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
 
   Destination({
-    required this.id,
-    required this.country,
-    required this.name,
-    required this.createdBy,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
+    this.id,
+    this.country,
+    this.name,
+    this.createdBy,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
   });
 
   factory Destination.fromJson(Map<dynamic, dynamic> json) => Destination(
@@ -293,21 +293,21 @@ class Destination {
         "country": country,
         "name": name,
         "createdBy": createdBy,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt!.toIso8601String(),
+        "updatedAt": updatedAt!.toIso8601String(),
         "__v": v,
       };
 }
 
 class TimeScheduled {
-  String startTime;
-  String endTime;
-  String id;
+  String? startTime;
+  String? endTime;
+  String? id;
 
   TimeScheduled({
-    required this.startTime,
-    required this.endTime,
-    required this.id,
+    this.startTime,
+    this.endTime,
+    this.id,
   });
 
   factory TimeScheduled.fromJson(Map<dynamic, dynamic> json) => TimeScheduled(
