@@ -50,7 +50,6 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
   File selectedfile = File('');
   String uploadedDocUrl = '';
   bool isLoading = false;
-
   void selectFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -60,12 +59,29 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
     if (result != null) {
       setState(() {
         selectedfile = File(result.files.single.path.toString());
+        filename = result.files.single.name;
+        isLoading = true; // Show loading indicator
       });
-    }
 
-    setState(() {
-      filename = result!.files.single.name;
-    });
+      try {
+        final resp = await uploadFileToServer(selectedfile, "files");
+        final jresp = jsonDecode(resp.toString());
+        if (jresp["status"] == "success") {
+          setState(() {
+            uploadedDocUrl = jresp["data"]["company_docs"][0]["url"];
+            showToast('Successfully uploaded document');
+            isLoading = false; 
+          });
+        } else {
+          showToast('Failed to upload document');
+          isLoading = false;
+        }
+      } catch (e) {
+        showToast('Error uploading document');
+        logs.d(e);
+        isLoading = false; 
+      }
+    }
   }
 
   @override
@@ -526,36 +542,6 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                       InkWell(
                         onTap: () async {
                           selectFile();
-                          // ignore: unnecessary_null_comparison
-                          if (selectedfile != null) {
-                            setState(() {
-                              isLoading = !isLoading;
-                            });
-                            try {
-                              final resp = await uploadFileToServer(
-                                  selectedfile, "files");
-                              final jresp = jsonDecode(resp.toString());
-                              if (jresp["status"] == "success") {
-                                setState(() {
-                                  uploadedDocUrl =
-                                      jresp["data"]["company_docs"][0]["url"];
-                                });
-                                showToast('Successfully uploaded  doc');
-                                setState(() {
-                                  isLoading = !isLoading;
-                                });
-                              } else {
-                                setState(() {
-                                  isLoading = !isLoading;
-                                });
-                              }
-                            } catch (e) {
-                              setState(() {
-                                isLoading = !isLoading;
-                              });
-                              logs.d(e);
-                            }
-                          }
                         },
                         child: CustomUplaoder(
                           title: filename.isNotEmpty
