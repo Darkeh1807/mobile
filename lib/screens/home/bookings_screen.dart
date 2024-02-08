@@ -1,12 +1,19 @@
+import 'dart:convert';
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
+import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/models/booked_ticket_model.dart';
+import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/services/get_from_server.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class BookingsScreen extends StatefulWidget {
   const BookingsScreen({super.key});
@@ -24,6 +31,35 @@ class _BookingsScreenState extends State<BookingsScreen> {
   ];
 
   String selectedTripType = "All";
+
+  Future<List<TicketBooked>?> getBookedTrips(BuildContext context) async {
+    final TokenProvider tp = context.read<TokenProvider>();
+    try {
+      final String res = await getFromServer(
+        "${Url.bookings}?skip=0&limit=10&populate=Trip&fields=status&options=i&query&filter=",
+        context,
+        authToken: tp.getToken,
+      );
+      final dynamic jresp = jsonDecode(res);
+
+      if (jresp["status"] == "success") {
+        final djresp = jresp["data"]["bookings"] as List<dynamic>;
+        final allBookedTickets =
+            djresp.map((ticket) => ticketBookedFromJson(ticket)).toList();
+        logs.d(allBookedTickets);
+        return allBookedTickets;
+      }
+    } catch (e) {
+      logs.d(e);
+    }
+    return null;
+  }
+
+  @override
+  void initState() {
+    getBookedTrips(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +124,10 @@ class _BookingsScreenState extends State<BookingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Recently Booked',
                         style: TextStyle(
                           color: Color(0xFF000023),
@@ -100,45 +136,51 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'See All',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xFF2465C2),
-                                fontSize: 12,
-                                fontFamily: 'Manrope',
-                                fontWeight: FontWeight.w600,
-                                height: 1),
-                          ))
                     ],
                   ),
                   addVerticalSpace(10),
-                  const TicketDisplayWidget(),
-                  addVerticalSpace(20),
-                  const Text(
-                    'Up-coming',
-                    style: TextStyle(
-                      color: Color(0xFF000023),
-                      fontSize: 14,
-                      fontFamily: 'Manrope',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  addVerticalSpace(20),
-                  ...List.generate(
-                      3,
-                      (index) => Column(
-                            children: [
-                              const TicketDisplayWidget(),
-                              if (index != 2) addVerticalSpace(12),
-                            ],
-                          ))
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: FutureBuilder<List<TicketBooked>?>(
+                        future: getBookedTrips(context),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return Align(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const CircularProgressIndicator(),
+                                    addVerticalSpace(5),
+                                    const Text("Loading tickets..."),
+                                  ],
+                                ),
+                              );
+                            default:
+                              if (snapshot.data == null ||
+                                  snapshot.data!.isEmpty) {
+                                return const NoBookingWidget();
+                              } else {
+                                return ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return TicketDisplayWidget(
+                                      ticket: snapshot.data![index],
+                                    );
+                                  },
+                                );
+                              }
+                          }
+                        },
+                      ))
                 ],
               ),
             ),
-            // NoBookingWidget()
           ],
         ),
       ),
@@ -147,12 +189,20 @@ class _BookingsScreenState extends State<BookingsScreen> {
 }
 
 class TicketDisplayWidget extends StatelessWidget {
+  final TicketBooked ticket;
   const TicketDisplayWidget({
     super.key,
+    required this.ticket,
   });
 
   @override
   Widget build(BuildContext context) {
+    int endTimeHour =
+        int.parse(ticket.trip?.timeScheduled?.endTime?.split(":")[0] ?? '0');
+    int startTimeHour =
+        int.parse(ticket.trip?.timeScheduled?.startTime?.split(":")[0] ?? '0');
+
+    int differenceInHours = endTimeHour - startTimeHour;
     return InkWell(
       onTap: () {},
       child: Ink(
@@ -176,12 +226,12 @@ class TicketDisplayWidget extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Ticket ID goes here',
-                            style: TextStyle(
+                            ticket.id ?? '',
+                            style: const TextStyle(
                               color: Color(0xFF2465C2),
                               fontSize: 12,
                               fontFamily: 'Manrope',
@@ -189,8 +239,8 @@ class TicketDisplayWidget extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '20/06/2023',
-                            style: TextStyle(
+                            "${ticket.createdAt?.day}/${ticket.createdAt?.month}/${ticket.createdAt?.year}",
+                            style: const TextStyle(
                               color: Color(0xFF2465C2),
                               fontSize: 12,
                               fontFamily: 'Manrope',
@@ -215,7 +265,7 @@ class TicketDisplayWidget extends StatelessWidget {
                           ),
                           addHorizontalSpace(8),
                           Text(
-                            "06:30AM",
+                            ticket.trip?.timeScheduled?.startTime ?? '',
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -262,7 +312,7 @@ class TicketDisplayWidget extends StatelessWidget {
                           ),
                           addHorizontalSpace(8),
                           Text(
-                            "06:30AM",
+                            ticket.trip?.timeScheduled?.endTime ?? '',
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -346,7 +396,7 @@ class TicketDisplayWidget extends StatelessWidget {
                         ),
                         addHorizontalSpace(4),
                         Text(
-                          "7hrs 50m",
+                          "${differenceInHours}hrs",
                           style: GoogleFonts.manrope(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,

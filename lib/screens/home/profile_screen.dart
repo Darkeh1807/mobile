@@ -4,6 +4,9 @@ import 'package:bus_booking/hive/token_hive_methods.dart';
 import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_fade.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/auth_page.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -85,7 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               title: "Basic Information",
               onTap: () {
-                pushNamedRoute(context, BasicInformationScreen.routeName);
+                nextScreen(context,
+                    SlideLeftRoute(page: const BasicInformationScreen()));
               },
             ),
             addVerticalSpace(20),
@@ -194,7 +198,7 @@ class SignoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider up = Provider.of<UserProvider>(context);
-   
+
     return Dialog(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -246,7 +250,8 @@ class SignoutDialog extends StatelessWidget {
                         await UserHiveMethods().deleteUser(user);
                         await TokenHiveMethods().deleteToken();
                         // ignore: use_build_context_synchronously
-                        pushNamedRoute(context, AuthPage.routeName);
+                        nextScreenClosePrev(
+                            context, FadeRoute(page: const AuthPage()));
                       } catch (e) {
                         logs.d("Error $e");
                       }

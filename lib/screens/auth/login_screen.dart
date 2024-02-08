@@ -6,6 +6,8 @@ import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/post_to_server.dart';
@@ -19,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {                                                           
+class LoginScreen extends StatefulWidget {
   const LoginScreen({
     super.key,
   });
@@ -196,8 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             tp.setToken = token;
 
                             // ignore: use_build_context_synchronously
-                            await Navigator.of(context)
-                                .pushNamed(AppHome.routeName);
+                            nextScreenClosePrev(
+                                context, SlideLeftRoute(page: const AppHome()));
                           } else if (jresp["message"] == "User not found") {
                             // ignore: use_build_context_synchronously
                             showSnackBar(context, "User not found");

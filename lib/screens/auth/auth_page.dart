@@ -6,7 +6,6 @@ import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
-import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

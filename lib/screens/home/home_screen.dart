@@ -2,6 +2,8 @@ import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/locations/location_select_screen.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
@@ -94,7 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           InkWell(
             onTap: () {
-              pushNamedRoute(context, NotificationsScreen.routeName);
+              nextScreen(
+                context,
+                SlideLeftRoute(
+                  page: const NotificationsScreen(),
+                ),
+              );
             },
             child: Stack(
               children: [
@@ -353,10 +360,8 @@ class _HomeScreenState extends State<HomeScreen> {
             addVerticalSpace(50),
             CustomOutlinedButton(
               onPressed: () {
-                pushNamedRoute(
-                  context,
-                  CreateBusScreen.routeName,
-                );
+                nextScreen(
+                    context, SlideLeftRoute(page: const CreateBusScreen()));
               },
               text: "Register",
             )
