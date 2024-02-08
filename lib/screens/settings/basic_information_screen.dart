@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 
 class BasicInformationScreen extends StatefulWidget {
   const BasicInformationScreen({super.key});
-  static const routeName = '/basic-information';
 
   @override
   State<BasicInformationScreen> createState() => _BasicInformationScreenState();
@@ -244,15 +243,17 @@ class _BasicInformationScreenState extends State<BasicInformationScreen> {
             ),
           ),
           addVerticalSpace(40),
-        
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20,),
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
             child: CustomPrimaryButton(
               text: "Save",
               onPressed: () {},
               fontWeight: FontWeight.w600,
             ),
-          ), 
+          ),
         ],
       ),
     );

@@ -26,8 +26,6 @@ class LoginScreen extends StatefulWidget {
     super.key,
   });
 
-  static const String routeName = '/login';
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -233,10 +231,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   addVerticalSpace(5),
                   TextButton(
                     onPressed: () {
-                      pushNamedRoute(
-                        context,
-                        CreateAccountScreen.routeName,
-                      );
+                      nextScreen(context,
+                          SlideLeftRoute(page: const CreateAccountScreen()));
                     },
                     child: Text(
                       "Sign up",

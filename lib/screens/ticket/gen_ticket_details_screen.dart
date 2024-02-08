@@ -1,56 +1,59 @@
 import 'dart:convert';
-
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
 import 'package:bus_booking/config/url/url.dart';
-import 'package:bus_booking/models/get_Ticket_model.dart';
 import 'package:bus_booking/models/ticket_model.dart';
-import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/provider/destination_provider.dart';
+import 'package:bus_booking/provider/origin_provider.dart';
+import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
-import 'package:bus_booking/screens/ticket/gen_ticket_details_screen.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_outlined_button.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
-class TicketDetailsScreen extends StatefulWidget {
+class GeneratedTicketDetailsScreen extends StatefulWidget {
   final String bookingId;
-  const TicketDetailsScreen({super.key, required this.bookingId});
+  final String? authToken;
+  const GeneratedTicketDetailsScreen({
+    super.key,
+    required this.bookingId,
+     this.authToken,
+  });
 
   @override
-  State<TicketDetailsScreen> createState() => _TicketDetailsScreenState();
+  State<GeneratedTicketDetailsScreen> createState() => _GeneratedTicketDetailsScreenState();
 }
 
-class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
+class _GeneratedTicketDetailsScreenState extends State<GeneratedTicketDetailsScreen> {
+  Ticket tickets = Ticket();
   bool isLoading = true;
-  SingleTicket tickets = SingleTicket();
 
   Future<void> getTicket(BuildContext context) async {
     try {
-      final tp = context.read<TokenProvider>();
       final res = await getFromServer(
-        "${Url.ticket}?bookingId=${widget.bookingId}&populate=Booking,Booking.Trip,Booking.Trip.origin,Booking.Trip.destination,Booking.Trip.bus,Booking.Trip.busCompany",
+        "${Url.ticket}?bookingId=${widget.bookingId}&populate=Booking,Booking.Trip",
         context,
-        authToken: tp.getToken,
+        authToken: widget.authToken,
       );
       final jresp = jsonDecode(res);
-
-      if (jresp != null && jresp.isNotEmpty) {
+      // logs.d(jresp);
+      if (jresp != null) {
         var serverTicket = jresp as List<dynamic>;
-        List<SingleTicket> assignedTicket =
-            serverTicket.map((ticket) => singleTicketFromJson(ticket)).toList();
+        List<Ticket> assignedTicket =
+            serverTicket.map((ticket) => ticketFromJson(ticket)).toList();
         for (var i = 0; i < serverTicket.length; i++) {
           setState(() {
             tickets = assignedTicket[i];
-            logs.d(tickets);
+            logs.d(tickets.booking?.status);
             isLoading = false;
           });
         }
@@ -71,11 +74,22 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final op = Provider.of<OriginProvider>(context);
+    final dp = Provider.of<DestinationProvider>(context);
+    final tripProvider = Provider.of<TripProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.read<DestinationProvider>().clearDestination();
+            context.read<OriginProvider>().clearOrigin();
+            context.read<TripProvider>().clearTrip();
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AppHome(),
+                ));
           },
           icon: const Icon(Icons.arrow_back_ios, size: 20),
         ),
@@ -195,7 +209,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                   ),
                                   addHorizontalSpace(10),
                                   Text(
-                                    "${tickets.booking?.trip?.origin?.name} -",
+                                    "${op.getOrigin.name} -",
                                     style: GoogleFonts.manrope(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
@@ -245,7 +259,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                 ),
                                 addHorizontalSpace(10),
                                 Text(
-                                  "${tickets.booking?.trip?.destination?.name} -  ",
+                                  "${dp.getDestination.name} -  ",
                                   style: GoogleFonts.manrope(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
@@ -351,8 +365,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                 children: [
                                   DetailDisplayWidget(
                                     title: "Bus Type",
-                                    value:
-                                        tickets.booking?.trip?.bus?.model ?? '',
+                                    value: tripProvider.trip.bus?.model ?? '',
                                   ),
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
@@ -364,16 +377,14 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
                                     title: "Dropping Point",
-                                    value: tickets
-                                            .booking?.trip?.destination?.name ??
-                                        '',
+                                    value: dp.getDestination.name ?? '',
                                   ),
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
                                     title: "Buss Number",
-                                    value: tickets.booking?.trip?.bus
-                                            ?.vehicleNumber ??
-                                        '',
+                                    value:
+                                        tripProvider.trip.bus?.vehicleNumber ??
+                                            '',
                                   ),
                                 ],
                               ),
@@ -385,8 +396,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                 children: [
                                   DetailDisplayWidget(
                                     title: "Bus Operator",
-                                    value: tickets
-                                            .booking?.trip?.busCompany?.name ??
+                                    value: tripProvider.trip.busCompany?.name ??
                                         '',
                                   ),
                                   addVerticalSpace(24),
@@ -399,9 +409,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
                                     title: "Boarding Point",
-                                    value:
-                                        tickets.booking?.trip?.origin?.name ??
-                                            '',
+                                    value: op.getOrigin.name ?? '',
                                   ),
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
@@ -479,6 +487,42 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                 addVerticalSpace(70)
               ]),
       ),
+    );
+  }
+}
+
+class DetailDisplayWidget extends StatelessWidget {
+  const DetailDisplayWidget({
+    super.key,
+    required this.title,
+    required this.value,
+  });
+  final String title;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.manrope(
+              fontSize: 12,
+              height: 1,
+              color: Palette.greyText,
+              fontWeight: FontWeight.w400),
+        ),
+        addVerticalSpace(6),
+        Text(
+          value,
+          style: GoogleFonts.manrope(
+              height: 1,
+              fontSize: 12,
+              color: Colors.black,
+              fontWeight: FontWeight.w400),
+        ),
+      ],
     );
   }
 }

@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 
 class AppHome extends StatefulWidget {
   const AppHome({super.key});
-  static const routeName = '/app_home';
+  
   @override
   State<AppHome> createState() => _AppHomeState();
 }

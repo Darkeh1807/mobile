@@ -1,4 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -31,7 +33,7 @@ Future<String> postDataToServer(
           .showSnackBar(const SnackBar(content: Text('Token has expired')));
       await Future.delayed(const Duration(seconds: 3));
 
-      pushNamedRoute(ctx, LoginScreen.routeName);
+      nextScreenClosePrev(ctx, FadeRoute(page: LoginScreen()));
       return 'Token has expired';
     } else if (response.statusCode == 500) {
       return response.body.toString();

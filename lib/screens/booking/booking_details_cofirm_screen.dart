@@ -24,7 +24,7 @@ import '../../config/theme/palette.dart';
 class BookingDetailsConfirmScreen extends StatefulWidget {
   final Trip trip;
   const BookingDetailsConfirmScreen({super.key, required this.trip});
-  static const routeName = '/booking_details_confirm_screen';
+ 
 
   @override
   State<BookingDetailsConfirmScreen> createState() =>

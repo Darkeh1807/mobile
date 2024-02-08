@@ -2,7 +2,7 @@
 
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/models/trip_model.dart';
-import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
+import 'package:bus_booking/screens/ticket/gen_ticket_details_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class _PaymentScreeenState extends State<PaymentScreeen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TicketDetailsScreen(
+                          builder: (context) => GeneratedTicketDetailsScreen(
                             bookingId: widget.bookingId,
                             authToken: widget.authToken,
                           ),

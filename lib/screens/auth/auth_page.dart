@@ -3,16 +3,17 @@ import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
+import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
-  static const routeName = 'auth_page';
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -21,13 +22,13 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   String token = "";
   Future<User?> _isExistingUser(BuildContext context) async {
-    // showProgressLoader();
+    showProgressLoader();
     User? userInfo = await UserHiveMethods().getHiveUser();
     if (userInfo != null && userInfo.id!.isNotEmpty) {
-      // cancelLoader();
+      cancelLoader();
       return userInfo;
     } else {
-      // cancelLoader();
+      cancelLoader();
       return null;
     }
   }
@@ -42,7 +43,8 @@ class _AuthPageState extends State<AuthPage> {
       } else if (ltoken == "" && ltoken!.isEmpty) {
         await Future.delayed(const Duration(seconds: 3));
         // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+        Navigator.pushReplacement(
+            context, FadeRoute(page: const LoginScreen()));
       }
     } catch (e) {
       logs.d('Error: $e');

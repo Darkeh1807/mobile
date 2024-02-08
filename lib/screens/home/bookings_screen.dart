@@ -5,6 +5,10 @@ import 'package:bus_booking/config/theme/spacing.dart';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/booked_ticket_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
+import 'package:bus_booking/screens/ticket/gen_ticket_details_screen.dart';
+import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -36,7 +40,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
     final TokenProvider tp = context.read<TokenProvider>();
     try {
       final String res = await getFromServer(
-        "${Url.bookings}?skip=0&limit=10&populate=Trip&fields=status&options=i&query&filter=",
+        "${Url.bookings}?skip=0&limit=10&populate=Trip,Trip.bus,Trip.busCompany,Trip.origin,Trip.destination&fields=status&options=i&query&filter=",
         context,
         authToken: tp.getToken,
       );
@@ -171,6 +175,18 @@ class _BookingsScreenState extends State<BookingsScreen> {
                                   itemBuilder: (context, index) {
                                     return TicketDisplayWidget(
                                       ticket: snapshot.data![index],
+                                      callback: () {
+                                        nextScreen(
+                                            context,
+                                            SlideLeftRoute(
+                                              page:
+                                                  TicketDetailsScreen(
+                                                bookingId:
+                                                    snapshot.data![index].id ??
+                                                        '',
+                                              ),
+                                            ));
+                                      },
                                     );
                                   },
                                 );
@@ -190,10 +206,8 @@ class _BookingsScreenState extends State<BookingsScreen> {
 
 class TicketDisplayWidget extends StatelessWidget {
   final TicketBooked ticket;
-  const TicketDisplayWidget({
-    super.key,
-    required this.ticket,
-  });
+  final VoidCallback? callback;
+  const TicketDisplayWidget({super.key, required this.ticket, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +218,7 @@ class TicketDisplayWidget extends StatelessWidget {
 
     int differenceInHours = endTimeHour - startTimeHour;
     return InkWell(
-      onTap: () {},
+      onTap: callback,
       child: Ink(
         child: Container(
           decoration: ShapeDecoration(
@@ -274,7 +288,7 @@ class TicketDisplayWidget extends StatelessWidget {
                           ),
                           addHorizontalSpace(10),
                           Text(
-                            "Selected Trip",
+                            ticket.trip?.origin?.name ?? '',
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -321,7 +335,7 @@ class TicketDisplayWidget extends StatelessWidget {
                           ),
                           addHorizontalSpace(10),
                           Text(
-                            "Accra, Ghana -  ",
+                            ticket.trip?.destination?.name ?? '',
                             style: GoogleFonts.manrope(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,

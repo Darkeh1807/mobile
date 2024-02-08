@@ -4,6 +4,8 @@ import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/services/uploadfile_to_server.dart';
@@ -65,7 +67,6 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       filename = result!.files.single.name;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -615,7 +616,8 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                               cancelLoader();
                               showToast("Successfully created bus company");
                               // ignore: use_build_context_synchronously
-                              pushNamedRoute(context, AppHome.routeName);
+                              nextScreen(
+                                  context, FadeRoute(page: const AppHome()));
                             } else if (jresp["message"] ==
                                 "Bus Operator already exits") {
                               cancelLoader();

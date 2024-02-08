@@ -30,7 +30,7 @@ class SearchResultsScreen extends StatefulWidget {
   final String? originId;
   final String? authToken;
 
-  static const routeName = 'search_results_screen';
+ 
 
   @override
   State<SearchResultsScreen> createState() => _SearchResultsScreenState();

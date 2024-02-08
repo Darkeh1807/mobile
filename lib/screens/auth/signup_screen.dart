@@ -1,4 +1,6 @@
 import 'package:bus_booking/config/theme/palette.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -8,7 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
-  static const routeName = '/signup';
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -140,7 +141,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomButton(
                 color: const Color(0xFF2EAFFF).withOpacity(0.1),
                 onPressed: () {
-                  pushNamedRoute(context, CreateAccountScreen.routeName);
+                  nextScreen(context,
+                      SlideLeftRoute(page: const CreateAccountScreen()));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -229,10 +231,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               addVerticalSpace(5),
               TextButton(
                 onPressed: () {
-                  pushNamedRoute(
-                    context,
-                    LoginScreen.routeName,
-                  );
+                  nextScreen(
+                      context, SlideLeftRoute(page: const LoginScreen()));
                 },
                 child: Text(
                   "Sign in",

@@ -6,6 +6,8 @@ import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
 import 'package:bus_booking/services/post_to_server.dart';
@@ -21,7 +23,6 @@ import 'package:provider/provider.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({super.key});
-  static const routeName = '/create-account';
 
   @override
   State<CreateAccountScreen> createState() => _CreateAccountScreenState();
@@ -439,8 +440,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           tp.setToken = token;
                           cancelLoader();
                           // ignore: use_build_context_synchronously
-                          await Navigator.of(context)
-                              .pushNamed(OtpVerifyScreen.routeName);
+                          nextScreenClosePrev(context,
+                              SlideLeftRoute(page: const OtpVerifyScreen()));
                         } else if (jresp["message"] == "User already exits") {
                           cancelLoader();
                           // ignore: use_build_context_synchronously
@@ -532,7 +533,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 addVerticalSpace(5),
                 TextButton(
                   onPressed: () {
-                    pushNamedRoute(context, LoginScreen.routeName);
+                    nextScreen(
+                        context, SlideLeftRoute(page: const LoginScreen()));
                   },
                   child: Text(
                     "Sign in",

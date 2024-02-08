@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 class SelectedScreenProceedScreen extends StatelessWidget {
   const SelectedScreenProceedScreen({super.key, required this.trip});
   final Trip trip;
-  static const routeName = '/selected_screen_proceed_screen';
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

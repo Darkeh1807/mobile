@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/services/post_to_server.dart';
@@ -19,7 +21,6 @@ import '../../config/theme/palette.dart';
 
 class OtpVerifyScreen extends StatefulWidget {
   const OtpVerifyScreen({super.key});
-  static const routeName = '/otp_verify_screen';
 
   @override
   State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
@@ -205,7 +206,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           if (jresp != null && jresp["status"] == "success") {
                             cancelLoader();
                             // ignore: use_build_context_synchronously
-                            pushNamedRoute(context, AppHome.routeName);
+                            nextScreen(
+                                context, SlideLeftRoute(page: const AppHome()));
                           }
                         } catch (e) {
                           cancelLoader();

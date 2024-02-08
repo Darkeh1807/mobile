@@ -1,6 +1,55 @@
-TicketBooked ticketBookedFromJson(Map data) => TicketBooked.fromJson(data);
+SingleTicket singleTicketFromJson(Map data) => SingleTicket.fromJson(data);
 
-class TicketBooked {
+class SingleTicket {
+  final String? id;
+  final Booking? booking;
+  final String? qrCode;
+  final String? user;
+  final String? status;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
+
+  SingleTicket({
+    this.id,
+    this.booking,
+    this.qrCode,
+    this.user,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+  });
+
+  factory SingleTicket.fromJson(Map<dynamic, dynamic> json) => SingleTicket(
+        id: json["_id"],
+        booking:
+            json["Booking"] == null ? null : Booking.fromJson(json["Booking"]),
+        qrCode: json["QRCode"],
+        user: json["user"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
+      );
+
+  Map<dynamic, dynamic> toJson() => {
+        "_id": id,
+        "Booking": booking?.toJson(),
+        "QRCode": qrCode,
+        "user": user,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
+      };
+}
+
+class Booking {
   final String? id;
   final Trip? trip;
   final String? user;
@@ -16,7 +65,7 @@ class TicketBooked {
   final String? paymentReference;
   final int? seatNumber;
 
-  TicketBooked({
+  Booking({
     this.id,
     this.trip,
     this.user,
@@ -33,7 +82,7 @@ class TicketBooked {
     this.seatNumber,
   });
 
-  factory TicketBooked.fromJson(Map<dynamic, dynamic> json) => TicketBooked(
+  factory Booking.fromJson(Map<dynamic, dynamic> json) => Booking(
         id: json["_id"],
         trip: json["Trip"] == null ? null : Trip.fromJson(json["Trip"]),
         user: json["User"],
@@ -56,7 +105,7 @@ class TicketBooked {
         seatNumber: json["seatNumber"],
       );
 
-  Map<dynamic, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "_id": id,
         "Trip": trip?.toJson(),
         "User": user,
@@ -358,7 +407,7 @@ class Social {
         id: json["_id"],
       );
 
-  Map<dynamic, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "name": name,
         "link": link,
         "_id": id,
@@ -426,7 +475,7 @@ class TimeScheduled {
         id: json["_id"],
       );
 
-  Map<dynamic, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "startTime": startTime,
         "endTime": endTime,
         "_id": id,
