@@ -2,8 +2,6 @@
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
-import 'package:bus_booking/utils/logger.dart';
-import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,10 +9,10 @@ Future<String> postDataToServer(
     String uri, Map<String, dynamic> data, BuildContext ctx,
     {String? authToken}) async {
   try {
-    logs.d(data);
+  
 
     final url = Uri.parse(uri);
-    logs.d(url);
+ 
     final response = await http.post(
       url,
       body: data,
@@ -33,7 +31,7 @@ Future<String> postDataToServer(
           .showSnackBar(const SnackBar(content: Text('Token has expired')));
       await Future.delayed(const Duration(seconds: 3));
 
-      nextScreenClosePrev(ctx, FadeRoute(page: LoginScreen()));
+      nextScreenClosePrev(ctx, FadeRoute(page: const LoginScreen()));
       return 'Token has expired';
     } else if (response.statusCode == 500) {
       return response.body.toString();

@@ -9,11 +9,13 @@ import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:io' show Directory;
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
+// import 'package:google_fonts/google_fonts.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
@@ -52,12 +54,15 @@ class MyApp extends StatelessWidget {
           create: (context) => TripProvider(),
         )
       ],
-      child: MaterialApp(
-        title: 'Bus Booking',
-        debugShowCheckedModeBanner: false,
-        builder: BotToastInit(),
-        theme: theme('l', context),
-        home: const AuthPage(),
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (context, child) => MaterialApp(
+          title: 'Bus Booking',
+          debugShowCheckedModeBanner: false,
+          builder: BotToastInit(),
+          theme: theme('l', context),
+          home: const AuthPage(),
+        ),
       ),
     );
   }

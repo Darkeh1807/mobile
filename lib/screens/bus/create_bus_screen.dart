@@ -70,7 +70,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
           setState(() {
             uploadedDocUrl = jresp["data"]["company_docs"][0]["url"];
             showToast('Successfully uploaded document');
-            isLoading = false; 
+            isLoading = false;
           });
         } else {
           showToast('Failed to upload document');
@@ -79,7 +79,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
       } catch (e) {
         showToast('Error uploading document');
         logs.d(e);
-        isLoading = false; 
+        isLoading = false;
       }
     }
   }
@@ -146,7 +146,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Name',
+                        'Company Name',
                         style: GoogleFonts.manrope(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

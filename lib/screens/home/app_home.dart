@@ -8,6 +8,7 @@ import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/auth_page.dart';
+import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/home/bookings_screen.dart';
 import 'package:bus_booking/screens/home/home_screen.dart';
 import 'package:bus_booking/screens/home/profile_screen.dart';
@@ -22,7 +23,7 @@ import 'package:provider/provider.dart';
 
 class AppHome extends StatefulWidget {
   const AppHome({super.key});
-  
+
   @override
   State<AppHome> createState() => _AppHomeState();
 }
@@ -63,7 +64,10 @@ class _AppHomeState extends State<AppHome> {
                 ),
                 addVerticalSpace(25),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    nextScreen(
+                        context, FadeRoute(page: const CreateBusScreen()));
+                  },
                   leading: Icon(MdiIcons.bus, color: Colors.black),
                   title: Text(
                     "Bus Booking",

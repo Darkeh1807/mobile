@@ -49,7 +49,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
         authToken: authToken,
       );
       final jresp = jsonDecode(resp);
-      logs.d(jresp);
+     
       if (jresp["success"] == true) {
         cancelLoader();
         return jresp["data"]["data"]["authorization_url"];

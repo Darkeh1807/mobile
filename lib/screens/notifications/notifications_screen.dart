@@ -36,14 +36,14 @@ class NotificationsScreen extends StatelessWidget {
             addVerticalSpace(
               Spacing.pageTopMargin,
             ),
-            ...List.generate(
-                20,
-                (index) => Column(
-                      children: [
-                        const NotificationDisplayWidget(),
-                        addVerticalSpace(15),
-                      ],
-                    ))
+            // ...List.generate(
+            //     20,
+            //     (index) => Column(
+            //           children: [
+            //             const NotificationDisplayWidget(),
+            //             addVerticalSpace(15),
+            //           ],
+            //         ))
           ],
         ),
       ),
@@ -60,16 +60,7 @@ class NotificationDisplayWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {},
-      child: Ink(
-        padding: const EdgeInsets.only(bottom: 15),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Color(0xFFE5E5E5),
-              width: 1,
-            ),
-          ),
-        ),
+      child: Card(
         child: Row(
           children: [
             CircleAvatar(

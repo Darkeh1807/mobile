@@ -7,7 +7,6 @@ import 'package:bus_booking/models/booked_ticket_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
-import 'package:bus_booking/screens/ticket/gen_ticket_details_screen.dart';
 import 'package:bus_booking/screens/ticket/ticket_details_screen.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -50,7 +49,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
         final djresp = jresp["data"]["bookings"] as List<dynamic>;
         final allBookedTickets =
             djresp.map((ticket) => ticketBookedFromJson(ticket)).toList();
-        logs.d(allBookedTickets);
+
         return allBookedTickets;
       }
     } catch (e) {
@@ -155,9 +154,8 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           switch (snapshot.connectionState) {
                             case ConnectionState.waiting:
                               return Align(
+                                alignment: Alignment.center,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const CircularProgressIndicator(),
                                     addVerticalSpace(5),
@@ -179,8 +177,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                                         nextScreen(
                                             context,
                                             SlideLeftRoute(
-                                              page:
-                                                  TicketDetailsScreen(
+                                              page: TicketDetailsScreen(
                                                 bookingId:
                                                     snapshot.data![index].id ??
                                                         '',

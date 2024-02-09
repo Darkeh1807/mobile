@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/sizing.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/get_Ticket_model.dart';
-import 'package:bus_booking/models/ticket_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
-import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/screens/ticket/gen_ticket_details_screen.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -50,7 +47,6 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
         for (var i = 0; i < serverTicket.length; i++) {
           setState(() {
             tickets = assignedTicket[i];
-            logs.d(tickets);
             isLoading = false;
           });
         }
