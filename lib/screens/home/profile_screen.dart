@@ -7,10 +7,9 @@ import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
-import 'package:bus_booking/screens/auth/auth_page.dart';
+import 'package:bus_booking/screens/auth/auth_screen.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
 import 'package:bus_booking/utils/logger.dart';
-import 'package:bus_booking/utils/toast.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_button.dart';
 import 'package:bus_booking/widgets/base/custom_outlined_button.dart';
@@ -245,7 +244,6 @@ class SignoutDialog extends StatelessWidget {
                   child: CustomButton(
                     onPressed: () async {
                       try {
-                        showToast('Signed out as ${up.getUser.fullName}');
                         User? user = up.getUser;
                         await UserHiveMethods().deleteUser(user);
                         await TokenHiveMethods().deleteToken();

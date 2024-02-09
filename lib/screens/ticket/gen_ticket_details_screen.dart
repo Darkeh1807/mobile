@@ -7,6 +7,8 @@ import 'package:bus_booking/models/ticket_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/trip_provider.dart';
+import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_slide_right.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -26,14 +28,16 @@ class GeneratedTicketDetailsScreen extends StatefulWidget {
   const GeneratedTicketDetailsScreen({
     super.key,
     required this.bookingId,
-     this.authToken,
+    this.authToken,
   });
 
   @override
-  State<GeneratedTicketDetailsScreen> createState() => _GeneratedTicketDetailsScreenState();
+  State<GeneratedTicketDetailsScreen> createState() =>
+      _GeneratedTicketDetailsScreenState();
 }
 
-class _GeneratedTicketDetailsScreenState extends State<GeneratedTicketDetailsScreen> {
+class _GeneratedTicketDetailsScreenState
+    extends State<GeneratedTicketDetailsScreen> {
   Ticket tickets = Ticket();
   bool isLoading = true;
 
@@ -45,7 +49,7 @@ class _GeneratedTicketDetailsScreenState extends State<GeneratedTicketDetailsScr
         authToken: widget.authToken,
       );
       final jresp = jsonDecode(res);
-     
+
       if (jresp != null) {
         var serverTicket = jresp as List<dynamic>;
         List<Ticket> assignedTicket =
@@ -76,6 +80,12 @@ class _GeneratedTicketDetailsScreenState extends State<GeneratedTicketDetailsScr
     final op = Provider.of<OriginProvider>(context);
     final dp = Provider.of<DestinationProvider>(context);
     final tripProvider = Provider.of<TripProvider>(context);
+    int endTimeHour = int.parse(
+        tickets.booking?.trip?.timeScheduled?.endTime?.split(":")[0] ?? '0');
+    int startTimeHour = int.parse(
+        tickets.booking?.trip?.timeScheduled?.startTime?.split(":")[0] ?? '0');
+
+    int differenceInHours = endTimeHour - startTimeHour;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -84,10 +94,10 @@ class _GeneratedTicketDetailsScreenState extends State<GeneratedTicketDetailsScr
             context.read<OriginProvider>().clearOrigin();
             context.read<TripProvider>().clearTrip();
 
-            Navigator.push(
+            nextScreenClosePrev(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const AppHome(),
+                SlideRightRoute(
+                  page: const AppHome(),
                 ));
           },
           icon: const Icon(Icons.arrow_back_ios, size: 20),
@@ -303,7 +313,7 @@ class _GeneratedTicketDetailsScreenState extends State<GeneratedTicketDetailsScr
                                     ),
                                     addHorizontalSpace(4),
                                     Text(
-                                      "7hrs 50m",
+                                      "${differenceInHours}hrs",
                                       style: GoogleFonts.manrope(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,

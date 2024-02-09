@@ -6,7 +6,7 @@ import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
-import 'package:bus_booking/screens/auth/auth_page.dart';
+import 'package:bus_booking/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +18,10 @@ import 'package:provider/provider.dart';
 // import 'package:google_fonts/google_fonts.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Palette.primaryColor,

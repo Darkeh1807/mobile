@@ -130,7 +130,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Email(optional)',
+                      'Email',
                       style: GoogleFonts.manrope(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -139,6 +139,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     addVerticalSpace(8),
                     TextFormField(
                       controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
                       style: GoogleFonts.manrope(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -187,6 +188,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     addVerticalSpace(8),
                     TextFormField(
                       controller: passwordController,
+                      keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                       style: GoogleFonts.manrope(
                           fontSize: 12,
@@ -369,12 +371,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         Expanded(
                           child: TextFormField(
                             controller: mobileNumController,
+                            keyboardType: TextInputType.phone,
                             style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black),
                             decoration: InputDecoration(
-                              hintText: "Mobile Number",
+                              hintText:
+                                  "Mobile Number(Do not start with the zero)",
                               hintStyle: GoogleFonts.manrope(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,

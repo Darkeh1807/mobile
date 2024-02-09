@@ -1,5 +1,6 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
@@ -232,7 +233,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextButton(
                 onPressed: () {
                   nextScreen(
-                      context, SlideLeftRoute(page: const LoginScreen()));
+                      context, FadeRoute(page: const LoginScreen()));
                 },
                 child: Text(
                   "Sign in",

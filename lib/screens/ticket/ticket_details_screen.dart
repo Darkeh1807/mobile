@@ -67,6 +67,12 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int endTimeHour = int.parse(
+        tickets.booking?.trip?.timeScheduled?.endTime?.split(":")[0] ?? '0');
+    int startTimeHour = int.parse(
+        tickets.booking?.trip?.timeScheduled?.startTime?.split(":")[0] ?? '0');
+
+    int differenceInHours = endTimeHour - startTimeHour;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -286,7 +292,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                     ),
                                     addHorizontalSpace(4),
                                     Text(
-                                      "7hrs 50m",
+                                      "${differenceInHours}hrs",
                                       style: GoogleFonts.manrope(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
