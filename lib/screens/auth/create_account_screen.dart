@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/url/url.dart';
@@ -7,6 +9,7 @@ import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
@@ -30,7 +33,7 @@ class CreateAccountScreen extends StatefulWidget {
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
   String selectedCountryCode = "250";
-  bool _isChecked = false;
+  final bool _isChecked = false;
   final _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -443,19 +446,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           up.setUser = userModel;
                           tp.setToken = token;
                           cancelLoader();
-                          // ignore: use_build_context_synchronously
+
                           nextScreenClosePrev(context,
                               SlideLeftRoute(page: const OtpVerifyScreen()));
-                        } else if (jresp["message"] == "User already exits") {
-                          cancelLoader();
-                          // ignore: use_build_context_synchronously
-                          showSnackBar(context, "User already exists");
                         } else {
                           cancelLoader();
+                          showSnackBar(
+                              context, 'Unable to create account, try again');
                         }
                       } on Exception catch (e) {
                         cancelLoader();
-                        // ignore: use_build_context_synchronously
+
                         showSnackBar(context,
                             'An error occured, check your internet connection');
 
@@ -464,27 +465,27 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     }
                   },
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Checkbox(
-                        value: _isChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isChecked = value!;
-                          });
-                        }),
-                    addHorizontalSpace(3),
-                    const Text(
-                      "Send me travel tips and promotions by email.",
-                      style: TextStyle(
-                        color: Palette.greyText,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Checkbox(
+                //         value: _isChecked,
+                //         onChanged: (bool? value) {
+                //           setState(() {
+                //             _isChecked = value!;
+                //           });
+                //         }),
+                //     addHorizontalSpace(3),
+                //     const Text(
+                //       "Send me travel tips and promotions by email.",
+                //       style: TextStyle(
+                //         color: Palette.greyText,
+                //         fontSize: 12,
+                //         fontWeight: FontWeight.w400,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 addVerticalSpace(14),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40 / 375),
@@ -537,8 +538,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 addVerticalSpace(5),
                 TextButton(
                   onPressed: () {
-                    nextScreen(
-                        context, SlideLeftRoute(page: const LoginScreen()));
+                    nextScreen(context, FadeRoute(page: const LoginScreen()));
                   },
                   child: Text(
                     "Sign in",

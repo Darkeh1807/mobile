@@ -7,6 +7,7 @@ import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
+import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
@@ -232,15 +233,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextButton(
                     onPressed: () {
                       nextScreen(context,
-                          SlideLeftRoute(page: const CreateAccountScreen()));
+                          FadeRoute(page: const CreateAccountScreen()));
                     },
                     child: Text(
                       "Sign up",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.manrope(
-                          color: Palette.primaryColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700),
+                        color: Palette.primaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ],
