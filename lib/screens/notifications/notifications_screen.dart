@@ -1,4 +1,3 @@
-import 'package:bus_booking/config/theme/spacing.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,25 +26,28 @@ class NotificationsScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0.5,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.pageHorizontalPadding,
-        ),
-        child: Column(
-          children: [
-            addVerticalSpace(
-              Spacing.pageTopMargin,
-            ),
-            // ...List.generate(
-            //     20,
-            //     (index) => Column(
-            //           children: [
-            //             const NotificationDisplayWidget(),
-            //             addVerticalSpace(15),
-            //           ],
-            //         ))
-          ],
-        ),
+      // body: SingleChildScrollView(
+      //   padding: const EdgeInsets.symmetric(
+      //     horizontal: Spacing.pageHorizontalPadding,
+      //   ),
+      //   child: Column(
+      //     children: [
+      //       addVerticalSpace(
+      //         Spacing.pageTopMargin,
+      //       ),
+      //       // ...List.generate(
+      //       //     20,
+      //       //     (index) => Column(
+      //       //           children: [
+      //       //             const NotificationDisplayWidget(),
+      //       //             addVerticalSpace(15),
+      //       //           ],
+      //       //         ))
+      //     ],
+      //   ),
+      // ),
+      body: const Center(
+        child: Text("No notification available"),
       ),
     );
   }

@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             addVerticalSpace(50),
             Text(
-              'Are you a car rental/ bus company?',
+              'Are you a bus company?',
               style: GoogleFonts.quicksand(
                 color: Colors.black,
                 fontSize: 16,
