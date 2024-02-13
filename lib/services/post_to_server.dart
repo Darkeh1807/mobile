@@ -2,8 +2,6 @@
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
-import 'package:bus_booking/utils/loaders.dart';
-import 'package:bus_booking/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,8 +23,6 @@ Future<String> postDataToServer(
     if (response.statusCode == 200 || response.statusCode == 201) {
       return response.body.toString();
     } else if (response.statusCode == 400) {
-      cancelLoader();
-      showSnackBar(ctx, "User already exists");
       return response.body.toString();
     } else if (response.statusCode == 401) {
       ScaffoldMessenger.of(ctx)

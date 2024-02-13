@@ -435,20 +435,26 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
                         final jresp = jsonDecode(resp);
                         logs.d(jresp);
-                        // logs.d(jresp);
+
                         if (jresp != null) {
-                          User userModel = User.fromJson(jresp["user"]);
-                          var token = jresp['token'];
+                          if (jresp.containsKey("message") &&
+                              jresp["message"] == "User already exits") {
+                            cancelLoader();
+                            showSnackBar(context, "User already exists");
+                          } else {
+                            User userModel = User.fromJson(jresp["user"]);
+                            var token = jresp['token'];
 
-                          await UserHiveMethods().addUser(userModel);
-                          await TokenHiveMethods().addToken(token);
+                            await UserHiveMethods().addUser(userModel);
+                            await TokenHiveMethods().addToken(token);
 
-                          up.setUser = userModel;
-                          tp.setToken = token;
-                          cancelLoader();
+                            up.setUser = userModel;
+                            tp.setToken = token;
+                            cancelLoader();
 
-                          nextScreenClosePrev(context,
-                              SlideLeftRoute(page: const OtpVerifyScreen()));
+                            nextScreenClosePrev(context,
+                                SlideLeftRoute(page: const OtpVerifyScreen()));
+                          }
                         } else {
                           cancelLoader();
                           showSnackBar(
@@ -456,10 +462,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         }
                       } on Exception catch (e) {
                         cancelLoader();
-
                         showSnackBar(context,
-                            'An error occured, check your internet connection');
-
+                            'An error occurred, check your internet connection');
                         logs.d("Error: $e");
                       }
                     }

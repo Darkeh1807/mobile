@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 class SelectedScreenProceedScreen extends StatelessWidget {
   const SelectedScreenProceedScreen({super.key, required this.trip});
   final Trip trip;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +31,10 @@ class SelectedScreenProceedScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(10),
               child: AvailableTicketCard(
                 trips: trip,
               ),
@@ -282,7 +282,6 @@ class AvailableTicketCard extends StatelessWidget {
         Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
-        // pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -302,7 +301,7 @@ class AvailableTicketCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
                   trips.busCompany?.name ?? '',
@@ -313,7 +312,7 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total ${trips.bus?.numberOfSeats} seats left",
+                  "Seats left:${trips.bus?.numberOfSeats}",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

@@ -171,19 +171,22 @@ class _BookingsScreenState extends State<BookingsScreen> {
                                 return ListView.builder(
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
-                                    return TicketDisplayWidget(
-                                      ticket: snapshot.data![index],
-                                      callback: () {
-                                        nextScreen(
-                                            context,
-                                            SlideLeftRoute(
-                                              page: TicketDetailsScreen(
-                                                bookingId:
-                                                    snapshot.data![index].id ??
-                                                        '',
-                                              ),
-                                            ));
-                                      },
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 15),
+                                      child: TicketDisplayWidget(
+                                        ticket: snapshot.data![index],
+                                        callback: () {
+                                          nextScreen(
+                                              context,
+                                              SlideLeftRoute(
+                                                page: TicketDetailsScreen(
+                                                  bookingId:
+                                                      snapshot.data![index].id ??
+                                                          '',
+                                                ),
+                                              ));
+                                        },
+                                      ),
                                     );
                                   },
                                 );

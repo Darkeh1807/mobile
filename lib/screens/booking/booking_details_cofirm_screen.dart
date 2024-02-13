@@ -24,7 +24,6 @@ import '../../config/theme/palette.dart';
 class BookingDetailsConfirmScreen extends StatefulWidget {
   final Trip trip;
   const BookingDetailsConfirmScreen({super.key, required this.trip});
- 
 
   @override
   State<BookingDetailsConfirmScreen> createState() =>
@@ -96,7 +95,7 @@ class _BookingDetailsConfirmScreenState
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(15),
                   child: AvailableTicketCard(
                     trips: widget.trip,
                   ),
@@ -421,9 +420,7 @@ class AvailableTicketCard extends StatelessWidget {
     DestinationProvider dp =
         Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
-      onTap: () {
-        // pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
-      },
+      onTap: () {},
       child: Container(
         padding: const EdgeInsets.fromLTRB(8, 12, 8, 15),
         margin: const EdgeInsets.only(right: 20, bottom: 20, left: 20),
@@ -446,7 +443,8 @@ class AvailableTicketCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Total ${trips.bus?.numberOfSeats} seats left",
+                  "Seats left-${trips.bus?.numberOfSeats}",
+                  textScaler: const TextScaler.linear(1),
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

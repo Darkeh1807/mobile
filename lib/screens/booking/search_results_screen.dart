@@ -23,14 +23,14 @@ class SearchResultsScreen extends StatefulWidget {
     this.destinationId,
     this.originId,
     this.authToken,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+        );
 
   final String? departureTime;
   final String? destinationId;
   final String? originId;
   final String? authToken;
-
- 
 
   @override
   State<SearchResultsScreen> createState() => _SearchResultsScreenState();
@@ -69,9 +69,14 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
-    DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: false);
+    OriginProvider op = Provider.of<OriginProvider>(
+      context,
+      listen: false,
+    );
+    DestinationProvider dp = Provider.of<DestinationProvider>(
+      context,
+      listen: false,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -187,7 +192,6 @@ class AvailableTicketCard extends StatelessWidget {
         Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
-        // pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -207,7 +211,6 @@ class AvailableTicketCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   trips.busCompany?.name ?? '',
@@ -217,8 +220,9 @@ class AvailableTicketCard extends StatelessWidget {
                     color: Palette.baseBlack,
                   ),
                 ),
+                Expanded(child: Container()),
                 Text(
-                  "Total ${trips.bus?.numberOfSeats} seats left",
+                  "seats left: ${trips.bus?.numberOfSeats}",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

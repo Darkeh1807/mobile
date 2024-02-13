@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 Future<String> getFromServer(String uri, BuildContext ctx,
     {String? authToken}) async {
-//Method to get from server and return the body of the response as s String which will then be encoded
   try {
     final url = Uri.parse(uri);
     final response = await http.get(
