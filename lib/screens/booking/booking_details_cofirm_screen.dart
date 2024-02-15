@@ -2,10 +2,7 @@
 import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/trip_model.dart';
-import 'package:bus_booking/provider/destination_provider.dart';
-import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
-import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/screens/payment/payment_proceed_screen.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
@@ -73,7 +70,7 @@ class _BookingDetailsConfirmScreenState
 
   @override
   Widget build(BuildContext context) {
-    final tripProvider = Provider.of<TripProvider>(context);
+    
     return Stack(
       children: [
         Scaffold(
@@ -287,7 +284,7 @@ class _BookingDetailsConfirmScreenState
                               );
 
                               if (booked != null && booked == "booked") {
-                                tripProvider.setTrip = widget.trip;
+                             
                                 showDialog(
                                   context: context,
                                   barrierColor: Colors.black.withOpacity(0.5),
@@ -412,13 +409,11 @@ class SuccessDialog extends StatelessWidget {
 
 class AvailableTicketCard extends StatelessWidget {
   final Trip trips;
+
   const AvailableTicketCard({super.key, required this.trips});
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
-    DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {},
       child: Container(
@@ -477,7 +472,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${op.originModel.name} -  ",
+                  "${trips.origin?.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -524,7 +519,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${dp.getDestination.name} -  ",
+                  "${trips.destination?.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

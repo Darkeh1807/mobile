@@ -2,8 +2,6 @@
 import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/trip_model.dart';
-import 'package:bus_booking/provider/destination_provider.dart';
-import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/payment/payment_screen..dart';
@@ -23,6 +21,7 @@ import '../../config/theme/palette.dart';
 class PaymentProceedScreen extends StatefulWidget {
   final Trip trip;
   final String bookingId;
+
   const PaymentProceedScreen({
     super.key,
     required this.trip,
@@ -49,7 +48,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
         authToken: authToken,
       );
       final jresp = jsonDecode(resp);
-     
+
       if (jresp["success"] == true) {
         cancelLoader();
         return jresp["data"]["data"]["authorization_url"];
@@ -103,6 +102,8 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                   padding: const EdgeInsets.all(20),
                   child: AvailableTicketCard(
                     trips: widget.trip,
+                    destination: widget.trip.destination?.name ?? '',
+                    origin: widget.trip.origin?.name ?? '',
                   ),
                 ),
                 const Divider(
@@ -301,7 +302,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                                         authorizationUrl: authorizationUrl,
                                         tripId: widget.trip.id.toString(),
                                         bookingId: widget.bookingId,
-                                        authToken:tp.getToken ,
+                                        authToken: tp.getToken,
                                       ),
                                     ));
                               }
@@ -401,13 +402,16 @@ class SuccessDialog extends StatelessWidget {
 
 class AvailableTicketCard extends StatelessWidget {
   final Trip trips;
-  const AvailableTicketCard({super.key, required this.trips});
+  final String destination;
+  final String origin;
+  const AvailableTicketCard(
+      {super.key,
+      required this.trips,
+      required this.destination,
+      required this.origin});
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
-    DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
         // pushNamedRoute(context, SelectedScreenProceedScreen.routeName);
@@ -467,7 +471,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${op.originModel.name} -  ",
+                  "$origin -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -514,7 +518,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${dp.getDestination.name} -  ",
+                  "$destination -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

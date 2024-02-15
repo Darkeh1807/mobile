@@ -6,7 +6,7 @@ import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/screens/booking/search_results_filters_screen.dart';
 import 'package:bus_booking/screens/booking/select_trip_proceed_screen.dart';
-import 'package:bus_booking/services/get_from_server.dart';
+import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
@@ -47,14 +47,40 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   String selectedTripType = "All";
 
   Future<List<Trip>> getAvailableTrips(BuildContext context) async {
+    Map<String, dynamic> data = (widget.departureTime == null &&
+            widget.destinationId == null &&
+            widget.originId == null)
+        ? {
+            "pagination": {"skip": "0", "limit": "10"},
+            "populate": ["bus", "origin", "destination", "busCompany"],
+            "search": {
+              "query": "",
+              "options": ["i"],
+              "fields": ["tripStatus", "tripType"]
+            }
+          }
+        : {
+            "pagination": {"skip": "0", "limit": "10"},
+            "populate": ["bus", "origin", "destination", "busCompany"],
+            "search": {
+              "query": "",
+              "options": ["i"],
+              "fields": ["tripStatus", "tripType"]
+            },
+            "filter": {
+              "origin": {"eq": "${widget.originId}"},
+              "destination": {"eq": "${widget.destinationId}"},
+              "date": {"eq": "${widget.departureTime}"}
+            }
+          };
+
     try {
-      final res = await getFromServer(
-          "${Url.trips}/search?origin=${widget.originId}&date=${widget.departureTime}&destination=${widget.destinationId}&populate=origin,bus,destination,busCompany&skip=0&limit=4",
-          context,
+      final res = await postDataToServer("${Url.trips}/search", data, context,
           authToken: widget.authToken);
       final jresp = jsonDecode(res);
+      logs.d(jresp);
       if (jresp["status"] == "success") {
-        var dtrips = jresp["data"]["trips"] as List<dynamic>;
+        var dtrips = jresp["data"]["rows"] as List<dynamic>;
         logs.d(dtrips);
         List<Trip> allTrips = dtrips.map((trip) => tripFromJson(trip)).toList();
         return allTrips;
@@ -85,7 +111,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(
-          "${op.originModel.name} - ${dp.getDestination.name}",
+          (op.getOrigin.name == null && dp.getDestination.name == null)
+              ? ""
+              : "${op.getOrigin.name} - ${dp.getDestination.name}",
           style: GoogleFonts.manrope(
               fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500),
         ),
@@ -187,9 +215,6 @@ class AvailableTicketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
-    DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -255,7 +280,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${op.originModel.name} -  ",
+                  "${trips.origin?.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -302,7 +327,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${dp.getDestination.name} -  ",
+                  "${trips.destination?.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

@@ -6,7 +6,6 @@ import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/ticket_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
-import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_right.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
@@ -44,7 +43,7 @@ class _GeneratedTicketDetailsScreenState
   Future<void> getTicket(BuildContext context) async {
     try {
       final res = await getFromServer(
-        "${Url.ticket}?bookingId=${widget.bookingId}&populate=Booking,Booking.Trip",
+        "${Url.ticket}?bookingId=${widget.bookingId}&populate=Booking,Booking.Trip,Booking.Trip.origin,Booking.Trip.destination,Booking.Trip.bus,Booking.Trip.busCompany",
         context,
         authToken: widget.authToken,
       );
@@ -57,6 +56,7 @@ class _GeneratedTicketDetailsScreenState
         for (var i = 0; i < serverTicket.length; i++) {
           setState(() {
             tickets = assignedTicket[i];
+            logs.d(tickets);
             isLoading = false;
           });
         }
@@ -77,9 +77,6 @@ class _GeneratedTicketDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
-    final op = Provider.of<OriginProvider>(context);
-    final dp = Provider.of<DestinationProvider>(context);
-    final tripProvider = Provider.of<TripProvider>(context);
     int endTimeHour = int.parse(
         tickets.booking?.trip?.timeScheduled?.endTime?.split(":")[0] ?? '0');
     int startTimeHour = int.parse(
@@ -92,7 +89,7 @@ class _GeneratedTicketDetailsScreenState
           onPressed: () {
             context.read<DestinationProvider>().clearDestination();
             context.read<OriginProvider>().clearOrigin();
-            context.read<TripProvider>().clearTrip();
+            
 
             nextScreenClosePrev(
                 context,
@@ -218,7 +215,7 @@ class _GeneratedTicketDetailsScreenState
                                   ),
                                   addHorizontalSpace(10),
                                   Text(
-                                    "${op.getOrigin.name} -",
+                                    "${tickets.booking?.trip?.origin?.name} -",
                                     style: GoogleFonts.manrope(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
@@ -268,7 +265,7 @@ class _GeneratedTicketDetailsScreenState
                                 ),
                                 addHorizontalSpace(10),
                                 Text(
-                                  "${dp.getDestination.name} -  ",
+                                  "${tickets.booking?.trip?.destination?.name} -  ",
                                   style: GoogleFonts.manrope(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
@@ -374,7 +371,8 @@ class _GeneratedTicketDetailsScreenState
                                 children: [
                                   DetailDisplayWidget(
                                     title: "Bus Type",
-                                    value: tripProvider.trip.bus?.model ?? '',
+                                    value:
+                                        tickets.booking?.trip?.bus?.model ?? '',
                                   ),
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
@@ -386,14 +384,16 @@ class _GeneratedTicketDetailsScreenState
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
                                     title: "Dropping Point",
-                                    value: dp.getDestination.name ?? '',
+                                    value: tickets
+                                            .booking?.trip?.destination?.name ??
+                                        '',
                                   ),
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
                                     title: "Buss Number",
-                                    value:
-                                        tripProvider.trip.bus?.vehicleNumber ??
-                                            '',
+                                    value: tickets.booking?.trip?.bus
+                                            ?.vehicleNumber ??
+                                        '',
                                   ),
                                 ],
                               ),
@@ -405,7 +405,8 @@ class _GeneratedTicketDetailsScreenState
                                 children: [
                                   DetailDisplayWidget(
                                     title: "Bus Operator",
-                                    value: tripProvider.trip.busCompany?.name ??
+                                    value: tickets
+                                            .booking?.trip?.busCompany?.name ??
                                         '',
                                   ),
                                   addVerticalSpace(24),
@@ -418,7 +419,9 @@ class _GeneratedTicketDetailsScreenState
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(
                                     title: "Boarding Point",
-                                    value: op.getOrigin.name ?? '',
+                                    value:
+                                        tickets.booking?.trip?.origin?.name ??
+                                            '',
                                   ),
                                   addVerticalSpace(24),
                                   DetailDisplayWidget(

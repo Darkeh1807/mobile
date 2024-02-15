@@ -47,18 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(
-      context,
-      listen: true,
-    );
-    DestinationProvider dp = Provider.of<DestinationProvider>(
-      context,
-      listen: true,
-    );
-    TokenProvider tp = Provider.of<TokenProvider>(
-      context,
-      listen: false,
-    );
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: true);
+    DestinationProvider dp =
+        Provider.of<DestinationProvider>(context, listen: true);
+    TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -130,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     radius: 18 / 2,
                     backgroundColor: Colors.white,
                     child: Center(
-                      child: Text("1"),
+                      child: Text("0"),
                     ),
                   ),
                 )
@@ -315,27 +307,16 @@ class _HomeScreenState extends State<HomeScreen> {
             CustomPrimaryButton(
               text: "Search",
               onPressed: () {
-                if (op.originModel.id?.isEmpty ?? true) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Origin  is required')));
-                } else if (dp.getDestination.id?.isEmpty ?? true) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Destination is required')));
-                } else if (selectedDate == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Departure date is required')));
-                } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchResultsScreen(
-                          departureTime: selectedDate,
-                          destinationId: dp.getDestination.id,
-                          originId: op.originModel.id,
-                          authToken: tp.getToken,
-                        ),
-                      ));
-                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchResultsScreen(
+                        departureTime: selectedDate,
+                        destinationId: dp.getDestination.id,
+                        originId: op.originModel.id,
+                        authToken: tp.getToken,
+                      ),
+                    ));
               },
             ),
             addVerticalSpace(50),

@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:convert';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
@@ -13,9 +14,9 @@ Future<String> postDataToServer(
 
     final response = await http.post(
       url,
-      body: data,
+      body: jsonEncode(data),
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'authorization': 'Bearer $authToken',
       },
     );
@@ -37,6 +38,6 @@ Future<String> postDataToServer(
       return 'HTTP error ${response.statusCode} : ${response.reasonPhrase}';
     }
   } catch (e) {
-    return 'An error occured: ${e.toString()}';
+    return ' ${e.toString()}';
   }
 }

@@ -4,7 +4,6 @@ import 'package:bus_booking/config/theme/theme.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
-import 'package:bus_booking/provider/trip_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +53,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => DestinationProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => TripProvider(),
-        )
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
