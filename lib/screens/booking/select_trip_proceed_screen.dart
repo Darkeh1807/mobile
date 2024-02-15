@@ -277,9 +277,6 @@ class AvailableTicketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
-    DestinationProvider dp =
-        Provider.of<DestinationProvider>(context, listen: false);
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -345,7 +342,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${op.originModel.name} -  ",
+                  "${trips.origin?.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -392,7 +389,7 @@ class AvailableTicketCard extends StatelessWidget {
                 ),
                 addHorizontalSpace(10),
                 Text(
-                  "${dp.getDestination.name} -  ",
+                  "${trips.destination?.name} -  ",
                   style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

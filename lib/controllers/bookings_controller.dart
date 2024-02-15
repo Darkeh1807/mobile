@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/booked_trip_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
@@ -40,7 +39,7 @@ class BookingsController {
       );
 
       final jresp = jsonDecode(res);
-      logs.d(jresp);
+
       if (jresp != null && jresp["status"] == "success") {
         final serverBookedTrips = jresp["data"]["rows"] as List<dynamic>;
 

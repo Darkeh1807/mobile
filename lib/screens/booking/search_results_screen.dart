@@ -4,7 +4,6 @@ import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
-import 'package:bus_booking/screens/booking/search_results_filters_screen.dart';
 import 'package:bus_booking/screens/booking/select_trip_proceed_screen.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/logger.dart';
@@ -12,7 +11,6 @@ import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -78,10 +76,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       final res = await postDataToServer("${Url.trips}/search", data, context,
           authToken: widget.authToken);
       final jresp = jsonDecode(res);
-      logs.d(jresp);
+
       if (jresp["status"] == "success") {
         var dtrips = jresp["data"]["rows"] as List<dynamic>;
-        logs.d(dtrips);
         List<Trip> allTrips = dtrips.map((trip) => tripFromJson(trip)).toList();
         return allTrips;
       } else {
@@ -95,14 +92,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OriginProvider op = Provider.of<OriginProvider>(
-      context,
-      listen: false,
-    );
-    DestinationProvider dp = Provider.of<DestinationProvider>(
-      context,
-      listen: false,
-    );
+    OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
+    DestinationProvider dp =
+        Provider.of<DestinationProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -117,20 +109,20 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           style: GoogleFonts.manrope(
               fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              pushWidgetRoute(context, const SearchResultsFilterScreen());
-            },
-            icon: const CircleAvatar(
-              backgroundColor: Palette.primaryColor,
-              child: Icon(
-                Iconsax.setting_4,
-                size: 20,
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       pushWidgetRoute(context, const SearchResultsFilterScreen());
+        //     },
+        //     icon: const CircleAvatar(
+        //       backgroundColor: Palette.primaryColor,
+        //       child: Icon(
+        //         Iconsax.setting_4,
+        //         size: 20,
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Column(

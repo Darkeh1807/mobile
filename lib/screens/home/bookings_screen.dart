@@ -119,7 +119,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                   ),
                   addVerticalSpace(10),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height * 0.65,
                     child: FutureBuilder<List<BookedTrip>?>(
                       future: getBookedTrips(context),
                       builder: (context, snapshot) {
