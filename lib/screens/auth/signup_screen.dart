@@ -4,10 +4,12 @@ import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
+import 'package:bus_booking/screens/driver/ticket/scan_ticket_qr.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -232,8 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               addVerticalSpace(5),
               TextButton(
                 onPressed: () {
-                  nextScreen(
-                      context, FadeRoute(page: const LoginScreen()));
+                  nextScreen(context, FadeRoute(page: const LoginScreen()));
                 },
                 child: Text(
                   "Sign in",
@@ -244,8 +245,85 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontWeight: FontWeight.w700),
                 ),
               ),
+              Expanded(child: Container()),
+              Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 90,
+                      right: 90,
+                    ),
+                    child: ScanQrCodeBtn(),
+                  ),
+                  addVerticalSpace(10),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: "For use by",
+                        style: GoogleFonts.manrope(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Palette.greyText,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: " Drivers ",
+                            style: GoogleFonts.manrope(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Palette.primaryColor,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " only ",
+                            style: GoogleFonts.manrope(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Palette.greyText,
+                            ),
+                          ),
+                        ]),
+                  ),
+                ],
+              )
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ScanQrCodeBtn extends StatelessWidget {
+  const ScanQrCodeBtn({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        nextScreen(context, SlideLeftRoute(page: const ScanQrScreen()));
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.05,
+        decoration: BoxDecoration(
+            color: Palette.primaryColor,
+            borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(
+              Iconsax.scan_barcode,
+              color: Colors.white,
+            ),
+            addHorizontalSpace(10),
+            Text(
+              "Scan ticket",
+              style: GoogleFonts.lexend(
+                color: Colors.white,
+              ),
+            )
+          ],
         ),
       ),
     );

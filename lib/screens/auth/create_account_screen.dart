@@ -433,7 +433,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         );
 
                         final jresp = jsonDecode(resp);
-                        logs.d(jresp);
+                        logs.d(jresp);     
 
                         if (jresp != null) {
                           if (jresp.containsKey("message") &&

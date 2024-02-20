@@ -1,7 +1,5 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/models/trip_model.dart';
-import 'package:bus_booking/provider/destination_provider.dart';
-import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/screens/booking/booking_details_cofirm_screen.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
@@ -9,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 
 class SelectedScreenProceedScreen extends StatelessWidget {
   const SelectedScreenProceedScreen({super.key, required this.trip});
