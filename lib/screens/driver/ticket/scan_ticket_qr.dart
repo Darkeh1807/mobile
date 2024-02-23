@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ class ScanQrScreen extends StatefulWidget {
 
 class _ScanQrScreenState extends State<ScanQrScreen> {
   late MobileScannerController mobileScannerController;
+  String scanMsg = "Can't find qr code...";
   @override
   void initState() {
     mobileScannerController = MobileScannerController(
@@ -32,6 +32,10 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
         controller: mobileScannerController,
         onDetect: (capture) {
           final List<Barcode> barcodes = capture.barcodes;
+          setState(() {
+            scanMsg = "Molidom is scanning...";
+          });
+
           for (final barcode in barcodes) {
             final value = jsonDecode(barcode.rawValue.toString());
             if (value != null) {
@@ -54,7 +58,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
             const ScannerOverlayWidget(),
             addVerticalSpace(10),
             Text(
-              "Molidom is scanning...",
+              scanMsg,
               style: GoogleFonts.lexend(
                 color: Colors.white54,
               ),
