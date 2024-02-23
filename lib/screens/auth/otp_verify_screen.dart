@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
@@ -5,11 +7,12 @@ import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
-import 'package:bus_booking/screens/home/app_home.dart';
+import 'package:bus_booking/screens/auth/login_screen.dart';
 import 'package:bus_booking/services/get_from_server.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
+import 'package:bus_booking/utils/snackbar.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/base_outlined_input.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
@@ -161,7 +164,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           );
 
                           final jresp = jsonDecode(resp);
-                          // ignore: use_build_context_synchronously
+                         
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('${jresp["message"]}')));
                         },
@@ -205,9 +208,13 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
                           if (jresp != null && jresp["status"] == "success") {
                             cancelLoader();
-                            // ignore: use_build_context_synchronously
-                            nextScreen(
-                                context, SlideLeftRoute(page: const AppHome()));
+
+                            nextScreen(context,
+                                SlideLeftRoute(page: const LoginScreen()));
+                          } else if (jresp != null &&
+                              jresp["message"] == "Incorrect Code") {
+                            cancelLoader();
+                            showSnackBar(context, "Wrong code");
                           }
                         } catch (e) {
                           cancelLoader();

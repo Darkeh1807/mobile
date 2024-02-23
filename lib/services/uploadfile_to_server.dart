@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 
 Future<String?> uploadFileToServer(File selectedFile, String path) async {
   final dio = Dio();
-
   try {
     if (selectedFile.path.isEmpty) {
       showToast("Please select a file first");
@@ -15,7 +14,6 @@ Future<String?> uploadFileToServer(File selectedFile, String path) async {
     final uploadUrl = "${Url.assets}/$path";
     logs.d(uploadUrl);
 
-   
     final formData = FormData.fromMap({
       "company_docs": await MultipartFile.fromFile(
         selectedFile.path,
@@ -23,14 +21,11 @@ Future<String?> uploadFileToServer(File selectedFile, String path) async {
       ),
     });
 
-  
     final response = await dio.post(uploadUrl, data: formData);
 
-    
     if (response.statusCode == 200 || response.statusCode == 201) {
       return response.toString();
     } else {
-     
       final errorMessage =
           "Error: ${response.statusCode} - ${response.statusMessage}";
       showToast(errorMessage);
@@ -41,7 +36,6 @@ Future<String?> uploadFileToServer(File selectedFile, String path) async {
     showToast(errorMessage);
     return null;
   } catch (e) {
-    // Handle other unexpected errors
     const errorMessage = "Unexpected error occurred";
     showToast(errorMessage);
     logs.e("Error uploading file: $e");

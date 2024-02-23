@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
+import 'package:bus_booking/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,6 +39,7 @@ Future<String> postDataToServer(
       return 'HTTP error ${response.statusCode} : ${response.reasonPhrase}';
     }
   } catch (e) {
+    showToast("Check your internet  connection ");
     return ' ${e.toString()}';
   }
 }
