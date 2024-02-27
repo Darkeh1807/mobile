@@ -164,7 +164,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           );
 
                           final jresp = jsonDecode(resp);
-                         
+
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('${jresp["message"]}')));
                         },
@@ -194,6 +194,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                         try {
                           String otpValue = getOtp();
                           String token = tp.getToken;
+                          logs.d(token);
 
                           final resp = await postDataToServer(
                             "${Url.authUrl}/verifyphone",
@@ -208,7 +209,6 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
                           if (jresp != null && jresp["status"] == "success") {
                             cancelLoader();
-
                             nextScreen(context,
                                 SlideLeftRoute(page: const LoginScreen()));
                           } else if (jresp != null &&

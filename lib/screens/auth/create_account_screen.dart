@@ -42,8 +42,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final up = context.watch<UserProvider>();
-    final tp = context.watch<TokenProvider>();
+    final up = Provider.of<UserProvider>(context, listen: false);
+    final tp = Provider.of<TokenProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -324,6 +324,34 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                         ],
                                       ),
                                     ),
+                                    DropdownMenuItem(
+                                        value: "+234",
+                                        child: Row(
+                                          children: [
+                                            addHorizontalSpace(12),
+                                            Center(
+                                              child: Flag.fromCode(
+                                                FlagsCode.NG,
+                                                height: 17,
+                                                width: 23,
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                    DropdownMenuItem(
+                                        value: "+256",
+                                        child: Row(
+                                          children: [
+                                            addHorizontalSpace(12),
+                                            Center(
+                                              child: Flag.fromCode(
+                                                FlagsCode.UG,
+                                                height: 17,
+                                                width: 23,
+                                              ),
+                                            ),
+                                          ],
+                                        ))
                                   ],
                               items: <DropdownMenuItem<String>>[
                                 DropdownMenuItem(
@@ -355,6 +383,42 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                       Center(
                                         child: Flag.fromCode(
                                           FlagsCode.GH,
+                                          height: 17,
+                                          width: 23,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                DropdownMenuItem(
+                                  value: "234",
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text("+234"),
+                                      addHorizontalSpace(12),
+                                      Center(
+                                        child: Flag.fromCode(
+                                          FlagsCode.NG,
+                                          height: 17,
+                                          width: 23,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                DropdownMenuItem(
+                                  value: "256",
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text("+256"),
+                                      addHorizontalSpace(12),
+                                      Center(
+                                        child: Flag.fromCode(
+                                          FlagsCode.UG,
                                           height: 17,
                                           width: 23,
                                         ),
@@ -433,7 +497,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         );
 
                         final jresp = jsonDecode(resp);
-                        logs.d(jresp);     
+                        logs.d(jresp);
 
                         if (jresp != null) {
                           if (jresp.containsKey("message") &&

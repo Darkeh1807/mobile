@@ -89,7 +89,6 @@ class _GeneratedTicketDetailsScreenState
           onPressed: () {
             context.read<DestinationProvider>().clearDestination();
             context.read<OriginProvider>().clearOrigin();
-            
 
             nextScreenClosePrev(
                 context,
