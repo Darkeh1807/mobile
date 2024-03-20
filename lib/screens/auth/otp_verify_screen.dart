@@ -209,15 +209,22 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
                           if (jresp != null && jresp["status"] == "success") {
                             cancelLoader();
+                            showSnackBar(context, "Verification successful");
                             nextScreen(context,
                                 SlideLeftRoute(page: const LoginScreen()));
                           } else if (jresp != null &&
                               jresp["message"] == "Incorrect Code") {
                             cancelLoader();
                             showSnackBar(context, "Wrong code");
+                          } else {
+                            cancelLoader();
+                            showSnackBar(
+                                context, "Error verifying phone number");
                           }
                         } catch (e) {
                           cancelLoader();
+                          showSnackBar(
+                              context, "Check your internet connection");
                           logs.d(e);
                         }
                       },

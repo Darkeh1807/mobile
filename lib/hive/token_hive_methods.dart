@@ -7,7 +7,6 @@ class TokenHiveMethods {
   Future<void> addToken(String token) async {
     final box = await Hive.openBox(tokenbox);
     box.put('token', token);
-    logs.d(token);
   }
 
   Future<String?> getToken() async {
@@ -25,6 +24,5 @@ class TokenHiveMethods {
     final box = await Hive.openBox(tokenbox);
     await box.delete("token");
     box.close();
-    logs.d("Token deleted succesfully");
   }
 }

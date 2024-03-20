@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/url/url.dart';
@@ -38,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-        final up = Provider.of<UserProvider>(context, listen: false);
+    final up = Provider.of<UserProvider>(context, listen: false);
     final tp = Provider.of<TokenProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
@@ -196,23 +198,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             up.setUser = userModel;
                             tp.setToken = token;
 
-                            // ignore: use_build_context_synchronously
                             nextScreenClosePrev(
                                 context, SlideLeftRoute(page: const AppHome()));
                           } else if (jresp["message"] == "User not found") {
-                            // ignore: use_build_context_synchronously
                             showSnackBar(context, "User not found");
                             cancelLoader();
                           } else if (jresp["message"] == "Wrong Password") {
-                            // ignore: use_build_context_synchronously
                             showSnackBar(context, "incorrect password");
                             cancelLoader();
                           } else {
+                            showSnackBar(
+                                context, "Error logging in, Try again");
                             cancelLoader();
                           }
                         } on Exception catch (e) {
                           cancelLoader();
-                          // ignore: use_build_context_synchronously
+
                           showSnackBar(
                               context, "Error: please check your internet");
                           logs.d("Error: $e");

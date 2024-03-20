@@ -491,7 +491,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             "email": emailController.text.trim(),
                             "password": passwordController.text.trim(),
                             "phone":
-                                "$selectedCountryCode${mobileNumController.text.trim()}",
+                                "+$selectedCountryCode${mobileNumController.text.trim()}",
                           },
                           context,
                         );

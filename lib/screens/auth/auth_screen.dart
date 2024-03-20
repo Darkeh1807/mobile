@@ -59,8 +59,8 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = context.read<UserProvider>();
-    TokenProvider tp = context.read<TokenProvider>();
+    final up = Provider.of<UserProvider>(context, listen: false);
+    final tp = Provider.of<TokenProvider>(context, listen: false);
     return FutureBuilder(
       future: _isExistingUser(context),
       builder: (context, snapshot) {
