@@ -1,13 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bus_booking/config/theme/palette.dart';
-import 'package:bus_booking/hive/token_hive_methods.dart';
-import 'package:bus_booking/hive/user_hive_methods.dart';
-import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
-import 'package:bus_booking/screens/auth/auth_screen.dart';
+import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/home/bookings_screen.dart';
 import 'package:bus_booking/screens/home/home_screen.dart';
@@ -125,18 +124,17 @@ class _AppHomeState extends State<AppHome> {
                   onTap: () async {
                     try {
                       showToast('Signed out successfully');
-                      User? user = up.getUser;
+                      // User? user = up.getUser;
                       //clear user
-                      await UserHiveMethods().deleteUser(user);
-                      await TokenHiveMethods().deleteToken();
+                      // await UserHiveMethods().deleteUser(user);
+                      // await TokenHiveMethods().deleteToken();
                       //clear origin
                       op.clearOrigin();
                       //clear destination
                       dp.clearDestination();
 
-                      // ignore: use_build_context_synchronously
                       nextScreenClosePrev(
-                          context, FadeRoute(page: const AuthPage()));
+                          context, FadeRoute(page: const SignUpScreen()));
                     } catch (e) {
                       showToast('Unable to signout');
                       logs.d("Error $e");

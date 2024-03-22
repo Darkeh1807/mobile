@@ -70,7 +70,7 @@ class _BookingDetailsConfirmScreenState
 
   @override
   Widget build(BuildContext context) {
-    
+    final tp = Provider.of<TokenProvider>(context, listen: false);
     return Stack(
       children: [
         Scaffold(
@@ -272,8 +272,6 @@ class _BookingDetailsConfirmScreenState
                           text: "Book",
                           onPressed: () async {
                             try {
-                              final tp = context.read<TokenProvider>();
-
                               String? booked = await bookTrip(
                                 context,
                                 {
@@ -284,7 +282,6 @@ class _BookingDetailsConfirmScreenState
                               );
 
                               if (booked != null && booked == "booked") {
-                             
                                 showDialog(
                                   context: context,
                                   barrierColor: Colors.black.withOpacity(0.5),

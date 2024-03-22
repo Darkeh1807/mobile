@@ -5,7 +5,7 @@ import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
-import 'package:bus_booking/screens/auth/auth_screen.dart';
+import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           builder: BotToastInit(),
           theme: theme('l', context),
-          home: const AuthPage(),
+          home: const SignUpScreen(),
         ),
       ),
     );

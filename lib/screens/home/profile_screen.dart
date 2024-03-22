@@ -1,13 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/theme/spacing.dart';
-import 'package:bus_booking/hive/token_hive_methods.dart';
-import 'package:bus_booking/hive/user_hive_methods.dart';
-import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
-import 'package:bus_booking/screens/auth/auth_screen.dart';
+import 'package:bus_booking/screens/auth/signup_screen.dart';
 import 'package:bus_booking/screens/settings/basic_information_screen.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
@@ -196,7 +195,7 @@ class SignoutDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider up = Provider.of<UserProvider>(context);
+    UserProvider up = Provider.of<UserProvider>(context, listen: false);
 
     return Dialog(
       elevation: 0,
@@ -244,12 +243,12 @@ class SignoutDialog extends StatelessWidget {
                   child: CustomButton(
                     onPressed: () async {
                       try {
-                        User? user = up.getUser;
-                        await UserHiveMethods().deleteUser(user);
-                        await TokenHiveMethods().deleteToken();
-                        // ignore: use_build_context_synchronously
+                        // User? user = up.getUser;
+                        // await UserHiveMethods().deleteUser(user);
+                        // await TokenHiveMethods().deleteToken();
+
                         nextScreenClosePrev(
-                            context, FadeRoute(page: const AuthPage()));
+                            context, FadeRoute(page: const SignUpScreen()));
                       } catch (e) {
                         logs.d("Error $e");
                       }

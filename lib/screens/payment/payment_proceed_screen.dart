@@ -48,6 +48,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
         authToken: authToken,
       );
       final jresp = jsonDecode(resp);
+      logs.d(jresp);
 
       if (jresp["success"] == true) {
         cancelLoader();
@@ -67,7 +68,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            "Check your internet connection",
+            "Error:Check your internet connection",
           ),
         ),
       );
@@ -77,7 +78,9 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final tp = Provider.of<TokenProvider>(context);
+    final tp = Provider.of<TokenProvider>(context, listen: false);
+    final up = Provider.of<UserProvider>(context, listen: false);
+
     return Stack(
       children: [
         Scaffold(
@@ -281,9 +284,6 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                           text: "Pay",
                           onPressed: () async {
                             try {
-                              final tp = context.read<TokenProvider>();
-                              final up = context.read<UserProvider>();
-
                               final authorizationUrl = await initPayment(
                                 context,
                                 {

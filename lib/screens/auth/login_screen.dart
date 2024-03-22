@@ -3,8 +3,6 @@
 import 'dart:convert';
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/url/url.dart';
-import 'package:bus_booking/hive/token_hive_methods.dart';
-import 'package:bus_booking/hive/user_hive_methods.dart';
 import 'package:bus_booking/models/user_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
@@ -192,8 +190,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 User.fromJson(jresp["data"]["user"]);
                             var token = jresp["data"]["token"];
 
-                            await UserHiveMethods().addUser(userModel);
-                            await TokenHiveMethods().addToken(token);
+                            // await UserHiveMethods().addUser(userModel);
+                            // await TokenHiveMethods().addToken(token);
 
                             up.setUser = userModel;
                             tp.setToken = token;
