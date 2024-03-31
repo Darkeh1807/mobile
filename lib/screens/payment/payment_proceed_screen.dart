@@ -53,6 +53,14 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
       if (jresp["success"] == true) {
         cancelLoader();
         return jresp["data"]["data"]["authorization_url"];
+      } else if (jresp["message"] == "Duplicate Transaction Reference") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Request failed: Duplicate Transaction Reference",
+            ),
+          ),
+        );
       } else {
         cancelLoader();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -80,6 +88,8 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
   Widget build(BuildContext context) {
     final tp = Provider.of<TokenProvider>(context, listen: false);
     final up = Provider.of<UserProvider>(context, listen: false);
+
+    logs.d(widget.bookingId);
 
     return Stack(
       children: [

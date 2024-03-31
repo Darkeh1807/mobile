@@ -48,11 +48,12 @@ class _GeneratedTicketDetailsScreenState
         authToken: widget.authToken,
       );
       final jresp = jsonDecode(res);
-
+      logs.d(jresp);
       if (jresp != null) {
         var serverTicket = jresp as List<dynamic>;
         List<Ticket> assignedTicket =
             serverTicket.map((ticket) => ticketFromJson(ticket)).toList();
+
         for (var i = 0; i < serverTicket.length; i++) {
           setState(() {
             tickets = assignedTicket[i];

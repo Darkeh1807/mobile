@@ -39,7 +39,7 @@ class _AppHomeState extends State<AppHome> {
       const ProfileScreen()
     ];
 
-    UserProvider up = Provider.of<UserProvider>(context, listen: false);
+    // UserProvider up = Provider.of<UserProvider>(context, listen: false);
     OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
     DestinationProvider dp =
         Provider.of<DestinationProvider>(context, listen: false);

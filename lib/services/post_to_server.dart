@@ -12,7 +12,7 @@ Future<String> postDataToServer(
     {String? authToken}) async {
   try {
     final url = Uri.parse(uri);
-
+     print(data);
     final response = await http.post(
       url,
       body: jsonEncode(data),

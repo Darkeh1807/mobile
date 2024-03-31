@@ -67,6 +67,12 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   }
 
   @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final tp = Provider.of<TokenProvider>(context, listen: false);
     final up = Provider.of<UserProvider>(context, listen: false);
@@ -156,6 +162,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       ),
                       InkWell(
                         onTap: () async {
+                          _timeRemaining = 5 * 50;
+                          _startTimer();
                           final token = tp.getToken;
                           final resp = await getFromServer(
                             '${Url.authUrl}/resendsms',
@@ -209,7 +217,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
                           if (jresp != null && jresp["status"] == "success") {
                             cancelLoader();
-                            showSnackBar(context, "Verification successful");
+                            showSnackBar(context,
+                                "Verification successful, Log in to continue.");
                             nextScreen(context,
                                 SlideLeftRoute(page: const LoginScreen()));
                           } else if (jresp != null &&

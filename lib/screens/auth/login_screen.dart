@@ -10,6 +10,7 @@ import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/auth/create_account_screen.dart';
+import 'package:bus_booking/screens/auth/otp_verify_screen.dart';
 import 'package:bus_booking/screens/home/app_home.dart';
 import 'package:bus_booking/services/post_to_server.dart';
 import 'package:bus_booking/utils/loaders.dart';
@@ -182,13 +183,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
 
                           final jresp = jsonDecode(resp);
-                          logs.d(jresp);
 
-                          if (jresp != null && jresp["status"] == "success") {
+                          if (jresp != null &&
+                              jresp["status"] == "success" &&
+                              jresp["data"]["user"]["isPhoneNumberVerified"] ==
+                                  true) {
                             cancelLoader();
                             User userModel =
                                 User.fromJson(jresp["data"]["user"]);
                             var token = jresp["data"]["token"];
+
+                            logs.d(token);
 
                             // await UserHiveMethods().addUser(userModel);
                             // await TokenHiveMethods().addToken(token);
@@ -198,6 +203,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             nextScreenClosePrev(
                                 context, SlideLeftRoute(page: const AppHome()));
+                          } else if (jresp["status"] == "success" &&
+                              jresp["data"]["user"]["isPhoneNumberVerified"] ==
+                                  false) {
+                            logs.d(
+                                jresp["data"]["user"]["isPhoneNumberVerified"]);
+                            cancelLoader();
+                            User userModel =
+                                User.fromJson(jresp["data"]["user"]);
+                            var token = jresp["data"]["token"];
+
+                            up.setUser = userModel;
+                            tp.setToken = token;
+                            showSnackBar(context,
+                                "Phone number not verified, Click on send again to recieve code");
+                            nextScreenClosePrev(context,
+                                SlideLeftRoute(page: const OtpVerifyScreen()));
                           } else if (jresp["message"] == "User not found") {
                             showSnackBar(context, "User not found");
                             cancelLoader();
