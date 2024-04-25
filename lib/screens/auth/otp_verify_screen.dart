@@ -162,8 +162,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       ),
                       InkWell(
                         onTap: () async {
-                          _timeRemaining = 5 * 50;
-                          _startTimer();
+                          // _timeRemaining = 5 * 50;
+                          // _startTimer();
                           final token = tp.getToken;
                           final resp = await getFromServer(
                             '${Url.authUrl}/resendsms',

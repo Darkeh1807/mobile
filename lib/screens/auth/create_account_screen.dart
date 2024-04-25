@@ -42,580 +42,603 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget build(BuildContext context) {
     final up = Provider.of<UserProvider>(context, listen: false);
     final tp = Provider.of<TokenProvider>(context, listen: false);
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: InkWell(
-            onTap: () {
-              goBack(context);
-            },
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: Palette.baseBlack,
+
+    String selectedSignUpType = "";
+    return DefaultTabController(
+      length: 2,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            leading: InkWell(
+              onTap: () {
+                goBack(context);
+              },
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Palette.baseBlack,
+              ),
+            ),
+            title: Text(
+              "Create Account",
+              style: GoogleFonts.quicksand(
+                  color: Palette.baseBlack,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600),
             ),
           ),
-          title: Text(
-            "Create Account",
-            style: GoogleFonts.quicksand(
-                color: Palette.baseBlack,
-                fontSize: 14,
-                fontWeight: FontWeight.w600),
-          ),
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Form(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 50 / 375),
-                  child: Text(
-                    "Provide your details to complete creating account",
-                    style: GoogleFonts.manrope(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Palette.greyText,
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width * 50 / 375),
+                    child: Text(
+                      "Provide your details to complete creating account",
+                      style: GoogleFonts.manrope(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Palette.greyText,
+                      ),
                     ),
                   ),
-                ),
-                addVerticalSpace(45),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Full name',
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Palette.greyText),
-                    ),
-                    addVerticalSpace(8),
-                    TextFormField(
-                      controller: fullNameController,
-                      style: GoogleFonts.manrope(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                        hintText: 'Enter your name',
-                        hintStyle: GoogleFonts.manrope(
-                            fontSize: 12,
+                  addVerticalSpace(45),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Full name',
+                        style: GoogleFonts.manrope(
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Palette.greyText),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 13),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 2,
-                            color: Color(0xFFE1E7EE),
-                          ),
-                        ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Enter your full name';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-                addVerticalSpace(16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email',
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Palette.greyText),
-                    ),
-                    addVerticalSpace(8),
-                    TextFormField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      style: GoogleFonts.manrope(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                        hintText: 'example@gmail.com',
-                        hintStyle: GoogleFonts.manrope(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Palette.greyText,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 18,
-                          vertical: 13,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 2,
-                            color: Color(0xFFE1E7EE),
-                          ),
-                        ),
-                      ),
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'email is required';
-                      //   } else if (!EmailValidator.validate(value)) {
-                      //     return 'Please enter a valid email';
-                      //   }
-                      //   return null;
-                      // },
-                    ),
-                  ],
-                ),
-                addVerticalSpace(16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Password',
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Palette.greyText),
-                    ),
-                    addVerticalSpace(8),
-                    TextFormField(
-                      controller: passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
-                      style: GoogleFonts.manrope(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                        hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.manrope(
+                      addVerticalSpace(8),
+                      TextFormField(
+                        controller: fullNameController,
+                        style: GoogleFonts.manrope(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: Palette.greyText),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 13),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 2,
-                            color: Color(0xFFE1E7EE),
+                            color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: 'Enter your name',
+                          hintStyle: GoogleFonts.manrope(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Palette.greyText),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 13),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              width: 2,
+                              color: Color(0xFFE1E7EE),
+                            ),
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your full name';
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Passaword cannot be empty';
-                        } else if (value.length < 8) {
-                          return 'Password mus be longer than 8 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-                addVerticalSpace(16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Confirm Password',
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Palette.greyText),
-                    ),
-                    addVerticalSpace(8),
-                    TextFormField(
-                      controller: confirmPasswordController,
-                      obscureText: true,
-                      style: GoogleFonts.manrope(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                        hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.manrope(
-                            fontSize: 12,
+                    ],
+                  ),
+                  addVerticalSpace(16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Password',
+                        style: GoogleFonts.manrope(
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Palette.greyText),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 13),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 2,
-                            color: Color(0xFFE1E7EE),
+                      ),
+                      addVerticalSpace(8),
+                      TextFormField(
+                        controller: passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: true,
+                        style: GoogleFonts.manrope(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: 'Enter your password',
+                          hintStyle: GoogleFonts.manrope(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Palette.greyText),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 13),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              width: 2,
+                              color: Color(0xFFE1E7EE),
+                            ),
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Passaword cannot be empty';
+                          } else if (value.length < 8) {
+                            return 'Password mus be longer than 8 characters';
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Enter password to confirm';
-                        } else if (passwordController.text !=
-                            confirmPasswordController.text) {
-                          return 'Passwords do not match';
-                        }
-                        return null;
-                      },
+                    ],
+                  ),
+                  addVerticalSpace(16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Confirm Password',
+                        style: GoogleFonts.manrope(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.greyText),
+                      ),
+                      addVerticalSpace(8),
+                      TextFormField(
+                        controller: confirmPasswordController,
+                        obscureText: true,
+                        style: GoogleFonts.manrope(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: 'Enter your password',
+                          hintStyle: GoogleFonts.manrope(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Palette.greyText),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 13),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              width: 2,
+                              color: Color(0xFFE1E7EE),
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter password to confirm';
+                          } else if (passwordController.text !=
+                              confirmPasswordController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                  addVerticalSpace(16),
+                  Text(
+                    "Select Sign up type",
+                    style: GoogleFonts.manrope(),
+                  ),
+                  addVerticalSpace(5),
+                  Container(
+                    height: 40,
+                    width: 700,
+                    color: Palette.lightBorder,
+                    child: TabBar(
+                      indicator: const BoxDecoration(
+                        color: Palette.primaryColor,
+                      ),
+                      tabs: const [
+                        Tab(
+                          child: Text(
+                            "Phone",
+                          ),
+                        ),
+                        Tab(
+                          child: Text("Email"),
+                        ),
+                      ],
+                      labelColor: Colors.white,
+                      labelStyle: GoogleFonts.manrope(),
+                      unselectedLabelColor: Palette.primaryColor,
                     ),
-                  ],
-                ),
-                addVerticalSpace(16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Mobile Number",
-                      style: GoogleFonts.manrope(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Palette.greyText),
-                    ),
-                    addVerticalSpace(8),
-                    Row(
+                  ),
+                  addVerticalSpace(16),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: TabBarView(
                       children: [
-                        SizedBox(
-                          width: 75,
-                          child: DropdownButtonFormField<String>(
-                              value: selectedCountryCode,
-                              selectedItemBuilder: (context) =>
-                                  <DropdownMenuItem<String>>[
-                                    DropdownMenuItem(
-                                      value: "+250",
-                                      alignment: Alignment.center,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          addHorizontalSpace(12),
-                                          Center(
-                                            child: Flag.fromCode(
-                                              FlagsCode.RW,
-                                              height: 17,
-                                              width: 23,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "+233",
-                                      alignment: Alignment.center,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          addHorizontalSpace(12),
-                                          Center(
-                                            child: Flag.fromCode(
-                                              FlagsCode.GH,
-                                              height: 17,
-                                              width: 23,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    DropdownMenuItem(
-                                        value: "+234",
-                                        child: Row(
-                                          children: [
-                                            addHorizontalSpace(12),
-                                            Center(
-                                              child: Flag.fromCode(
-                                                FlagsCode.NG,
-                                                height: 17,
-                                                width: 23,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Mobile Number",
+                              style: GoogleFonts.manrope(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Palette.greyText),
+                            ),
+                            addVerticalSpace(8),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 75,
+                                  child: DropdownButtonFormField<String>(
+                                      value: selectedCountryCode,
+                                      selectedItemBuilder: (context) =>
+                                          <DropdownMenuItem<String>>[
+                                            DropdownMenuItem(
+                                              value: "+250",
+                                              alignment: Alignment.center,
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  addHorizontalSpace(12),
+                                                  Center(
+                                                    child: Flag.fromCode(
+                                                      FlagsCode.RW,
+                                                      height: 17,
+                                                      width: 23,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        )),
-                                    DropdownMenuItem(
-                                        value: "+256",
-                                        child: Row(
-                                          children: [
-                                            addHorizontalSpace(12),
-                                            Center(
-                                              child: Flag.fromCode(
-                                                FlagsCode.UG,
-                                                height: 17,
-                                                width: 23,
+                                            DropdownMenuItem(
+                                              value: "+233",
+                                              alignment: Alignment.center,
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  addHorizontalSpace(12),
+                                                  Center(
+                                                    child: Flag.fromCode(
+                                                      FlagsCode.GH,
+                                                      height: 17,
+                                                      width: 23,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
+                                            DropdownMenuItem(
+                                                value: "+234",
+                                                child: Row(
+                                                  children: [
+                                                    addHorizontalSpace(12),
+                                                    Center(
+                                                      child: Flag.fromCode(
+                                                        FlagsCode.NG,
+                                                        height: 17,
+                                                        width: 23,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                            DropdownMenuItem(
+                                                value: "+256",
+                                                child: Row(
+                                                  children: [
+                                                    addHorizontalSpace(12),
+                                                    Center(
+                                                      child: Flag.fromCode(
+                                                        FlagsCode.UG,
+                                                        height: 17,
+                                                        width: 23,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ))
                                           ],
-                                        ))
-                                  ],
-                              items: <DropdownMenuItem<String>>[
-                                DropdownMenuItem(
-                                  value: "250",
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text("+250"),
-                                      addHorizontalSpace(12),
-                                      Center(
-                                        child: Flag.fromCode(
-                                          FlagsCode.RW,
-                                          height: 17,
-                                          width: 23,
+                                      items: <DropdownMenuItem<String>>[
+                                        DropdownMenuItem(
+                                          value: "250",
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text("+250"),
+                                              addHorizontalSpace(12),
+                                              Center(
+                                                child: Flag.fromCode(
+                                                  FlagsCode.RW,
+                                                  height: 17,
+                                                  width: 23,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
+                                        DropdownMenuItem(
+                                          value: "233",
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text("+233"),
+                                              addHorizontalSpace(12),
+                                              Center(
+                                                child: Flag.fromCode(
+                                                  FlagsCode.GH,
+                                                  height: 17,
+                                                  width: 23,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "234",
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text("+234"),
+                                              addHorizontalSpace(12),
+                                              Center(
+                                                child: Flag.fromCode(
+                                                  FlagsCode.NG,
+                                                  height: 17,
+                                                  width: 23,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "256",
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text("+256"),
+                                              addHorizontalSpace(12),
+                                              Center(
+                                                child: Flag.fromCode(
+                                                  FlagsCode.UG,
+                                                  height: 17,
+                                                  width: 23,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                      onChanged: (String? value) {
+                                        setState(() {
+                                          selectedCountryCode = value!;
+                                        });
+                                      }),
                                 ),
-                                DropdownMenuItem(
-                                  value: "233",
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text("+233"),
-                                      addHorizontalSpace(12),
-                                      Center(
-                                        child: Flag.fromCode(
-                                          FlagsCode.GH,
-                                          height: 17,
-                                          width: 23,
+                                addHorizontalSpace(7),
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: mobileNumController,
+                                    keyboardType: TextInputType.phone,
+                                    style: GoogleFonts.manrope(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
+                                    decoration: InputDecoration(
+                                      hintText:
+                                          "Mobile Number(Do not start with the zero)",
+                                      hintStyle: GoogleFonts.manrope(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          color: Palette.greyText),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 18,
+                                        vertical: 13,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        borderSide: const BorderSide(
+                                          width: 2,
+                                          color: Color(0xFFE1E7EE),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: "234",
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text("+234"),
-                                      addHorizontalSpace(12),
-                                      Center(
-                                        child: Flag.fromCode(
-                                          FlagsCode.NG,
-                                          height: 17,
-                                          width: 23,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: "256",
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text("+256"),
-                                      addHorizontalSpace(12),
-                                      Center(
-                                        child: Flag.fromCode(
-                                          FlagsCode.UG,
-                                          height: 17,
-                                          width: 23,
-                                        ),
-                                      ),
-                                    ],
+                                    ),
+                                    // validator: (value) {
+                                    //   if (value == null || value.isEmpty) {
+                                    //     return 'Phone number is required';
+                                    //   } else if (value.length >= 10) {
+                                    //     return "Enter phone number without the zero";
+                                    //   }
+
+                                    //   return null;
+                                    // },
                                   ),
                                 ),
                               ],
-                              onChanged: (String? value) {
-                                setState(() {
-                                  selectedCountryCode = value!;
-                                });
-                              }),
+                            ),
+                          ],
                         ),
-                        addHorizontalSpace(7),
-                        Expanded(
-                          child: TextFormField(
-                            controller: mobileNumController,
-                            keyboardType: TextInputType.phone,
-                            style: GoogleFonts.manrope(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              hintText:
-                                  "Mobile Number(Do not start with the zero)",
-                              hintStyle: GoogleFonts.manrope(
-                                  fontSize: 12,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Email',
+                              style: GoogleFonts.manrope(
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: Palette.greyText),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 13,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                  width: 2,
-                                  color: Color(0xFFE1E7EE),
+                            ),
+                            addVerticalSpace(8),
+                            TextFormField(
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              style: GoogleFonts.manrope(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                              decoration: InputDecoration(
+                                hintText: 'example@gmail.com',
+                                hintStyle: GoogleFonts.manrope(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Palette.greyText,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 13,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(
+                                    width: 2,
+                                    color: Color(0xFFE1E7EE),
+                                  ),
                                 ),
                               ),
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return 'email is required';
+                              //   } else if (!EmailValidator.validate(value)) {
+                              //     return 'Please enter a valid email';
+                              //   }
+                              //   return null;
+                              // },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Phone number is required';
-                              } else if (value.length >= 10) {
-                                return "Enter phone number without the zero";
-                              }
-
-                              return null;
-                            },
-                          ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-                addVerticalSpace(53),
-                CustomPrimaryButton(
-                  text: "Create Account",
-                  onPressed: () async {
-                    bool isValidated = _formKey.currentState!.validate();
-                    if (isValidated) {
-                      showProgressLoader();
-                      try {
-                        var resp = await postDataToServer(
-                          "${Url.authUrl}/signup",
-                          {
-                            "fullName": fullNameController.text.trim(),
-                            "email": emailController.text.trim(),
-                            "password": passwordController.text.trim(),
-                            "phone":
-                                "+$selectedCountryCode${mobileNumController.text.trim()}",
-                          },
-                          context,
-                        );
-
-                        final jresp = jsonDecode(resp);
-                        logs.d(jresp);
-
-                        if (jresp != null) {
-                          if (jresp.containsKey("message") &&
-                              jresp["message"] == "User already exits") {
-                            cancelLoader();
-                            showSnackBar(context, "User already exists");
-                          } else {
-                            User userModel = User.fromJson(jresp["user"]);
-                            var token = jresp['token'];
-
-                            // await UserHiveMethods().addUser(userModel);
-                            // await TokenHiveMethods().addToken(token);
-
-                            up.setUser = userModel;
-                            tp.setToken = token;
-                            cancelLoader();
-
-                            nextScreenClosePrev(context,
-                                SlideLeftRoute(page: const OtpVerifyScreen()));
-                          }
-                        } else {
-                          cancelLoader();
-                          showSnackBar(
-                              context, 'Unable to create account, try again');
-                        }
-                      } on Exception catch (e) {
-                        cancelLoader();
-                        showSnackBar(context,
-                            'An error occurred, check your internet connection');
-                        logs.d("Error: $e");
-                      }
-                    }
-                  },
-                ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Checkbox(
-                //         value: _isChecked,
-                //         onChanged: (bool? value) {
-                //           setState(() {
-                //             _isChecked = value!;
-                //           });
-                //         }),
-                //     addHorizontalSpace(3),
-                //     const Text(
-                //       "Send me travel tips and promotions by email.",
-                //       style: TextStyle(
-                //         color: Palette.greyText,
-                //         fontSize: 12,
-                //         fontWeight: FontWeight.w400,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                addVerticalSpace(14),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40 / 375),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                        text: "By creating an account, you accept AppName's ",
-                        style: GoogleFonts.manrope(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Palette.greyText,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "Terms",
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Palette.primaryColor,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " and ",
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Palette.greyText,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "Privacy Policy",
-                            style: GoogleFonts.manrope(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Palette.primaryColor,
-                            ),
-                          ),
-                        ]),
                   ),
-                ),
-                addVerticalSpace(40),
-                Text(
-                  "Already have an account? ",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.manrope(
-                      color: Palette.tertiaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
-                ),
-                addVerticalSpace(5),
-                TextButton(
-                  onPressed: () {
-                    nextScreen(context, FadeRoute(page: const LoginScreen()));
-                  },
-                  child: Text(
-                    "Sign in",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.manrope(
-                      color: Palette.primaryColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                  addVerticalSpace(53),
+                  CustomPrimaryButton(
+                    text: "Create Account",
+                    onPressed: () async {
+                      bool isValidated = _formKey.currentState!.validate();
+                      if (isValidated) {
+                        showProgressLoader();
+                        try {
+                          var resp = await postDataToServer(
+                            "${Url.authUrl}/signup",
+                            {
+                              "fullName": fullNameController.text.trim(),
+                              "email": emailController.text.trim(),
+                              "password": passwordController.text.trim(),
+                              "phone":
+                                  "+$selectedCountryCode${mobileNumController.text.trim()}",
+                            },
+                            context,
+                          );
+
+                          final jresp = jsonDecode(resp);
+                          logs.d(jresp);
+
+                          if (jresp != null) {
+                            if (jresp.containsKey("message") &&
+                                jresp["message"] == "User already exits") {
+                              cancelLoader();
+                              showSnackBar(context, "User already exists");
+                            } else {
+                              User userModel = User.fromJson(jresp["user"]);
+                              var token = jresp['token'];
+
+                              // await UserHiveMethods().addUser(userModel);
+                              // await TokenHiveMethods().addToken(token);
+
+                              up.setUser = userModel;
+                              tp.setToken = token;
+                              cancelLoader();
+
+                              nextScreenClosePrev(
+                                  context,
+                                  SlideLeftRoute(
+                                      page: const OtpVerifyScreen()));
+                            }
+                          } else {
+                            cancelLoader();
+                            showSnackBar(
+                                context, 'Unable to create account, try again');
+                          }
+                        } on Exception catch (e) {
+                          cancelLoader();
+                          showSnackBar(context,
+                              'An error occurred, check your internet connection');
+                          logs.d("Error: $e");
+                        }
+                      }
+                    },
+                  ),
+                  addVerticalSpace(14),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40 / 375),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                          text: "By creating an account, you accept AppName's ",
+                          style: GoogleFonts.manrope(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Palette.greyText,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "Terms",
+                              style: GoogleFonts.manrope(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Palette.primaryColor,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " and ",
+                              style: GoogleFonts.manrope(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Palette.greyText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "Privacy Policy",
+                              style: GoogleFonts.manrope(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Palette.primaryColor,
+                              ),
+                            ),
+                          ]),
                     ),
                   ),
-                ),
-              ],
+                  addVerticalSpace(40),
+                  Text(
+                    "Already have an account? ",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.manrope(
+                        color: Palette.tertiaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  addVerticalSpace(5),
+                  TextButton(
+                    onPressed: () {
+                      nextScreen(context, FadeRoute(page: const LoginScreen()));
+                    },
+                    child: Text(
+                      "Sign in",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.manrope(
+                        color: Palette.primaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

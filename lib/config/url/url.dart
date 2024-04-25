@@ -1,6 +1,6 @@
 class Url {
   //All api url goes here
-  static String baseUrl = 'https://molidom.adjuma.io/api/v1';
+  static String baseUrl = 'https://molidom.adjuma.io/api/v2';
   static String authUrl = "$baseUrl/auth";
   static String busCompany = "$baseUrl/busCompany";
   static String assets = "$baseUrl/assets";

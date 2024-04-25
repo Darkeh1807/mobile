@@ -151,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Continue with phone",
+                      "Continue to sign up",
                       style: GoogleFonts.manrope(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
