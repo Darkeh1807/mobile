@@ -29,6 +29,7 @@ class PaymentScreeen extends StatefulWidget {
 
 class _PaymentScreeenState extends State<PaymentScreeen> {
   late WebViewController controller;
+  int loadingState = 0;
 
   @override
   void initState() {
@@ -37,7 +38,11 @@ class _PaymentScreeenState extends State<PaymentScreeen> {
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {},
+          onProgress: (int progress) {
+            setState(() {
+              loadingState = progress;
+            });
+          },
           onPageStarted: (url) {
             if (url.contains(
                 "https://molidom.adjuma.io/api/v1/payment/callback")) {

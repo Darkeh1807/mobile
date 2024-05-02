@@ -1,19 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
-import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_slide_left.dart';
 import 'package:bus_booking/screens/bus/create_bus_screen.dart';
 import 'package:bus_booking/screens/locations/location_select_screen.dart';
 import 'package:bus_booking/screens/notifications/notifications_screen.dart';
+import 'package:bus_booking/utils/date_selector.dart';
+import 'package:bus_booking/utils/snackbar.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_outlined_button.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../booking/search_results_screen.dart';
 
@@ -28,29 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<String> _tripChoices = ["One way", "Round-trip"];
   String selectedTripType = "One way";
   String? selectedDate;
-  Future<void> showDate() async {
-    DateTime now = DateTime.now();
-    DateTime lastDate = now.add(const Duration(days: 30));
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: lastDate,
-    );
-
-    if (pickedDate != null) {
-      final String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      setState(() {
-        selectedDate = formattedDate;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     OriginProvider op = Provider.of<OriginProvider>(context, listen: true);
     DestinationProvider dp =
         Provider.of<DestinationProvider>(context, listen: true);
-    TokenProvider tp = Provider.of<TokenProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -299,24 +284,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 Iconsax.calendar_1,
                 color: Palette.greyText,
               ),
-              onTap: () {
-                showDate();
+              onTap: () async {
+                final date = await showDate(context);
+                if (date != null) {
+                  setState(() {
+                    selectedDate = date;
+                  });
+                } else {
+                  showSnackBar(context, "No date selected");
+                }
               },
             ),
             addVerticalSpace(30),
             CustomPrimaryButton(
               text: "Search",
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SearchResultsScreen(
-                        departureTime: selectedDate,
-                        destinationId: dp.getDestination.id,
-                        originId: op.originModel.id,
-                        authToken: tp.getToken,
-                      ),
-                    ));
+                if (op.getOrigin.id != null && dp.getDestination.id == null) {
+                  showSnackBar(context, "Destionation is required");
+                } else if (dp.getDestination.id != null &&
+                    op.getOrigin.id == null) {
+                  showSnackBar(context, "Origin is required");
+                } else if (op.getOrigin.id != null &&
+                    dp.getDestination.id != null &&
+                    selectedDate == null) {
+                  showSnackBar(context, "Departure date is required");
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchResultsScreen(
+                          departureTime: selectedDate,
+                          destinationId: dp.getDestination.id,
+                          originId: op.originModel.id,
+                        ),
+                      ));
+                }
               },
             ),
             addVerticalSpace(50),

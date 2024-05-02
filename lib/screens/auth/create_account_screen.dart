@@ -43,7 +43,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     final up = Provider.of<UserProvider>(context, listen: false);
     final tp = Provider.of<TokenProvider>(context, listen: false);
 
-    String selectedSignUpType = "";
     return DefaultTabController(
       length: 2,
       child: SafeArea(
@@ -527,10 +526,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             "${Url.authUrl}/signup",
                             {
                               "fullName": fullNameController.text.trim(),
-                              "email": emailController.text.trim(),
+                              emailController.text.isNotEmpty
+                                      ? "email"
+                                      : "phone":
+                                  emailController.text.isNotEmpty
+                                      ? emailController.text.trim()
+                                      : mobileNumController.text.trim(),
                               "password": passwordController.text.trim(),
-                              "phone":
-                                  "+$selectedCountryCode${mobileNumController.text.trim()}",
+                              "regType": emailController.text.isNotEmpty
+                                  ? "email"
+                                  : "phone"
                             },
                             context,
                           );
@@ -561,8 +566,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             }
                           } else {
                             cancelLoader();
-                            showSnackBar(
-                                context, 'Unable to create account, try again');
+                            showSnackBar(context,
+                                'Unable to create account, try again...');
                           }
                         } on Exception catch (e) {
                           cancelLoader();
@@ -625,7 +630,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   addVerticalSpace(5),
                   TextButton(
                     onPressed: () {
-                      nextScreen(context, FadeRoute(page: const LoginScreen()));
+                      nextScreen(
+                          context,
+                          FadeRoute(
+                            page: const LoginScreen(),
+                          ));
                     },
                     child: Text(
                       "Sign in",

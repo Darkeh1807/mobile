@@ -40,6 +40,7 @@ class _GeneratedTicketDetailsScreenState
   Ticket tickets = Ticket();
   bool isLoading = true;
 
+  //Generated ticket method
   Future<void> getTicket(BuildContext context) async {
     try {
       final res = await getFromServer(
@@ -88,8 +89,12 @@ class _GeneratedTicketDetailsScreenState
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            context.read<DestinationProvider>().clearDestination();
-            context.read<OriginProvider>().clearOrigin();
+            // context.read<DestinationProvider>().clearDestination();
+            // context.read<OriginProvider>().clearOrigin();
+
+            Provider.of<DestinationProvider>(context)
+                .clearDestination(); //Clear destination
+            Provider.of<OriginProvider>(context).clearOrigin(); //Clear origin
 
             nextScreenClosePrev(
                 context,

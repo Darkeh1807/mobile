@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:convert';
 import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/controllers/payment_controller.dart';
 import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
@@ -27,67 +28,17 @@ class PaymentProceedScreen extends StatefulWidget {
     required this.trip,
     required this.bookingId,
   });
-  static const routeName = '/booking_details_confirm_screen';
 
   @override
   State<PaymentProceedScreen> createState() => _PaymentProceedScreenState();
 }
 
 class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
-  Future<String?> initPayment(
-    BuildContext context,
-    Map<String, dynamic> data,
-    String authToken,
-  ) async {
-    showProgressLoader();
-    try {
-      final resp = await postDataToServer(
-        Url.payment,
-        data,
-        context,
-        authToken: authToken,
-      );
-      final jresp = jsonDecode(resp);
-      logs.d(jresp);
-
-      if (jresp["success"] == true) {
-        cancelLoader();
-        return jresp["data"]["data"]["authorization_url"];
-      } else if (jresp["message"] == "Duplicate Transaction Reference") {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Request failed: Duplicate Transaction Reference",
-            ),
-          ),
-        );
-      } else {
-        cancelLoader();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Request failed",
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      cancelLoader();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Error:Check your internet connection",
-          ),
-        ),
-      );
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final tp = Provider.of<TokenProvider>(context, listen: false);
     final up = Provider.of<UserProvider>(context, listen: false);
+    final pc = PaymentsController(); //Initialised Payments Controller
 
     logs.d(widget.bookingId);
 
@@ -294,7 +245,7 @@ class _PaymentProceedScreenState extends State<PaymentProceedScreen> {
                           text: "Pay",
                           onPressed: () async {
                             try {
-                              final authorizationUrl = await initPayment(
+                              final authorizationUrl = await pc.initPayment(
                                 context,
                                 {
                                   "amount": widget.trip.price.toString(),

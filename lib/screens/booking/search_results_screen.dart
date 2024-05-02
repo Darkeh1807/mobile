@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/controllers/trips_controller.dart';
 import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/destination_provider.dart';
 import 'package:bus_booking/provider/origin_provider.dart';
@@ -20,7 +21,7 @@ class SearchResultsScreen extends StatefulWidget {
     this.departureTime,
     this.destinationId,
     this.originId,
-    this.authToken,
+ 
   }) : super(
           key: key,
         );
@@ -28,7 +29,7 @@ class SearchResultsScreen extends StatefulWidget {
   final String? departureTime;
   final String? destinationId;
   final String? originId;
-  final String? authToken;
+
 
   @override
   State<SearchResultsScreen> createState() => _SearchResultsScreenState();
@@ -44,57 +45,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   ];
   String selectedTripType = "All";
 
-  Future<List<Trip>> getAvailableTrips(BuildContext context) async {
-    Map<String, dynamic> data = (widget.departureTime == null &&
-            widget.destinationId == null &&
-            widget.originId == null)
-        ? {
-            "pagination": {"skip": "0", "limit": "10"},
-            "populate": ["bus", "origin", "destination", "busCompany"],
-            "search": {
-              "query": "",
-              "options": ["i"],
-              "fields": ["tripStatus", "tripType"]
-            }
-          }
-        : {
-            "pagination": {"skip": "0", "limit": "10"},
-            "populate": ["bus", "origin", "destination", "busCompany"],
-            "search": {
-              "query": "",
-              "options": ["i"],
-              "fields": ["tripStatus", "tripType"]
-            },
-            "filter": {
-              "origin": {"eq": "${widget.originId}"},
-              "destination": {"eq": "${widget.destinationId}"},
-              "date": {"eq": "${widget.departureTime}"}
-            }
-          };
-
-    try {
-      final res = await postDataToServer("${Url.trips}/search", data, context,
-          authToken: widget.authToken);
-      final jresp = jsonDecode(res);
-
-      if (jresp["status"] == "success") {
-        var dtrips = jresp["data"]["rows"] as List<dynamic>;
-        List<Trip> allTrips = dtrips.map((trip) => tripFromJson(trip)).toList();
-        return allTrips;
-      } else {
-        return [];
-      }
-    } catch (e) {
-      logs.d(e);
-      return [];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     OriginProvider op = Provider.of<OriginProvider>(context, listen: false);
     DestinationProvider dp =
         Provider.of<DestinationProvider>(context, listen: false);
+    final tc = TripsController(); //Trips controller
 
     return Scaffold(
       appBar: AppBar(
@@ -168,7 +124,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
             ),
             addVerticalSpace(20),
             FutureBuilder<List<Trip>>(
-              future: getAvailableTrips(context),
+              future: tc.getAvailableTrips(
+                context,
+                departureTime: widget.departureTime,
+                destinationId: widget.destinationId,
+                originId: widget.originId,
+              ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();

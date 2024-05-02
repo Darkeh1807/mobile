@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ Future<String> postDataToServer(
     String uri, Map<String, dynamic> data, BuildContext ctx,
     {String? authToken}) async {
   try {
+    logs.d(data);
     final url = Uri.parse(uri);
     final response = await http.post(
       url,

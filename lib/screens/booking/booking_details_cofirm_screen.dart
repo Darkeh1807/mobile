@@ -1,11 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:convert';
-import 'package:bus_booking/config/url/url.dart';
+import 'package:bus_booking/controllers/bookings_controller.dart';
 import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/screens/payment/payment_proceed_screen.dart';
-import 'package:bus_booking/services/post_to_server.dart';
-import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
@@ -31,46 +28,11 @@ class _BookingDetailsConfirmScreenState
     extends State<BookingDetailsConfirmScreen> {
   bool hasPaid = false;
   String bookingId = "";
-  Future<String?> bookTrip(
-    BuildContext context,
-    Map<String, dynamic> data,
-    String authToken,
-  ) async {
-    showProgressLoader();
-    try {
-      final String res = await postDataToServer(
-        Url.booking,
-        data,
-        context,
-        authToken: authToken,
-      );
-
-      final jresp = jsonDecode(res);
-
-      if (jresp["success"] == true) {
-        cancelLoader();
-        setState(() {
-          bookingId = jresp["data"]["booking"]["_id"];
-        });
-
-        return "booked";
-      } else if (jresp["message"] == "You have already booked this trip") {
-        cancelLoader();
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("You have already booked this trip")));
-      }
-    } catch (e) {
-      cancelLoader();
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Check your internet connection")));
-      logs.d("Error: $e");
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
     final tp = Provider.of<TokenProvider>(context, listen: false);
+    final bc = BookingsController(); //Instance of bookings controller
     return Stack(
       children: [
         Scaffold(
@@ -272,7 +234,7 @@ class _BookingDetailsConfirmScreenState
                           text: "Book",
                           onPressed: () async {
                             try {
-                              String? booked = await bookTrip(
+                              String? booked = await bc.bookTrip(
                                 context,
                                 {
                                   "Trip": widget.trip.id,
@@ -281,7 +243,11 @@ class _BookingDetailsConfirmScreenState
                                 tp.getToken,
                               );
 
-                              if (booked != null && booked == "booked") {
+                              if (booked != null &&
+                                  booked.split(" ")[0] == "booked") {
+                                setState(() {
+                                  bookingId = booked.split(" ")[1];
+                                });
                                 showDialog(
                                   context: context,
                                   barrierColor: Colors.black.withOpacity(0.5),
