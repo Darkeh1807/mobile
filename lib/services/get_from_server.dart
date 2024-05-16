@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
@@ -25,7 +28,12 @@ Future<String> getFromServer(String uri, BuildContext ctx,
       return 'HTTP error ${response.statusCode}: ${response.reasonPhrase}';
     }
   } catch (e) {
-    showToast("Check your internet  connection ");
-    return 'An error occured: ${e.toString()}';
+    if (e is SocketException) {
+      return "Check your internet connection";
+    } else if (e is TimeoutException) {
+      return "Request timedout, try again";
+    } else {
+      return "An unknown error occured";
+    }
   }
 }

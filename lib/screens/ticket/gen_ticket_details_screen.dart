@@ -62,6 +62,8 @@ class _GeneratedTicketDetailsScreenState
             isLoading = false;
           });
         }
+      } else {
+        isLoading = false;
       }
     } catch (e) {
       setState(() {
@@ -73,6 +75,7 @@ class _GeneratedTicketDetailsScreenState
 
   @override
   void initState() {
+    logs.d(widget.bookingId);
     getTicket(context);
     super.initState();
   }
@@ -92,9 +95,10 @@ class _GeneratedTicketDetailsScreenState
             // context.read<DestinationProvider>().clearDestination();
             // context.read<OriginProvider>().clearOrigin();
 
-            Provider.of<DestinationProvider>(context)
+            Provider.of<DestinationProvider>(context, listen: false)
                 .clearDestination(); //Clear destination
-            Provider.of<OriginProvider>(context).clearOrigin(); //Clear origin
+            Provider.of<OriginProvider>(context, listen: false)
+                .clearOrigin(); //Clear origin
 
             nextScreenClosePrev(
                 context,

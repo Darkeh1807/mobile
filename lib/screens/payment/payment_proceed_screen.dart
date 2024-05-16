@@ -1,13 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:convert';
-import 'package:bus_booking/config/url/url.dart';
 import 'package:bus_booking/controllers/payment_controller.dart';
 import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/provider/token_provider.dart';
 import 'package:bus_booking/provider/user_provider.dart';
 import 'package:bus_booking/screens/payment/payment_screen..dart';
-import 'package:bus_booking/services/post_to_server.dart';
-import 'package:bus_booking/utils/loaders.dart';
 import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';

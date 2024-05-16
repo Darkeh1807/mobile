@@ -86,13 +86,15 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TokenProvider tp = Provider.of<TokenProvider>(context, listen: true);
-    UserProvider up = Provider.of<UserProvider>(context, listen: true);
+    TokenProvider tp =
+        Provider.of<TokenProvider>(context, listen: true); //token provider
+    UserProvider up =
+        Provider.of<UserProvider>(context, listen: true); //User provider
 
     emailController.text = up.getUser.email.toString();
-    mobileController.text = up.getUser.phone.toString();
+    // mobileController.text = up.getUser.phone.toString();
     contactPersonNameController.text = up.getUser.fullName.toString();
-    contactPersonPhoneController.text = up.getUser.phone.toString();
+    // contactPersonPhoneController.text = up.getUser.phone.toString();
     contactPersonEmailController.text = up.getUser.email.toString();
 
     return SafeArea(
@@ -113,7 +115,7 @@ class _CreateBusScreenState extends State<CreateBusScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Navigator.pop(context, null);
+                          goBack(context);
                         },
                         child: const Icon(
                           Icons.arrow_back_ios,

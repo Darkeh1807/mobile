@@ -11,6 +11,3 @@ class Url {
   static String payment = "$baseUrl/payment";
   static String ticket = "$baseUrl/ticket";
 }
-  
-
-

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 
 Future<String> patchToServer(String uri, Map<String, dynamic> data,
@@ -18,6 +21,12 @@ Future<String> patchToServer(String uri, Map<String, dynamic> data,
       return 'HTTP error ${response.statusCode}: ${response.reasonPhrase}';
     }
   } catch (e) {
-    return 'An error occured: ${e.toString()}';
+    if (e is SocketException) {
+      return "Check your internet connection";
+    } else if (e is TimeoutException) {
+      return "Request timedout, try again";
+    } else {
+      return "An unknown error occured";
+    }
   }
 }

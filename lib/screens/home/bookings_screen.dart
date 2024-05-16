@@ -41,6 +41,12 @@ class _BookingsScreenState extends State<BookingsScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    BookingsController().getBookedTrips(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -144,6 +150,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                                 snapshot.data!.isEmpty) {
                               return const NoBookingWidget();
                             } else {
+                              // final measurement = snapshot.data;
                               return ListView.builder(
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {

@@ -3,9 +3,11 @@
 import 'package:bus_booking/config/theme/palette.dart';
 import 'package:bus_booking/models/trip_model.dart';
 import 'package:bus_booking/screens/ticket/gen_ticket_details_screen.dart';
+import 'package:bus_booking/utils/logger.dart';
 import 'package:bus_booking/utils/ui.dart';
 import 'package:bus_booking/widgets/base/custom_primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -79,11 +81,26 @@ class _PaymentScreeenState extends State<PaymentScreeen> {
 
   @override
   Widget build(BuildContext context) {
+    logs.d(loadingState);
     return Scaffold(
       body: SafeArea(
-        child: WebViewWidget(
-          controller: controller,
-        ),
+        child: loadingState < 100
+            ? Column(
+                children: [
+                  LinearProgressIndicator(
+                    value: loadingState.toDouble(),
+                  ),
+                  Text(
+                    loadingState.toString(),
+                    style: GoogleFonts.lexend(
+                      color: Palette.primaryColor,
+                    ),
+                  )
+                ],
+              )
+            : WebViewWidget(
+                controller: controller,
+              ),
       ),
     );
   }

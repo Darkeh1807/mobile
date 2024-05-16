@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:bus_booking/route_transitions/pagesnavigator.dart';
 import 'package:bus_booking/route_transitions/route_transition_fade.dart';
 import 'package:bus_booking/screens/auth/login_screen.dart';
@@ -40,7 +42,15 @@ Future<String> postDataToServer(
       return 'HTTP error ${response.statusCode} : ${response.reasonPhrase}';
     }
   } catch (e) {
-    showToast("Check your internet  connection ");
-    return ' ${e.toString()}';
+    if (e is SocketException) {
+       showToast("Check your internet  connection ");
+      return "Check your internet connection";
+    } else if (e is TimeoutException) {
+       showToast("Request timedout");
+      return "Request timedout, try again";
+    } else {
+       showToast("An unknow error occured");
+      return "An unknown error occured";
+    }
   }
 }
